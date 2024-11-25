@@ -6,10 +6,19 @@ import footer from "./config/footer.config";
 import { env } from "process";
 import { Config } from "@docusaurus/types";
 import { Options } from "@docusaurus/plugin-content-docs";
+import {
+  AUTHOR_FALLBACK,
+  AuthorData,
+  commitCache,
+  cacheAuthorData,
+  getFileCommitHashSafe,
+} from "./src/util/authorUtils";
+import { preview, deploymentID } from "./src/util/pagesUtils";
 
-const preview = env.VERCEL_ENV === "preview";
+cacheAuthorData(preview || env.NODE_ENV === "development");
 
-const url = (preview && `https://${env.VERCEL_URL}`) || "https://docs.papermc.io";
+const url =
+  (preview && `https://${deploymentID}.papermc-docs.pages.dev`) || "https://docs.papermc.io";
 
 const docsCommon: Options = {
   breadcrumbs: true,
@@ -22,32 +31,27 @@ const docsCommon: Options = {
 };
 
 const config: Config = {
-  title: "PaperMC Documentation",
+  title: "PaperMC Docs",
   tagline:
-    "Documentation for all projects under the PaperMC umbrella, including Paper, Velocity, and Waterfall.",
+    "Documentation for all projects under the PaperMC umbrella, including Paper, Velocity, and Folia.",
   url: url,
   baseUrl: "/",
   onBrokenLinks: isCI ? "throw" : "warn",
   onBrokenMarkdownLinks: isCI ? "throw" : "warn",
   onBrokenAnchors: isCI ? "throw" : "warn",
   onDuplicateRoutes: isCI ? "throw" : "warn",
-  favicon: "img/favicon.ico",
+  favicon: "/favicon.ico",
   trailingSlash: false,
   noIndex: preview,
   baseUrlIssueBanner: false,
   clientModules: [
     require.resolve("./src/css/custom.css"),
+    require.resolve("./src/css/ui.scss"),
     require.resolve("@fontsource/jetbrains-mono/index.css"),
   ],
 
-  webpack: {
-    jsLoader: (isServer) => ({
-      loader: require.resolve("esbuild-loader"),
-      options: {
-        loader: "tsx",
-        target: isServer ? "node12" : "es2017",
-      },
-    }),
+  future: {
+    experimental_faster: true,
   },
 
   headTags: [
@@ -80,9 +84,37 @@ const config: Config = {
       headingIds: false,
     },
     format: "detect",
+    parseFrontMatter: async (params) => {
+      const result = await params.defaultParseFrontMatter(params);
+      let author: AuthorData = {
+        ...AUTHOR_FALLBACK,
+      };
+      if (process.env.NODE_ENV !== "development") {
+        const data = await getFileCommitHashSafe(params.filePath);
+        if (data) {
+          const username = commitCache.get(data.commit);
+          author = {
+            commit: data.commit,
+            username: username ?? AUTHOR_FALLBACK.username,
+          };
+        }
+      }
+
+      return {
+        ...result,
+        frontMatter: {
+          ...result.frontMatter,
+          author: author,
+        },
+      };
+    },
   },
 
-  themes: ["@docusaurus/theme-classic", "@docusaurus/theme-search-algolia", "@docusaurus/theme-mermaid"],
+  themes: [
+    "@docusaurus/theme-classic",
+    "@docusaurus/theme-search-algolia",
+    "@docusaurus/theme-mermaid",
+  ],
 
   plugins: [
     [
@@ -106,7 +138,7 @@ const config: Config = {
         lastVersion: "current",
         versions: {
           current: {
-            label: "1.20",
+            label: "1.21",
             path: "",
           },
         },
@@ -185,7 +217,7 @@ const config: Config = {
       },
     ],
     "@docusaurus/plugin-debug",
-    "@gracefullight/docusaurus-plugin-vercel-analytics",
+    "docusaurus-plugin-sass",
   ],
 
   themeConfig: {
@@ -227,7 +259,8 @@ const config: Config = {
         "toml",
         "properties",
       ],
-      theme: themes.vsDark,
+      theme: themes.vsLight,
+      darkTheme: themes.vsDark,
     },
     algolia: {
       appId: "P1BCDPTG1Q",
@@ -236,7 +269,7 @@ const config: Config = {
       contextualSearch: true,
     },
     mermaid: {
-      theme: {light: 'neutral', dark: 'dark'},
+      theme: { light: "neutral", dark: "dark" },
     },
   },
 };

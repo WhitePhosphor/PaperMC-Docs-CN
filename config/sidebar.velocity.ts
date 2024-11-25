@@ -47,6 +47,7 @@ const velocity: SidebarsConfig = {
           },
           items: [
             "admin/reference/configuration",
+            "admin/reference/system-properties",
             "admin/reference/commands",
             "admin/reference/server-compatibility",
             "admin/reference/comparison",
@@ -84,10 +85,7 @@ const velocity: SidebarsConfig = {
             type: "generated-index",
             slug: "/cat/dev/how-to-guides",
           },
-          items: [
-            "dev/how-to/dependencies",
-            "dev/how-to/porting-from-velocity-1",
-          ],
+          items: ["dev/how-to/dependencies", "dev/how-to/porting-from-velocity-1"],
         },
         {
           type: "category",
@@ -99,12 +97,13 @@ const velocity: SidebarsConfig = {
           items: [
             {
               type: "category",
-              label: "Component API",
+              label: "Component API (Adventure)",
               collapsed: true,
               items: [
                 "dev/api/component-api/intro",
                 "dev/api/component-api/i18n",
-              ]
+                "dev/api/component-api/audiences",
+              ],
             },
             "dev/api/event",
             "dev/api/command",

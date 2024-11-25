@@ -4,7 +4,7 @@ description: How to automatically publish your plugin to Hangar on commits.
 ---
 
 If you want to automatically publish your plugin to [Hangar](https://hangar.papermc.io/) on commits, you can use
-our [Hangar publish Gradle plugin](https://github.com/HangarMC/hangar-publish-plugin).
+our [Gradle plugin](https://github.com/HangarMC/hangar-publish-plugin).
 
 After you have added the required `hangarPublish` configuration, you can manually publish it by
 running `./gradlew build publishPluginPublicationToHangar`, or have GitHub Actions automatically publish a version on
@@ -28,14 +28,14 @@ are able to convert the example code.
 
 :::
 
-### Creating the Snapshot release channel
+### Creating the `Snapshot` release channel
 
 The builds script below will publish non-release builds under a `Snapshot` channel. You need to create this channel in
 your Hangar project's channel page first.
 
 ![Create a Snapshot channel](https://i.imgur.com/p4UEIeJ.png)
 
-### Adding the HANGAR_API_TOKEN repository secret
+### Adding the `HANGAR_API_TOKEN` repository secret
 
 First, you need to create a Hangar API token. Go to your Hangar settings in the profile dropdown and click on "Api keys" on the left. Then, tick
 the `create_version` permission box, give the key a name and create it. **At the top**, you should be given your secret API
@@ -47,13 +47,13 @@ secret `HANGAR_API_TOKEN` and paste the Hangar API token from the previous step 
 
 ![Action secrets](https://i.imgur.com/l11Bnx5.png)
 
-## Project Files
+## Project files
 
 The files below are simple examples that require little manual changes for you to use, but you can still adapt them
 depending on your needs. Take a look at the comments and especially the TODOs to figure out what you still need to
 change.
 
-### gradle.properties
+### `gradle.properties`
 
 Create a `gradle.properties` file in your project root directory if it does not already exist. In there, you define the
 platform versions your plugin is compatible with. Simply remove the platforms you don't need and put in the correct
@@ -62,7 +62,7 @@ versions.
 Hangar allows version ranges (such as `1.19-1.20.2`) and wildcards (such as `1.20.x`).
 
 ```properties
-# Specify the platform versions for Paper, Velocity, and Waterfall.
+# Specify the platform versions for Paper and Velocity.
 # Hangar also allows version ranges (such as 1.19-1.20.2) and wildcards (such as 1.20.x).
 # TODO: Remove the platforms you don't need and put in the correct versions.
 paperVersion=1.12.2, 1.16.5, 1.19-1.20.2
@@ -70,13 +70,13 @@ velocityVersion=3.2
 waterfallVersion=1.20
 ```
 
-### build.gradle.kts
+### `build.gradle.kts`
 
 In the plugins block of your `build.gradle.kts` build script, add the publish plugin:
 
 ```kotlin
 plugins {
-    id("io.papermc.hangar-publish-plugin") version "0.1.0"
+    id("io.papermc.hangar-publish-plugin") version "0.1.2"
 }
 ```
 
@@ -106,7 +106,7 @@ hangarPublish {
             register(Platforms.PAPER) {
                 // TODO: If you're using ShadowJar, replace the jar lines with the appropriate task:
                 //   jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                // Set the jar file to upload
+                // Set the JAR file to upload
                 jar.set(tasks.jar.flatMap { it.archiveFile })
 
                 // Set platform versions from gradle.properties file
@@ -191,7 +191,7 @@ hangarPublish {
 
 You don't necessarily need to publish via GitHub Actions, but it is an easy way to do so. If you want to use it, create
 a `publish.yml` file in the `.github/workflows` directory of your project root folder and make sure
-you [add the repository secret](#adding-the-hangarapitoken-repository-secret).
+you [add the repository secret](#adding-the-hangar_api_token-repository-secret).
 
 You can add and remove branches to be published by editing the `branches` section.
 
@@ -221,6 +221,6 @@ jobs:
       - name: Publish
         env:
           # Make sure you have added a repository secret in the repository's settings
-          HANGAR_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}
+          HANGAR_API_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}
         run: ./gradlew build publishPluginPublicationToHangar --stacktrace
 ```

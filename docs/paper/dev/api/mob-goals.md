@@ -1,6 +1,6 @@
 ---
 slug: /dev/mob-goals
-description: A guide to the PDC API for storing data.
+description: A guide to the mob goal API.
 ---
 
 # Mob Goal API
@@ -48,7 +48,7 @@ The `getTypes()` method is used to determine what types of goal this is. The typ
 
 :::
 
-Here is an example of a goal that makes a camel follow a player. This is essentially the same as the `FOLLOW_MOB` in Vanilla, 
+Here is an example of a goal that makes a camel follow a player. This is essentially the same as the `FOLLOW_MOB` in Vanilla,
 but it is a good example of how to create a goal.
 
 ```java
@@ -88,11 +88,11 @@ public class CamelFollowPlayerGoal implements Goal<Camel> {
     @Override
     public void stop() {
         // This is called when the goal stops. In this case, we just send a message to the player.
-        player.sendMessage(text("I Stopped following you!"));
+        player.sendMessage(text("I stopped following you!"));
     }
 
     @Override
-    public @NotNull GoalKey<Camel> getKey() {
+    public GoalKey<Camel> getKey() {
         // This is the key for the goal. It is used to identify the goal and is used to determine if two goals are the same.
         // It requires the class of the entity and a NamespacedKey. The NamespacedKey is used to identify the goal.
         // You should use the plugin's namespace for the NamespacedKey, not Minecraft or Bukkit.

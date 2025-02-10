@@ -130,7 +130,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "misc",
-        path: "docs/misc",
+        path: "docs-cn/misc",
         routeBasePath: "/misc",
         sidebarPath: require.resolve("./config/sidebar.misc"),
       },
@@ -140,7 +140,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "paper",
-        path: "docs/paper",
+        path: "docs-cn/paper",
         routeBasePath: "paper",
         sidebarPath: require.resolve("./config/sidebar.paper"),
         lastVersion: "current",
@@ -157,7 +157,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "folia",
-        path: "docs/folia",
+        path: "docs-cn/folia",
         routeBasePath: "folia",
         sidebarPath: require.resolve("./config/sidebar.folia"),
         lastVersion: "current",
@@ -174,7 +174,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "velocity",
-        path: "docs/velocity",
+        path: "docs-cn/velocity",
         routeBasePath: "velocity",
         sidebarPath: require.resolve("./config/sidebar.velocity"),
       },
@@ -184,7 +184,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "waterfall",
-        path: "docs/waterfall",
+        path: "docs-cn/waterfall",
         routeBasePath: "waterfall",
         sidebarPath: require.resolve("./config/sidebar.waterfall"),
       },

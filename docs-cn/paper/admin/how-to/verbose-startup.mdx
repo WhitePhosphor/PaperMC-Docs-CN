@@ -1,0 +1,92 @@
+---
+slug: /verbose-startup
+title: Verbose Startup
+description: 如何启用 Paper 服务器的详细启动日志，以便进行问题排查。
+---
+
+# 详细启动日志 (Verbose Startup)
+
+详细启动日志 (Verbose Startup) 是 Paper 服务器提供的一项功能，可以输出更详细的服务器启动日志，包括插件加载、配置加载、世界加载等过程的详细信息。启用详细启动日志可以帮助您在服务器启动失败或出现异常时，更方便地排查问题。
+
+## 启用详细启动日志
+
+您可以通过修改 `paper.yml` 配置文件中的 `verbose` 配置项来启用详细启动日志。
+
+**修改 `paper.yml` 配置文件:**
+
+打开服务器根目录下的 `paper.yml` 配置文件，找到 `config` 节点下的 `verbose` 配置项，将其值设置为 `true`。
+
+```yaml
+config:
+  verbose: true # 是否启用详细启动日志，true 为启用，false 为禁用 (默认: false)
+```
+
+**配置项说明:**
+
+*   **`config.verbose`**:  是否启用详细启动日志。
+    *   `true`: 启用详细启动日志。服务器启动时将输出更详细的日志信息，包括插件加载、配置加载、世界加载等过程的详细信息。
+    *   `false`: 禁用详细启动日志 (默认值)。服务器启动时只输出基本的日志信息。
+
+**重启服务器:**
+
+修改 `paper.yml` 配置文件后，需要重启 Paper 服务器才能使配置生效。
+
+**查看详细启动日志:**
+
+启用详细启动日志后，重启服务器，您将在服务器控制台和 `logs/latest.log` 日志文件中看到更详细的启动日志信息。
+
+**详细启动日志内容示例:**
+
+```
+[00:00:00 INFO]: [PaperMC] Loading server version 1.18.2-R0.1-SNAPSHOT git-Paper-333
+[00:00:00 INFO]: [PaperMC] Checking version compatibility...
+[00:00:00 INFO]: [PaperMC] Detected Java Version: 17.0.2
+[00:00:00 INFO]: [PaperMC] Detected Minecraft Version: 1.18.2
+[00:00:00 INFO]: [PaperMC] Loading global configuration from paper.yml
+[00:00:00 INFO]: [PaperMC] Loaded global configuration
+[00:00:00 INFO]: [PaperMC] Loading bukkit configuration from bukkit.yml
+[00:00:00 INFO]: [PaperMC] Loaded bukkit configuration
+[00:00:00 INFO]: [PaperMC] Loading spigot configuration from spigot.yml
+[00:00:00 INFO]: [PaperMC] Loaded spigot configuration
+[00:00:00 INFO]: [PaperMC] Loading server properties from server.properties
+[00:00:00 INFO]: [PaperMC] Loaded server properties
+[00:00:00 INFO]: [PaperMC] Starting Minecraft server version 1.18.2
+[00:00:00 INFO]: [Server thread/INFO]: Loading properties
+[00:00:00 INFO]: [Server thread/INFO]: Default game type: SURVIVAL
+[00:00:00 INFO]: [Server thread/INFO]: Generating keypair
+[00:00:00 INFO]: [Server thread/INFO]: Starting minecraft server on *:25565
+[00:00:00 INFO]: [Server thread/INFO]: Using default channel type
+[00:00:00 INFO]: [Server thread/INFO]: [ExamplePlugin] Loading ExamplePlugin v1.0
+[00:00:00 INFO]: [Server thread/INFO]: [ExamplePlugin] Enabling ExamplePlugin v1.0
+[00:00:00 INFO]: [Server thread/INFO]: [ExamplePlugin] ExamplePlugin is now enabled!
+[00:00:00 INFO]: [Server thread/INFO]: Preparing level "world"
+[00:00:00 INFO]: [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[00:00:00 INFO]: [Server thread/INFO]: Preparing spawn area: -16, -16, 16, 16
+[00:00:00 INFO]: [Server thread/INFO]: Time elapsed: ... ms
+[00:00:00 INFO]: [Server thread/INFO]: Done loading
+[00:00:00 INFO]: [Server thread/INFO]: ...
+```
+
+**详细启动日志作用:**
+
+*   **排查启动失败问题:**  如果服务器启动失败，详细启动日志可以提供更多错误信息，帮助您定位启动失败的原因。例如，如果插件加载失败，详细启动日志会显示插件加载失败的详细错误信息，包括异常堆栈跟踪。
+*   **监控启动过程:**  详细启动日志可以帮助您监控服务器的启动过程，了解服务器启动的各个阶段 (例如配置加载、插件加载、世界加载) 的耗时情况。
+*   **诊断启动缓慢问题:**  如果服务器启动缓慢，详细启动日志可以帮助您找出启动缓慢的瓶颈所在。例如，如果世界加载耗时过长，详细启动日志会显示世界加载的详细进度和耗时信息。
+
+## 何时启用详细启动日志
+
+*   **服务器启动失败时:**  当服务器启动失败时，启用详细启动日志可以帮助您排查启动失败的原因。
+*   **服务器启动缓慢时:**  当服务器启动缓慢时，启用详细启动日志可以帮助您诊断启动缓慢的瓶颈所在。
+*   **插件加载异常时:**  当插件加载出现异常时，启用详细启动日志可以帮助您获取插件加载异常的详细信息。
+*   **需要详细了解服务器启动过程时:**  如果您需要详细了解服务器的启动过程，例如学习 Paper 服务器的启动流程，或者进行性能优化，可以启用详细启动日志进行观察和分析。
+
+## 注意事项
+
+*   **详细启动日志会增加日志文件的大小。**  启用详细启动日志后，服务器输出的日志信息会更多，日志文件的大小也会相应增加。如果您担心日志文件过大，可以在问题排查完成后及时禁用详细启动日志。
+*   **详细启动日志对服务器性能几乎没有影响。**  启用详细启动日志只是增加了日志输出，对服务器的运行性能几乎没有影响，您可以根据需要随时启用或禁用详细启动日志。
+
+如果您在使用详细启动日志过程中遇到任何问题，请随时在 [PaperMC Discord](https://discord.gg/papermc) 的 `#paper-help` 频道中寻求帮助。
+
+---
+
+**希望详细启动日志能帮助您更好地管理和维护 Paper 服务器。祝您游戏愉快！** 

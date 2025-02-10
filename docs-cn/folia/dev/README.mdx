@@ -1,0 +1,42 @@
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from "@docusaurus/theme-common";
+
+# Folia 开发
+
+欢迎来到 Folia 开发文档！
+
+如果您是插件开发者，并希望让您的插件与 Folia 兼容，或者您想为 Folia 本身做贡献，那么您来对地方了!
+
+## 插件开发者
+
+Folia 是一个修改版本的 Paper，旨在实现大规模服务器的性能提升。它通过引入区域化的多线程世界来做到这一点。这意味着，与传统的 Paper 服务器不同，世界的不同部分可以同时在不同的线程上运行。
+
+虽然 Folia 尽可能地与现有的 Paper API 保持兼容，但区域化的多线程性质意味着，在编写插件时，有一些新的考虑事项需要注意。
+
+本节文档旨在指导插件开发者了解 Folia 的架构，以及如何更新插件以使其与 Folia 兼容。
+
+*   [Folia 入门](./folia-for-plugins.mdx) - 了解 Folia 以及它与 Paper 的不同之处。
+*   [线程安全和异步](./thread-safety.mdx) - 了解 Folia 的线程模型以及如何编写线程安全的插件代码。
+*   [区域和全局 API](./region-vs-global-api.mdx) - 了解 Folia 的区域和全局 API，以及何时使用它们。
+*   [调度器](./scheduler.mdx) - 了解 Folia 的调度器以及如何在 Folia 中安全地调度任务。
+*   [事件](./events.mdx) - 了解 Folia 中事件处理的变化。
+*   [区块和实体迭代](./chunk-entity-iteration.mdx) - 了解在 Folia 中迭代区块和实体的最佳实践。
+*   [常见问题解答](./faq.md) - 常见问题解答。
+
+## 贡献者
+
+如果您想为 Folia 本身做贡献，我们非常欢迎! Folia 是一个开源项目，我们欢迎社区的贡献。
+
+本节文档旨在指导贡献者了解 Folia 的代码库，以及如何为 Folia 做出贡献。
+
+*   [构建 Folia](./building-folia.mdx) - 了解如何构建 Folia。
+*   [代码风格](./code-style.mdx) - Folia 代码库的代码风格指南。
+*   [贡献指南](./contributing.mdx) - 了解如何为 Folia 做出贡献。
+
+如果您有任何问题，或者需要任何帮助，请随时加入我们的 [Discord 服务器](https://discord.gg/papermc)，并在 `#folia-dev` 频道中提问。
+
+---
+
+**感谢您为 Folia 社区做出贡献!**
+
+<DocCardList items={useCurrentSidebarCategory().items} />

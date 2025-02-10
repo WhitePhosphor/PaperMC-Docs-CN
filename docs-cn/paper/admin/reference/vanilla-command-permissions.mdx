@@ -1,0 +1,119 @@
+---
+slug: /reference/command-permissions
+title: Vanilla Command Permissions
+description: Minecraft 原版命令权限节点列表。
+---
+
+# 原版命令权限节点
+
+本页列出了 Minecraft 原版命令的权限节点。您可以使用这些权限节点在权限插件中配置玩家对原版命令的访问权限。
+
+**权限节点格式:**
+
+原版命令的权限节点通常以 `minecraft.command.` 开头，后跟命令名称。例如，`/gamemode` 命令的权限节点为 `minecraft.command.gamemode`。
+
+**权限节点列表:**
+
+| 命令             | 权限节点                                  | 默认权限等级 |
+| ---------------- | ----------------------------------------- | -------- |
+| `/advancement`    | `minecraft.command.advancement`           | 2        |
+| `/attribute`      | `minecraft.command.attribute`             | 2        |
+| `/ban`            | `minecraft.command.ban`                   | 3        |
+| `/ban-ip`         | `minecraft.command.banip`                 | 3        |
+| `/banlist`        | `minecraft.command.banlist`               | 3        |
+| `/bossbar`        | `minecraft.command.bossbar`               | 2        |
+| `/clear`          | `minecraft.command.clear`                 | 2        |
+| `/clone`          | `minecraft.command.clone`                 | 2        |
+| `/data`           | `minecraft.command.data`                  | 2        |
+| `/datapack`       | `minecraft.command.datapack`              | 2        |
+| `/debug`          | `minecraft.command.debug`                 | 3        |
+| `/defaultgamemode` | `minecraft.command.defaultgamemode`       | 2        |
+| `/deop`           | `minecraft.command.deop`                  | 3        |
+| `/difficulty`     | `minecraft.command.difficulty`            | 2        |
+| `/effect`         | `minecraft.command.effect`                | 2        |
+| `/enchant`        | `minecraft.command.enchant`               | 2        |
+| `/execute`        | `minecraft.command.execute`               | 2        |
+| `/fill`           | `minecraft.command.fill`                  | 2        |
+| `/forceLoad`      | `minecraft.command.forceLoad`             | 3        |
+| `/function`       | `minecraft.command.function`              | 2        |
+| `/gamemode`       | `minecraft.command.gamemode`              | 2        |
+| `/gamerule`       | `minecraft.command.gamerule`              | 2        |
+| `/give`           | `minecraft.command.give`                  | 2        |
+| `/help`           | `minecraft.command.help`                  | 0        |
+| `/kick`           | `minecraft.command.kick`                  | 3        |
+| `/kill`           | `minecraft.command.kill`                  | 2        |
+| `/list`           | `minecraft.command.list`                  | 0        |
+| `/locate`         | `minecraft.command.locate`                | 2        |
+| `/locatebiome`    | `minecraft.command.locatebiome`           | 2        |
+| `/loot`           | `minecraft.command.loot`                  | 2        |
+| `/me`             | `minecraft.command.me`                    | 0        |
+| `/msg`            | `minecraft.command.msg`                   | 0        |
+| `/op`             | `minecraft.command.op`                    | 3        |
+| `/pardon`         | `minecraft.command.pardon`                | 3        |
+| `/particle`       | `minecraft.command.particle`              | 2        |
+| `/playsound`      | `minecraft.command.playsound`             | 2        |
+| `/publish`        | `minecraft.command.publish`               | 3        |
+| `/recipe`         | `minecraft.command.recipe`                | 2        |
+| `/reload`         | `minecraft.command.reload`                | 4        |
+| `/replaceitem`    | `minecraft.command.replaceitem`           | 2        |
+| `/save-all`       | `minecraft.command.save-all`              | 4        |
+| `/save-off`       | `minecraft.command.save-off`              | 4        |
+| `/save-on`        | `minecraft.command.save-on`               | 4        |
+| `/say`            | `minecraft.command.say`                   | 1        |
+| `/schedule`       | `minecraft.command.schedule`              | 2        |
+| `/scoreboard`     | `minecraft.command.scoreboard`            | 2        |
+| `/seed`           | `minecraft.command.seed`                  | 2        |
+| `/setblock`       | `minecraft.command.setblock`              | 2        |
+| `/setidletimeout` | `minecraft.command.setidletimeout`        | 3        |
+| `/setworldspawn`  | `minecraft.command.setworldspawn`         | 2        |
+| `/spawnpoint`     | `minecraft.command.spawnpoint`            | 2        |
+| `/spectate`       | `minecraft.command.spectate`              | 2        |
+| `/spreadplayers`  | `minecraft.command.spreadplayers`         | 2        |
+| `/stop`           | `minecraft.command.stop`                  | 4        |
+| `/stopsound`      | `minecraft.command.stopsound`             | 2        |
+| `/summon`         | `minecraft.command.summon`                | 2        |
+| `/tag`            | `minecraft.command.tag`                   | 2        |
+| `/team`           | `minecraft.command.team`                  | 2        |
+| `/teammsg`        | `minecraft.command.teammsg`               | 0        |
+| `/teleport`       | `minecraft.command.teleport`              | 2        |
+| `/tell`           | `minecraft.command.tell`                  | 0        |
+| `/tellraw`        | `minecraft.command.tellraw`               | 2        |
+| `/time`           | `minecraft.command.time`                  | 2        |
+| `/title`          | `minecraft.command.title`                 | 2        |
+| `/tm`             | `minecraft.command.teammsg`               | 0        |
+| `/tp`             | `minecraft.command.teleport`              | 2        |
+| `/trigger`        | `minecraft.command.trigger`               | 0        |
+| `/w`              | `minecraft.command.msg`                   | 0        |
+| `/weather`        | `minecraft.command.weather`               | 2        |
+| `/whitelist`      | `minecraft.command.whitelist`             | 3        |
+| `/worldborder`    | `minecraft.command.worldborder`           | 2        |
+| `/xp`             | `minecraft.command.xp`                    | 2        |
+
+**默认权限等级说明:**
+
+*   **0**:  所有玩家 (包括未授权玩家)
+*   **1**:  服务器管理员 (Operator Level 1)
+*   **2**:  服务器管理员 (Operator Level 2)
+*   **3**:  服务器管理员 (Operator Level 3)
+*   **4**:  服务器管理员 (Operator Level 4) - 最高权限等级，通常只有服务器控制台拥有此权限
+
+**如何使用权限节点:**
+
+您可以在权限插件 (例如 LuckPerms, PermissionsEx) 中使用这些权限节点来配置玩家的命令权限。例如，要允许玩家使用 `/gamemode` 命令，您可以在权限插件中为玩家或用户组添加 `minecraft.command.gamemode` 权限。
+
+**示例 (LuckPerms):**
+
+```
+/lp user <玩家名> permission set minecraft.command.gamemode true
+```
+
+**注意事项:**
+
+*   权限节点区分大小写，请确保输入正确的权限节点名称。
+*   部分插件可能使用不同的权限系统或权限节点格式，请参考您使用的权限插件的文档。
+*   过度开放命令权限可能会导致安全风险，请谨慎配置命令权限。
+
+---
+
+**希望本列表能够帮助您配置 Paper 服务器的命令权限。祝您游戏愉快！**
+

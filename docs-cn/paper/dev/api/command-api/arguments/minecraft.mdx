@@ -1,0 +1,235 @@
+---
+slug: /dev/command-api/arguments/minecraft
+description: 命令 API 中 Minecraft 原版参数类型。
+---
+
+# Minecraft 原版参数类型
+
+Paper 命令 API 兼容并扩展了 Minecraft 原版命令参数类型，可以直接在 Paper 命令 API 中使用 Minecraft 原版参数类型。
+
+## 原版参数类型
+
+以下是一些常用的 Minecraft 原版参数类型及其在 Paper 命令 API 中的用法：
+
+### Boolean
+
+`Boolean` 参数类型允许解析布尔值 `true` 或 `false`。
+
+```java
+@CommandMethod("toggle <value>")
+@CommandPermission("test.toggle")
+public void toggle(
+    final CommandSender sender,
+    final boolean value
+) {
+    sender.sendMessage(Component.text("Value is now: " + value));
+}
+```
+
+### Integer
+
+`Integer` 参数类型允许解析整数值。可以使用 `@IntegerRange` 注解限制整数值的范围。
+
+```java
+@CommandMethod("setlevel <level>")
+@CommandPermission("test.setlevel")
+public void setLevel(
+    final CommandSender sender,
+    @IntegerRange("1-100") final int level
+) {
+    sender.sendMessage(Component.text("Level set to: " + level));
+}
+```
+
+### Double
+
+`Double` 参数类型允许解析双精度浮点数值。可以使用 `@DoubleRange` 注解限制数值范围。
+
+```java
+@CommandMethod("setratio <ratio>")
+@CommandPermission("test.setratio")
+public void setRatio(
+    final CommandSender sender,
+    @DoubleRange("0.0-1.0") final double ratio
+) {
+    sender.sendMessage(Component.text("Ratio set to: " + ratio));
+}
+```
+
+### String
+
+`String` 参数类型允许解析字符串值。可以使用不同的 String 参数类型来控制字符串的解析行为：
+
+- `String`: 解析单个单词字符串。
+- `StringArgumentType.greedyString()`: 解析剩余所有字符串，包括空格。
+- `StringArgumentType.string()`:  与 `String` 类似，解析单个单词字符串。
+- `StringArgumentType.word()`:  与 `String` 类似，解析单个单词字符串。
+
+```java
+@CommandMethod("say <message>")
+@CommandPermission("test.say")
+public void say(
+    final CommandSender sender,
+    @Argument(value = "message", parser = StringArgumentType.class, type = StringArgumentType.StringType.GREEDY_STRING) final String message
+) {
+    sender.sendMessage(Component.text("You said: " + message));
+}
+```
+
+### Text
+
+`Text` 参数类型与 `StringArgumentType.greedyString()` 类似，用于解析剩余所有字符串。
+
+```java
+@CommandMethod("echo <text>")
+@CommandPermission("test.echo")
+public void echo(
+    final CommandSender sender,
+    final String text
+) {
+    sender.sendMessage(Component.text("Echo: " + text));
+}
+```
+
+### Float
+
+`Float` 参数类型允许解析单精度浮点数值。可以使用 `@FloatRange` 注解限制数值范围。
+
+```java
+@CommandMethod("setvalue <value>")
+@CommandPermission("test.setvalue")
+public void setValue(
+    final CommandSender sender,
+    @FloatRange("0.0-100.0") final float value
+) {
+    sender.sendMessage(Component.text("Value set to: " + value));
+}
+```
+
+### Long
+
+`Long` 参数类型允许解析长整型数值。可以使用 `@LongRange` 注解限制数值范围。
+
+```java
+@CommandMethod("settime <time>")
+@CommandPermission("test.settime")
+public void setTime(
+    final CommandSender sender,
+    @LongRange("0-24000") final long time
+) {
+    sender.sendMessage(Component.text("Time set to: " + time));
+}
+```
+
+### 其他原版参数类型
+
+除了以上列出的常用参数类型外，Paper 命令 API 还支持其他 Minecraft 原版参数类型，例如：
+
+- `AngleArgumentType`: 角度
+- `ColorArgumentType`: 颜色
+- `ScoreboardCriteriaArgumentType`: 计分板标准
+- `ScoreboardObjectiveArgumentType`: 计分板目标
+- `ScoreboardSlotArgumentType`: 计分板显示槽位
+- `ScoreHolderArgumentType`: 计分板持有者
+- `TeamArgumentType`: 队伍
+- `EntitySummonArgumentType`: 实体类型
+- `EnchantmentArgumentType`:  附魔类型
+- `EntityTypeArgumentType`: 实体类型
+- `ItemEnchantmentArgumentType`: 物品附魔
+- `ItemStackArgumentType`: 物品堆叠
+- `ItemTagArgumentType`: 物品标签
+- `ObjectiveCriteriaArgumentType`: 目标标准
+- `ParticleArgumentType`: 粒子效果
+- `PotionEffectArgumentType`: 药水效果
+- `ResourceLocationArgumentType`: 资源定位符
+- `RotationArgumentType`: 旋转
+- `Vec2ArgumentType`: 二维向量
+- `Vec3ArgumentType`: 三维向量
+
+您可以在 [Minecraft Commands 文档](https://minecraft.fandom.com/wiki/Commands) 中找到更详细的原版参数类型说明。
+
+## 示例
+
+以下是一些使用 Minecraft 原版参数类型的完整示例：
+
+```java
+public class MinecraftArgumentsCommand {
+
+    @CommandMethod("toggle <value>")
+    @CommandPermission("test.toggle")
+    public void toggle(
+        final CommandSender sender,
+        final boolean value
+    ) {
+        sender.sendMessage(Component.text("Value is now: " + value));
+    }
+
+    @CommandMethod("setlevel <level>")
+    @CommandPermission("test.setlevel")
+    public void setLevel(
+        final CommandSender sender,
+        @IntegerRange("1-100") final int level
+    ) {
+        sender.sendMessage(Component.text("Level set to: " + level));
+    }
+
+    @CommandMethod("setratio <ratio>")
+    @CommandPermission("test.setratio")
+    public void setRatio(
+        final CommandSender sender,
+        @DoubleRange("0.0-1.0") final double ratio
+    ) {
+        sender.sendMessage(Component.text("Ratio set to: " + ratio));
+    }
+
+    @CommandMethod("say <message>")
+    @CommandPermission("test.say")
+    public void say(
+        final CommandSender sender,
+        @Argument(value = "message", parser = StringArgumentType.class, type = StringArgumentType.StringType.GREEDY_STRING) final String message
+    ) {
+        sender.sendMessage(Component.text("You said: " + message));
+    }
+
+    @CommandMethod("echo <text>")
+    @CommandPermission("test.echo")
+    public void echo(
+        final CommandSender sender,
+        final String text
+    ) {
+        sender.sendMessage(Component.text("Echo: " + text));
+    }
+
+    @CommandMethod("setvalue <value>")
+    @CommandPermission("test.setvalue")
+    public void setValue(
+        final CommandSender sender,
+        @FloatRange("0.0-100.0") final float value
+    ) {
+        sender.sendMessage(Component.text("Value set to: " + value));
+    }
+
+    @CommandMethod("settime <time>")
+    @CommandPermission("test.settime")
+    public void setTime(
+        final CommandSender sender,
+        @LongRange("0-24000") final long time
+    ) {
+        sender.sendMessage(Component.text("Time set to: " + time));
+    }
+}
+```
+
+## 注意事项
+
+- Paper 命令 API 提供了丰富的原版参数类型支持，可以满足各种常见的命令参数需求。
+- 可以使用注解（例如 `@IntegerRange`, `@DoubleRange`, `@FloatRange`, `@LongRange`）来限制数值参数的范围。
+- 可以根据字符串参数的具体需求选择合适的 `StringArgumentType.StringType` 类型。
+- 建议参考 Minecraft Commands 文档了解更多原版参数类型的详细信息。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Minecraft Commands 文档](https://minecraft.fandom.com/wiki/Commands)
+- [Brigadier Command Parser](https://github.com/Mojang/brigadier) (Minecraft 命令解析库)

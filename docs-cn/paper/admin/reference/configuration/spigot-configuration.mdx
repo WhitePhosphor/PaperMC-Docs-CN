@@ -1,0 +1,26 @@
+---
+slug: /reference/spigot-configuration
+description: An explanation of Spigot's configuration file.
+---
+
+# Spigot Configuration
+
+import React from 'react';
+import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
+import SpigotConfigSpec from '!!raw-loader!@site/config-specs/paper/spigot.yml';
+
+:::info
+
+以下页面展示了 `spigot.yml` 文件的结构和默认值。
+
+点击配置项可以查看该项的详细说明。
+
+:::
+
+:::note
+
+要覆盖某个世界的配置选项，请在 `world-settings` 下使用世界文件夹名称创建新的配置节点。
+
+:::
+
+<ConfigDocBlock data={SpigotConfigSpec}/>

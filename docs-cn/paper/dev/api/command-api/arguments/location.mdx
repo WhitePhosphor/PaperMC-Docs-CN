@@ -1,0 +1,144 @@
+---
+slug: /dev/command-api/arguments/location
+description: 命令 API 中位置相关的参数类型。
+---
+
+import BlockPositionMp4 from "./assets/vanilla-arguments/blockposition.mp4";
+import FinePositionMp4 from "./assets/vanilla-arguments/fineposition.mp4";
+import WorldMp4 from "./assets/vanilla-arguments/world.mp4";
+
+# 位置参数类型
+
+Paper 命令 API 提供了用于处理位置的参数类型。
+
+## 位置参数类型
+
+### Location
+
+`Location` 参数类型允许解析一个精确的三维坐标位置。
+
+```java
+@CommandMethod("teleport <location>")
+@CommandPermission("test.teleport")
+public void teleport(
+    final CommandSender sender,
+    final Location location
+) {
+    if (sender instanceof Entity entity) {
+        entity.teleport(location);
+        sender.sendMessage(Component.text("已传送至 " + location.getX() + ", " + location.getY() + ", " + location.getZ()));
+    } else {
+        sender.sendMessage(Component.text("只有实体才能使用此命令"));
+    }
+}
+```
+
+### Position
+
+`Position` 参数类型允许解析一个相对或绝对的三维坐标位置，但不包含世界信息。
+
+```java
+@CommandMethod("move <position>")
+@CommandPermission("test.move")
+public void move(
+    final CommandSender sender,
+    final Position position
+) {
+    if (sender instanceof Entity entity) {
+        Location currentLocation = entity.getLocation();
+        Location newLocation = currentLocation.add(position.getX(), position.getY(), position.getZ());
+        entity.teleport(newLocation);
+        sender.sendMessage(Component.text("已移动至 " + newLocation.getX() + ", " + newLocation.getY() + ", " + newLocation.getZ()));
+    } else {
+        sender.sendMessage(Component.text("只有实体才能使用此命令"));
+    }
+}
+```
+
+### WorldLocation
+
+`WorldLocation` 参数类型允许解析包含世界信息的三维坐标位置。
+
+```java
+@CommandMethod("worldteleport <worldlocation>")
+@CommandPermission("test.worldteleport")
+public void worldTeleport(
+    final CommandSender sender,
+    final WorldLocation worldLocation
+) {
+    if (sender instanceof Entity entity) {
+        entity.teleport(worldLocation);
+        sender.sendMessage(Component.text("已传送到世界 " + worldLocation.getWorld().getName() + " 的 " + worldLocation.getX() + ", " + worldLocation.getY() + ", " + worldLocation.getZ()));
+    } else {
+        sender.sendMessage(Component.text("只有实体才能使用此命令"));
+    }
+}
+```
+
+## 示例
+
+以下是一些使用位置参数类型的完整示例：
+
+```java
+public class LocationCommands {
+
+    @CommandMethod("teleport <location>")
+    @CommandPermission("test.teleport")
+    public void teleport(
+        final CommandSender sender,
+        final Location location
+    ) {
+        if (sender instanceof Entity entity) {
+            entity.teleport(location);
+            sender.sendMessage(Component.text("已传送至 " + location.getX() + ", " + location.getY() + ", " + location.getZ()));
+        } else {
+            sender.sendMessage(Component.text("只有实体才能使用此命令"));
+        }
+    }
+
+    @CommandMethod("move <position>")
+    @CommandPermission("test.move")
+    public void move(
+        final CommandSender sender,
+        final Position position
+    ) {
+        if (sender instanceof Entity entity) {
+            Location currentLocation = entity.getLocation();
+            Location newLocation = currentLocation.add(position.getX(), position.getY(), position.getZ());
+            entity.teleport(newLocation);
+            sender.sendMessage(Component.text("已移动至 " + newLocation.getX() + ", " + newLocation.getY() + ", " + newLocation.getZ()));
+        } else {
+            sender.sendMessage(Component.text("只有实体才能使用此命令"));
+        }
+    }
+
+    @CommandMethod("worldteleport <worldlocation>")
+    @CommandPermission("test.worldteleport")
+    public void worldTeleport(
+        final CommandSender sender,
+        final WorldLocation worldLocation
+    ) {
+        if (sender instanceof Entity entity) {
+            entity.teleport(worldLocation);
+            sender.sendMessage(Component.text("已传送到世界 " + worldLocation.getWorld().getName() + " 的 " + worldLocation.getX() + ", " + worldLocation.getY() + ", " + worldLocation.getZ()));
+        } else {
+            sender.sendMessage(Component.text("只有实体才能使用此命令"));
+        }
+    }
+}
+```
+
+## 注意事项
+
+- `Location` 参数类型需要提供完整的世界、X、Y、Z 坐标信息。
+- `Position` 参数类型只解析 X、Y、Z 坐标，世界信息会从命令发送者的当前世界获取。
+- `WorldLocation` 参数类型允许指定世界和 X、Y、Z 坐标，可以跨世界传送。
+- 可以根据命令的需求选择合适的参数类型。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Bukkit Location API](https://javadocs.io/doc/org.bukkit/bukkit/latest/org/bukkit/Location.html)
+- [Bukkit Position API](https://javadocs.io/doc/org.bukkit/bukkit/latest/org/bukkit/util/Vector.html) (Bukkit `Vector` 类也用于表示位置)
+- [Bukkit World API](https://javadocs.io/doc/org.bukkit/bukkit/latest/org/bukkit/World.html)

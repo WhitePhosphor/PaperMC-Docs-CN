@@ -1,0 +1,13 @@
+---
+slug: /tools/item-command-converter
+description: 一个工具，用于将命令从旧的基于 NBT 的物品格式更新为物品组件。
+---
+import ItemCommandConverter from "@site/src/components/ItemCommandConverter";
+
+# 物品命令转换器
+
+在 1.20.5 中，Mojang 已从非结构化 NBT 迁移到所谓的物品组件。虽然 Minecraft 会自动为您更新所有现有物品，但只有 Paper 会在可能的情况下更新包含物品的命令和文本组件。此工具可帮助您在外部将旧物品命令转换为新格式。
+
+请注意，如果您想转换 summon 命令之外的实体数据，则需要选择*实体参数*模式，因为我们需要实体类型才能正确转换数据。
+
+<ItemCommandConverter />

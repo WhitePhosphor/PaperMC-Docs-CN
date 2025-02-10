@@ -1,0 +1,50 @@
+---
+slug: /reference/configuration/world
+title: paper-world.yml
+description: paper-world.yml 配置文件的详细参考文档。
+---
+
+# paper-world.yml
+
+`paper-world.yml` 文件允许您为每个世界设置自定义配置选项，从而覆盖 `paper-world-defaults.yml` 中的默认值，实现每个世界不同的行为和优化。
+
+**工作原理：**
+
+所有未在 `paper-world.yml` 中明确设置的配置项将从 `paper-world-defaults.yml` 中继承，避免了在每个世界中重复声明所有选项。您只需在该文件中添加需要修改的部分即可。
+
+**示例：**
+
+如果默认配置 `lootables.auto-replenish` 设置为 `true`，但您希望在名为 `resource` 的世界中禁用自动补充，则可以在 `resource` 文件夹中的 `paper-world.yml` 文件中写入：
+
+```yaml
+_version: 28
+
+# highlight-start
+lootables:
+  auto-replenish: false
+# highlight-end
+```
+
+**常见配置选项：**
+
+- **`lootables.auto-replenish`**  
+  控制可拾取物品是否自动补充。  
+  **默认值:** `true`
+
+- **`entities.spawning`**  
+  包含与实体生成相关的配置，如怪物、动物和环境生物的生成上限。  
+  例如，可以在此处覆盖 `spawn-limits.monster`, `spawn-limits.animal` 等选项。
+
+- **其他设置：**  
+  根据 `paper-world-defaults.yml` 中的详细说明，您还可以覆盖与世界难度、视距、环境特性等相关的其他配置选项。
+
+**注意事项：**
+
+- **仅覆盖需要修改的选项：** 未在 `paper-world.yml` 中明确设置的配置项将自动继承自 `paper-world-defaults.yml`。  
+- **变更生效条件：** 修改 `paper-world.yml` 后，必须重启该世界或整服重启才能使更改生效。
+
+---
+
+**更多信息**
+
+有关详细的配置选项和说明，请参阅 Paper 官方文档中的世界配置部分以及 `paper-world-defaults.yml` 文件中的注释内容。

@@ -1,0 +1,121 @@
+---
+slug: /anti-xray
+title: Anti-Xray
+description: 如何配置 Paper 的反 X 射线功能以隐藏矿物。
+---
+
+# 反 X 射线
+
+反 X 射线是 Paper 内置的一项功能，旨在阻止玩家使用 X 射线材质包或模组来作弊，从而在游戏中找到矿物。Paper 提供了两种反 X 射线引擎模式 (模式 1 和模式 2)，您可以根据服务器的性能和需求选择合适的模式。
+
+## 模式 1 (vanilla)
+
+模式 1 是 Paper 的默认反 X 射线模式，它基于 Minecraft 原版的区块隐藏机制。模式 1 的性能开销较低，但反 X 射线效果也相对较弱。
+
+**模式 1 特点:**
+
+*   **性能开销低:** 对服务器性能影响较小。
+*   **反 X 射线效果较弱:**  只能简单地隐藏矿物，容易被高级 X 射线材质包或模组绕过。
+*   **配置简单:**  无需额外配置，默认启用。
+
+**模式 1 配置:**
+
+模式 1 无需额外配置，您可以通过修改 `paper.yml` 文件中的 `anti-xray.enabled` 和 `anti-xray.engine-mode` 配置项来启用或禁用模式 1。
+
+```yaml
+config:
+  anti-xray:
+    enabled: true # 是否启用反 X 射线
+    engine-mode: 1 # 反 X 射线引擎模式，1 为模式 1
+```
+
+**模式 1 适用场景:**
+
+*   服务器性能有限，对反 X 射线效果要求不高。
+*   小型服务器或生存服务器，玩家作弊行为较少。
+
+## 模式 2 (hidden)
+
+模式 2 是 Paper 提供的更高级的反 X 射线模式，它使用更复杂的算法来隐藏矿物，可以有效地阻止大多数 X 射线材质包和模组。模式 2 的性能开销相对较高，但反 X 射线效果更好。
+
+**模式 2 特点:**
+
+*   **性能开销较高:**  对服务器性能有一定影响，尤其是在区块生成和加载时。
+*   **反 X 射线效果强:**  可以有效地阻止大多数 X 射线材质包和模组。
+*   **配置灵活:**  提供多种配置选项，可以自定义隐藏的方块类型和刷新距离等。
+
+**模式 2 配置:**
+
+要启用和配置模式 2，您需要修改 `paper.yml` 文件中的 `anti-xray` 配置项。
+
+```yaml
+config:
+  anti-xray:
+    enabled: true # 是否启用反 X 射线
+    engine-mode: 2 # 反 X 射线引擎模式，2 为模式 2
+    blocks: # 需要隐藏的方块类型列表
+      - minecraft:diamond_ore
+      - minecraft:deepslate_diamond_ore
+      - minecraft:gold_ore
+      - minecraft:deepslate_gold_ore
+      - minecraft:iron_ore
+      - minecraft:deepslate_iron_ore
+      - minecraft:coal_ore
+      - minecraft:deepslate_coal_ore
+      - minecraft:copper_ore
+      - minecraft:deepslate_copper_ore
+      - minecraft:lapis_ore
+      - minecraft:deepslate_lapis_ore
+      - minecraft:emerald_ore
+      - minecraft:deepslate_emerald_ore
+      - minecraft:redstone_ore
+      - minecraft:deepslate_redstone_ore
+      - minecraft:nether_gold_ore
+      - minecraft:nether_quartz_ore
+      - minecraft:ancient_debris
+      - minecraft:chest # 示例: 隐藏箱子
+    block-update-mode: 1 # 区块更新模式，1 为模式 1 (默认)
+    max-chunk-section-index: 5 # 最大区块 Section 索引 (Y 轴高度)，默认为 5
+    update-radius: 2 # 区块更新半径 (区块)，默认为 2
+    use-block-updates: false # 是否使用方块更新来隐藏方块，默认为 false
+    lava-obscures: false # 岩浆是否遮挡隐藏方块，默认为 false
+    max-view-distance: 6 # 最大反 X 射线作用距离 (客户端视野距离)，默认为 6
+```
+
+**模式 2 配置项说明:**
+
+*   **`enabled`**: 是否启用反 X 射线，`true` 为启用，`false` 为禁用。
+*   **`engine-mode`**: 反 X 射线引擎模式，`2` 为模式 2。
+*   **`blocks`**: 需要隐藏的方块类型列表。您可以根据需要添加或删除方块类型。方块类型使用 Minecraft 命名空间 ID (例如 `minecraft:diamond_ore`)。
+*   **`block-update-mode`**: 区块更新模式，可选值为 `1` 和 `2`。
+    *   `1`: 模式 1，性能开销较低，但可能存在一些视觉伪影。
+    *   `2`: 模式 2，性能开销较高，但视觉效果更好，更平滑。
+*   **`max-chunk-section-index`**: 最大区块 Section 索引 (Y 轴高度)。用于限制反 X 射线作用的 Y 轴高度范围。默认为 `5`，表示只在 Y 轴 0-79 范围内应用反 X 射线。您可以根据需要调整此值。
+*   **`update-radius`**: 区块更新半径 (区块)。当玩家移动时，服务器会更新玩家周围一定半径内的区块，以隐藏或显示方块。此值越大，更新范围越大，性能开销越高。默认为 `2`。
+*   **`use-block-updates`**: 是否使用方块更新来隐藏方块。如果启用，服务器将使用方块更新事件来隐藏方块，可能会导致一些视觉伪影。默认为 `false`。
+*   **`lava-obscures`**: 岩浆是否遮挡隐藏方块。如果启用，岩浆将可以遮挡隐藏的方块，使 X 射线材质包更难穿透岩浆看到矿物。默认为 `false`。
+*   **`max-view-distance`**: 最大反 X 射线作用距离 (客户端视野距离)。用于限制反 X 射线作用的最大客户端视野距离。超过此距离的区块将不会应用反 X 射线。默认为 `6`，建议不要超过服务器 `server.properties` 文件中 `view-distance` 的值。
+
+**模式 2 适用场景:**
+
+*   服务器性能较好，对反 X 射线效果要求较高。
+*   大型服务器或 PvP 服务器，玩家作弊行为较多。
+*   需要更精细的反 X 射线配置。
+
+## 选择合适的反 X 射线模式
+
+选择哪种反 X 射线模式取决于您的服务器的性能和需求。
+
+*   **如果您的服务器性能有限，或者对反 X 射线效果要求不高，建议使用模式 1。** 模式 1 的性能开销较低，可以满足基本的反 X 射线需求。
+*   **如果您的服务器性能较好，并且对反 X 射线效果要求较高，建议使用模式 2。** 模式 2 的反 X 射线效果更好，可以有效地阻止大多数 X 射线作弊行为。
+
+您可以根据服务器的实际情况进行测试和调整，找到最适合您服务器的反 X 射线配置。
+
+## 注意事项
+
+*   反 X 射线功能会增加服务器的性能开销，尤其是在模式 2 下。请根据服务器性能合理配置反 X 射线功能。
+*   反 X 射线功能并非万能的，无法完全阻止所有 X 射线作弊行为。一些高级 X 射线模组或客户端可能仍然可以绕过反 X 射线。
+*   过度配置反 X 射线 (例如过大的更新半径、过多的隐藏方块类型) 可能会导致服务器性能下降或出现视觉伪影。请谨慎配置。
+*   建议结合其他反作弊措施 (例如反作弊插件、人工巡查) 来共同维护服务器的游戏公平性。
+
+如果您在使用反 X 射线功能过程中遇到任何问题，请随时在 [PaperMC Discord](https://discord.gg/papermc) 的 `#paper-help` 频道中寻求帮助。

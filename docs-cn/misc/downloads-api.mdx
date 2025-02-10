@@ -1,0 +1,84 @@
+---
+slug: /downloads-api
+description: Paper 提供了一个下载 API，您可以使用它来访问构建版本。
+---
+
+# 下载 API
+
+PaperMC 提供了一个下载 API，以方便自动下载访问。完整的文档可以在 [下载 API 文档](https://api.papermc.io/docs) 中找到。
+
+:::danger
+
+我们**强烈建议不要**在生产环境中使用不稳定版本或自动更新程序。
+
+:::
+
+:::info
+
+以下示例需要安装 `jq`。您可以使用 `sudo apt-get install jq` 在 Debian/Ubuntu 上安装它。
+
+:::
+
+## 获取最新版本
+
+```shell
+#!/usr/bin/env sh
+
+PROJECT="paper"
+
+LATEST_VERSION=$(curl -s https://api.papermc.io/v2/projects/${PROJECT} | \
+    jq -r '.versions[-1]')
+
+echo "最新版本是 $LATEST_VERSION"
+```
+
+这将获取给定项目的最新可用 Minecraft 版本。
+
+## 获取最新的稳定构建版本号
+
+<VersionFormattedCode language={"shell"}>
+```
+#!/usr/bin/env sh
+
+PROJECT="paper"
+MINECRAFT_VERSION="%%_MAJ_MIN_PAT_MC_%%"
+
+LATEST_BUILD=$(curl -s https://api.papermc.io/v2/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds | \
+    jq '.builds | map(select(.channel == "default") | .build) | .[-1]')
+
+if [ "$LATEST_BUILD" != "null" ]; then
+    echo "最新的稳定构建版本是 $LATEST_BUILD"
+else
+    echo "未找到版本 $MINECRAFT_VERSION 的稳定构建版本 :("
+fi
+```
+</VersionFormattedCode>
+
+这将获取给定项目和 Minecraft 版本的最新稳定构建版本（如果可用）。
+
+## 下载最新的稳定构建版本
+
+<VersionFormattedCode language={"shell"}>
+```
+#!/usr/bin/env sh
+
+PROJECT="paper"
+MINECRAFT_VERSION="%%_MAJ_MIN_PAT_MC_%%"
+
+LATEST_BUILD=$(curl -s https://api.papermc.io/v2/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds | \
+    jq -r '.builds | map(select(.channel == "default") | .build) | .[-1]')
+
+if [ "$LATEST_BUILD" != "null" ]; then
+    JAR_NAME=${PROJECT}-${MINECRAFT_VERSION}-${LATEST_BUILD}.jar
+    PAPERMC_URL="https://api.papermc.io/v2/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds/${LATEST_BUILD}/downloads/${JAR_NAME}"
+
+    # 下载最新的 Paper 版本
+    curl -o server.jar $PAPERMC_URL
+    echo "下载完成"
+else
+    echo "未找到版本 $MINECRAFT_VERSION 的稳定构建版本 :("
+fi
+```
+</VersionFormattedCode>
+
+这是 API 最常见的用例。它将下载给定项目和 Minecraft 版本的最新稳定构建版本。您应该始终服务和使用稳定构建版本。实验性构建版本容易出错，并且不提供支持。

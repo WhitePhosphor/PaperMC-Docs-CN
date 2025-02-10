@@ -1,0 +1,299 @@
+---
+slug: /dev/command-api/arguments/paper
+description: Paper 命令 API 独有的参数类型。
+---
+
+import BlockStateMp4 from "./assets/vanilla-arguments/blockstate.mp4";
+import ItemStackMp4 from "./assets/vanilla-arguments/itemstack.mp4";
+import NamespacedKeyMp4 from "./assets/vanilla-arguments/namespacedkey.mp4";
+import TimeMp4 from "./assets/vanilla-arguments/time.mp4";
+import UuidMp4 from "./assets/vanilla-arguments/uuid.mp4";
+import ObjectiveCriteriaMp4 from "./assets/vanilla-arguments/objectivecriteria.mp4";
+
+# Paper 独有参数类型
+
+Paper 命令 API 提供了一些 Paper 独有的参数类型，用于更方便地处理 Paper 服务器的特定功能和数据。
+
+## Paper 参数类型
+
+### Server Properties
+
+`ServerProperties` 参数类型允许您直接访问 `server.properties` 配置文件中的属性值。
+
+```java
+@CommandMethod("getproperty <property>")
+@CommandPermission("test.getproperty")
+public void getProperty(
+    final CommandSender sender,
+    final ServerProperties property
+) {
+    sender.sendMessage(Component.text("Property value: " + property.value()));
+}
+```
+
+### World
+
+`World` 参数类型允许解析服务器中的世界。
+
+```java
+@CommandMethod("setworldspawn <world>")
+@CommandPermission("test.setworldspawn")
+public void setWorldSpawn(
+    final CommandSender sender,
+    final World world
+) {
+    world.setSpawnLocation(new Location(world, 0, 100, 0));
+    sender.sendMessage(Component.text("World spawn set for world: " + world.getName()));
+}
+```
+
+### MaterialTag
+
+`MaterialTag` 参数类型允许解析 Bukkit `MaterialTag`，用于表示一组 `Material` 类型。
+
+```java
+@CommandMethod("givebytag <tag>")
+@CommandPermission("test.givebytag")
+public void giveByTag(
+    final CommandSender sender,
+    final MaterialTag tag
+) {
+    if (sender instanceof Player player) {
+        for (final Material material : tag.getValues()) {
+            player.getInventory().addItem(new ItemStack(material));
+        }
+        sender.sendMessage(Component.text("Given items with tag: " + tag.getKey().asString()));
+    } else {
+        sender.sendMessage(Component.text("Only players can use this command"));
+    }
+}
+```
+
+### GameProfile
+
+`GameProfile` 参数类型允许解析玩家的游戏档案，包括玩家名、UUID 和皮肤信息。
+
+```java
+@CommandMethod("getprofile <profile>")
+@CommandPermission("test.getprofile")
+public void getProfile(
+    final CommandSender sender,
+    final GameProfile profile
+) {
+    sender.sendMessage(Component.text("Profile name: " + profile.getName()));
+    sender.sendMessage(Component.text("Profile UUID: " + profile.getId()));
+}
+```
+
+### OfflinePlayer
+
+`OfflinePlayer` 参数类型允许解析离线玩家对象，可以用于获取离线玩家的数据。
+
+```java
+@CommandMethod("getlastlogin <player>")
+@CommandPermission("test.getlastlogin")
+public void getLastLogin(
+    final CommandSender sender,
+    final OfflinePlayer player
+) {
+    sender.sendMessage(Component.text("Last login for " + player.getName() + ": " + new Date(player.getLastLogin())));
+}
+```
+
+### Plugin
+
+`Plugin` 参数类型允许解析服务器已安装的插件。
+
+```java
+@CommandMethod("plugininfo <plugin>")
+@CommandPermission("test.plugininfo")
+public void getPluginInfo(
+    final CommandSender sender,
+    final Plugin plugin
+) {
+    sender.sendMessage(Component.text("Plugin name: " + plugin.getName()));
+    sender.sendMessage(Component.text("Plugin version: " + plugin.getDescription().getVersion()));
+}
+```
+
+### Sound
+
+`Sound` 参数类型允许解析 Minecraft 的声音效果。
+
+```java
+@CommandMethod("playsound <sound>")
+@CommandPermission("test.playsound")
+public void playSound(
+    final CommandSender sender,
+    final Sound sound
+) {
+    if (sender instanceof Player player) {
+        player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+        sender.sendMessage(Component.text("Playing sound: " + sound.getKey().asString()));
+    } else {
+        sender.sendMessage(Component.text("Only players can use this command"));
+    }
+}
+```
+
+### NamespacedKey
+
+`NamespacedKey` 参数类型允许解析 Minecraft 的命名空间键，用于标识资源。
+
+```java
+@CommandMethod("getkey <key>")
+@CommandPermission("test.getkey")
+public void getKey(
+    final CommandSender sender,
+    final NamespacedKey key
+) {
+    sender.sendMessage(Component.text("Namespaced key: " + key.asString()));
+}
+```
+
+### Material
+
+`Material` 参数类型允许解析 Bukkit `Material` 类型，用于表示 Minecraft 中的物品、方块等材质。
+
+```java
+@CommandMethod("giveitem <material>")
+@CommandPermission("test.giveitem")
+public void giveItem(
+    final CommandSender sender,
+    final Material material
+) {
+    if (sender instanceof Player player) {
+        player.getInventory().addItem(new ItemStack(material));
+        sender.sendMessage(Component.text("Given item: " + material.name()));
+    } else {
+        sender.sendMessage(Component.text("Only players can use this command"));
+    }
+}
+```
+
+## 示例
+
+以下是一些使用 Paper 独有参数类型的完整示例：
+
+```java
+public class PaperArgumentsCommand {
+
+    @CommandMethod("getproperty <property>")
+    @CommandPermission("test.getproperty")
+    public void getProperty(
+        final CommandSender sender,
+        final ServerProperties property
+    ) {
+        sender.sendMessage(Component.text("Property value: " + property.value()));
+    }
+
+    @CommandMethod("setworldspawn <world>")
+    @CommandPermission("test.setworldspawn")
+    public void setWorldSpawn(
+        final CommandSender sender,
+        final World world
+    ) {
+        world.setSpawnLocation(new Location(world, 0, 100, 0));
+        sender.sendMessage(Component.text("World spawn set for world: " + world.getName()));
+    }
+
+    @CommandMethod("givebytag <tag>")
+    @CommandPermission("test.givebytag")
+    public void giveByTag(
+        final CommandSender sender,
+        final MaterialTag tag
+    ) {
+        if (sender instanceof Player player) {
+            for (final Material material : tag.getValues()) {
+                player.getInventory().addItem(new ItemStack(material));
+            }
+            sender.sendMessage(Component.text("Given items with tag: " + tag.getKey().asString()));
+        } else {
+            sender.sendMessage(Component.text("Only players can use this command"));
+        }
+    }
+
+    @CommandMethod("getprofile <profile>")
+    @CommandPermission("test.getprofile")
+    public void getProfile(
+        final CommandSender sender,
+        final GameProfile profile
+    ) {
+        sender.sendMessage(Component.text("Profile name: " + profile.getName()));
+        sender.sendMessage(Component.text("Profile UUID: " + profile.getId()));
+    }
+
+    @CommandMethod("getlastlogin <player>")
+    @CommandPermission("test.getlastlogin")
+    public void getLastLogin(
+        final CommandSender sender,
+        final OfflinePlayer player
+    ) {
+        sender.sendMessage(Component.text("Last login for " + player.getName() + ": " + new Date(player.getLastLogin())));
+    }
+
+    @CommandMethod("plugininfo <plugin>")
+    @CommandPermission("test.plugininfo")
+    public void getPluginInfo(
+        final CommandSender sender,
+        final Plugin plugin
+    ) {
+        sender.sendMessage(Component.text("Plugin name: " + plugin.getName()));
+        sender.sendMessage(Component.text("Plugin version: " + plugin.getDescription().getVersion()));
+    }
+
+    @CommandMethod("playsound <sound>")
+    @CommandPermission("test.playsound")
+    public void playSound(
+        final CommandSender sender,
+        final Sound sound
+    ) {
+        if (sender instanceof Player player) {
+            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+            sender.sendMessage(Component.text("Playing sound: " + sound.getKey().asString()));
+        } else {
+            sender.sendMessage(Component.text("Only players can use this command"));
+        }
+    }
+
+    @CommandMethod("getkey <key>")
+    @CommandPermission("test.getkey")
+    public void getKey(
+        final CommandSender sender,
+        final NamespacedKey key
+    ) {
+        sender.sendMessage(Component.text("Namespaced key: " + key.asString()));
+    }
+
+    @CommandMethod("giveitem <material>")
+    @CommandPermission("test.giveitem")
+    public void giveItem(
+        final CommandSender sender,
+        final Material material
+    ) {
+        if (sender instanceof Player player) {
+            player.getInventory().addItem(new ItemStack(material));
+            sender.sendMessage(Component.text("Given item: " + material.name()));
+        } else {
+            sender.sendMessage(Component.text("Only players can use this command"));
+        }
+    }
+}
+```
+
+## 注意事项
+
+- Paper 独有参数类型提供了对 Paper 服务器特性的便捷访问。
+- 可以使用 `ServerProperties` 参数类型轻松获取服务器配置信息。
+- `World` 参数类型方便操作服务器世界。
+- `MaterialTag` 和 `Material` 参数类型简化了物品和材质的处理。
+- `GameProfile` 和 `OfflinePlayer` 参数类型用于处理玩家数据。
+- `Plugin` 参数类型可以获取插件信息。
+- `Sound` 和 `NamespacedKey` 参数类型用于处理声音和命名空间键。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Bukkit API 文档](https://javadocs.io/doc/org.bukkit/bukkit/latest/index.html)
+- [Paper API 文档](https://javadocs.io/doc/io.papermc.paper/paper-api/latest/index.html)

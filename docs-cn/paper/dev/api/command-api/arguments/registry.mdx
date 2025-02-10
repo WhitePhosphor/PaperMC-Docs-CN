@@ -1,0 +1,359 @@
+---
+slug: /dev/command-api/arguments/registry
+description: 命令 API 中注册表相关的参数类型。
+---
+
+import ResourceAttributes from "./assets/registry-arguments/resource-attributes.mp4";
+import ResourceBannerPattern from "./assets/registry-arguments/resource-banner-pattern.mp4";
+import ResourceBiome from "./assets/registry-arguments/resource-biome.mp4";
+import ResourceBlock from "./assets/registry-arguments/resource-block.mp4";
+import ResourceCatVariant from "./assets/registry-arguments/resource-cat-variant.mp4";
+import ResourceDamageType from "./assets/registry-arguments/resource-damage-type.mp4";
+import ResourceDataComponentType from "./assets/registry-arguments/resource-data-component-type.mp4";
+import ResourceEnchantment from "./assets/registry-arguments/resource-enchantment.mp4";
+import ResourceEntityType from "./assets/registry-arguments/resource-entity-type.mp4";
+import ResourceFluid from "./assets/registry-arguments/resource-fluid.mp4";
+import ResourceFrogVariant from "./assets/registry-arguments/resource-frog-variant.mp4";
+import ResourceGameEvent from "./assets/registry-arguments/resource-game-event.mp4";
+import ResourceInstrument from "./assets/registry-arguments/resource-instrument.mp4";
+import ResourceItem from "./assets/registry-arguments/resource-item.mp4";
+import ResourceJukeboxSong from "./assets/registry-arguments/resource-jukebox-song.mp4";
+import ResourceMapDecorationType from "./assets/registry-arguments/resource-map-decoration-type.mp4";
+import ResourceMemoryModuleType from "./assets/registry-arguments/resource-memory-module-type.mp4";
+import ResourceMenu from "./assets/registry-arguments/resource-menu.mp4";
+import ResourceMobEffect from "./assets/registry-arguments/resource-mob-effect.mp4";
+import ResourcePaintingVariant from "./assets/registry-arguments/resource-painting-variant.mp4";
+import ResourceParticleType from "./assets/registry-arguments/resource-particle-type.mp4";
+import ResourcePotion from "./assets/registry-arguments/resource-potion.mp4";
+import ResourceSoundEvent from "./assets/registry-arguments/resource-sound-event.mp4";
+import ResourceStructureType from "./assets/registry-arguments/resource-structure-type.mp4";
+import ResourceTrimMaterial from "./assets/registry-arguments/resource-trim-material.mp4";
+import ResourceTrimPattern from "./assets/registry-arguments/resource-trim-pattern.mp4";
+import ResourceVillagerProfession from "./assets/registry-arguments/resource-villager-profession.mp4";
+import ResourceVillagerType from "./assets/registry-arguments/resource-villager-type.mp4";
+import ResourceWolfVariant from "./assets/registry-arguments/resource-wolf-variant.mp4";
+
+import ResourceKeyItem from "./assets/registry-arguments/resourcekey-item.mp4";
+import EnchantsRegistry from "./assets/registry-arguments/enchants-registry.mp4";
+
+# 注册表参数类型
+
+Paper 命令 API 提供了一些与 Minecraft 注册表 (Registry) 相关的参数类型。 注册表用于管理 Minecraft 中各种类型的游戏内容，例如方块、物品、实体类型等。
+
+## 注册表参数类型
+
+### BlockState
+
+`BlockState` 参数类型允许解析方块状态 (BlockState)。 方块状态包含了方块的类型和各种属性，例如材质、朝向、变种等。
+
+```java
+@CommandMethod("setblocktype <blockstate>")
+@CommandPermission("test.setblocktype")
+public void setBlockType(
+    final CommandSender sender,
+    final BlockState blockState
+) {
+    if (sender instanceof Player player) {
+        final Block block = player.getTargetBlock(5);
+        if (block != null) {
+            block.setBlockData(blockState.createBlockData());
+            sender.sendMessage(Component.text("方块类型已设置为: " + blockState.getMaterial().name()));
+        } else {
+            sender.sendMessage(Component.text("请看向一个方块"));
+        }
+    } else {
+        sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+    }
+}
+```
+
+### Enchantment
+
+`Enchantment` 参数类型允许解析附魔类型 (Enchantment)。
+
+```java
+@CommandMethod("getenchantment <enchantment>")
+@CommandPermission("test.getenchantment")
+public void getEnchantment(
+    final CommandSender sender,
+    final Enchantment enchantment
+) {
+    sender.sendMessage(Component.text("附魔类型: " + enchantment.getKey().asString()));
+}
+```
+
+### EntityType
+
+`EntityType` 参数类型允许解析实体类型 (EntityType)。
+
+```java
+@CommandMethod("summonentity <entitytype>")
+@CommandPermission("test.summonentity")
+public void summonEntity(
+    final CommandSender sender,
+    final EntityType entityType
+) {
+    if (sender instanceof Player player) {
+        player.getWorld().spawnEntity(player.getLocation(), entityType);
+        sender.sendMessage(Component.text("已召唤实体: " + entityType.name()));
+    } else {
+        sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+    }
+}
+```
+
+### ItemTag
+
+`ItemTag` 参数类型允许解析物品标签 (ItemTag)。 物品标签用于表示一组物品类型，例如 `minecraft:wool` 标签包含了所有羊毛类型的物品。
+
+```java
+@CommandMethod("getitemtag <itemtag>")
+@CommandPermission("test.getitemtag")
+public void getItemTag(
+    final CommandSender sender,
+    final ItemTag itemTag
+) {
+    sender.sendMessage(Component.text("物品标签: " + itemTag.getKey().asString()));
+    sender.sendMessage(Component.text("包含物品类型: " + itemTag.getValues().size() + " 种"));
+}
+```
+
+### Material
+
+`Material` 参数类型允许解析材质 (Material)。 材质表示 Minecraft 中的物品、方块等基本类型。
+
+```java
+@CommandMethod("getitemmaterial <material>")
+@CommandPermission("test.getitemmaterial")
+public void getItemMaterial(
+    final CommandSender sender,
+    final Material material
+) {
+    sender.sendMessage(Component.text("材质: " + material.name()));
+}
+```
+
+### ObjectiveCriteria
+
+`ObjectiveCriteria` 参数类型允许解析计分板目标标准 (ObjectiveCriteria)。 计分板目标标准定义了计分板目标的分数计算方式。
+
+```java
+@CommandMethod("getobjectivecriteria <criteria>")
+@CommandPermission("test.getobjectivecriteria")
+public void getObjectiveCriteria(
+    final CommandSender sender,
+    final ObjectiveCriteria criteria
+) {
+    sender.sendMessage(Component.text("计分板目标标准: " + criteria.getName()));
+}
+```
+
+### Particle
+
+`Particle` 参数类型允许解析粒子效果类型 (Particle)。
+
+```java
+@CommandMethod("spawnparticle <particle>")
+@CommandPermission("test.spawnparticle")
+public void spawnParticle(
+    final CommandSender sender,
+    final Particle particle
+) {
+    if (sender instanceof Player player) {
+        player.getWorld().spawnParticle(particle, player.getLocation(), 10);
+        sender.sendMessage(Component.text("已生成粒子效果: " + particle.getKey().asString()));
+    } else {
+        sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+    }
+}
+```
+
+### PotionEffectType
+
+`PotionEffectType` 参数类型允许解析药水效果类型 (PotionEffectType)。
+
+```java
+@CommandMethod("getpotioneffect <potioneffect>")
+@CommandPermission("test.getpotioneffect")
+public void getPotionEffect(
+    final CommandSender sender,
+    final PotionEffectType potionEffectType
+) {
+    sender.sendMessage(Component.text("药水效果类型: " + potionEffectType.getName()));
+}
+```
+
+### NamespacedKey
+
+`NamespacedKey` 参数类型允许解析命名空间键 (NamespacedKey)。 命名空间键用于唯一标识 Minecraft 中的各种资源，例如方块、物品、附魔、粒子效果等。
+
+```java
+@CommandMethod("getnamespacedkey <key>")
+@CommandPermission("test.getnamespacedkey")
+public void getNamespacedKey(
+    final CommandSender sender,
+    final NamespacedKey key
+) {
+    sender.sendMessage(Component.text("命名空间键: " + key.asString()));
+}
+```
+
+### Sound
+
+`Sound` 参数类型允许解析声音效果 (Sound)。
+
+```java
+@CommandMethod("playsoundeffect <sound>")
+@CommandPermission("test.playsoundeffect")
+public void playSoundEffect(
+    final CommandSender sender,
+    final Sound sound
+) {
+    if (sender instanceof Player player) {
+        player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+        sender.sendMessage(Component.text("播放声音效果: " + sound.getKey().asString()));
+    } else {
+        sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+    }
+}
+```
+
+## 示例
+
+以下是一些使用注册表参数类型的完整示例：
+
+```java
+public class RegistryArgumentsCommand {
+
+    @CommandMethod("setblocktype <blockstate>")
+    @CommandPermission("test.setblocktype")
+    public void setBlockType(
+        final CommandSender sender,
+        final BlockState blockState
+    ) {
+        if (sender instanceof Player player) {
+            final Block block = player.getTargetBlock(5);
+            if (block != null) {
+                block.setBlockData(blockState.createBlockData());
+                sender.sendMessage(Component.text("方块类型已设置为: " + blockState.getMaterial().name()));
+            } else {
+                sender.sendMessage(Component.text("请看向一个方块"));
+            }
+        } else {
+            sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+        }
+    }
+
+    @CommandMethod("getenchantment <enchantment>")
+    @CommandPermission("test.getenchantment")
+    public void getEnchantment(
+        final CommandSender sender,
+        final Enchantment enchantment
+    ) {
+        sender.sendMessage(Component.text("附魔类型: " + enchantment.getKey().asString()));
+    }
+
+    @CommandMethod("summonentity <entitytype>")
+    @CommandPermission("test.summonentity")
+    public void summonEntity(
+        final CommandSender sender,
+        final EntityType entityType
+    ) {
+        if (sender instanceof Player player) {
+            player.getWorld().spawnEntity(player.getLocation(), entityType);
+            sender.sendMessage(Component.text("已召唤实体: " + entityType.name()));
+        } else {
+            sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+        }
+    }
+
+    @CommandMethod("getitemtag <itemtag>")
+    @CommandPermission("test.getitemtag")
+    public void getItemTag(
+        final CommandSender sender,
+        final ItemTag itemTag
+    ) {
+        sender.sendMessage(Component.text("物品标签: " + itemTag.getKey().asString()));
+        sender.sendMessage(Component.text("包含物品类型: " + itemTag.getValues().size() + " 种"));
+    }
+
+    @CommandMethod("getitemmaterial <material>")
+    @CommandPermission("test.getitemmaterial")
+    public void getItemMaterial(
+        final CommandSender sender,
+        final Material material
+    ) {
+        sender.sendMessage(Component.text("材质: " + material.name()));
+    }
+
+    @CommandMethod("getobjectivecriteria <criteria>")
+    @CommandPermission("test.getobjectivecriteria")
+    public void getObjectiveCriteria(
+        final CommandSender sender,
+        final ObjectiveCriteria criteria
+    ) {
+        sender.sendMessage(Component.text("计分板目标标准: " + criteria.getName()));
+    }
+
+    @CommandMethod("spawnparticle <particle>")
+    @CommandPermission("test.spawnparticle")
+    public void spawnParticle(
+        final CommandSender sender,
+        final Particle particle
+    ) {
+        if (sender instanceof Player player) {
+            player.getWorld().spawnParticle(particle, player.getLocation(), 10);
+            sender.sendMessage(Component.text("已生成粒子效果: " + particle.getKey().asString()));
+        } else {
+            sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+        }
+    }
+
+    @CommandMethod("getpotioneffect <potioneffect>")
+    @CommandPermission("test.getpotioneffect")
+    public void getPotionEffect(
+        final CommandSender sender,
+        final PotionEffectType potionEffectType
+    ) {
+        sender.sendMessage(Component.text("药水效果类型: " + potionEffectType.getName()));
+    }
+
+    @CommandMethod("getnamespacedkey <key>")
+    @CommandPermission("test.getnamespacedkey")
+    public void getNamespacedKey(
+        final CommandSender sender,
+        final NamespacedKey key
+    ) {
+        sender.sendMessage(Component.text("命名空间键: " + key.asString()));
+    }
+
+    @CommandMethod("playsoundeffect <sound>")
+    @CommandPermission("test.playsoundeffect")
+    public void playSoundEffect(
+        final CommandSender sender,
+        final Sound sound
+    ) {
+        if (sender instanceof Player player) {
+            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+            sender.sendMessage(Component.text("播放声音效果: " + sound.getKey().asString()));
+        } else {
+            sender.sendMessage(Component.text("只有玩家才能使用此命令"));
+        }
+    }
+}
+```
+
+## 注意事项
+
+- 注册表参数类型提供了对 Minecraft 注册表中各种游戏内容的便捷访问。
+- 可以使用这些参数类型来创建与方块、物品、实体、附魔、粒子效果、药水效果、声音效果等相关的命令。
+- 建议参考 Bukkit 和 Paper API 文档了解更多关于注册表类型的信息。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Bukkit API 文档](https://javadocs.io/doc/org.bukkit/bukkit/latest/index.html)
+- [Paper API 文档](https://javadocs.io/doc/io.papermc.paper/paper-api/latest/index.html)
+- [Minecraft Wiki - Registry](https://minecraft.fandom.com/wiki/Registry) (可能需要查阅更详细的 Minecraft 注册表文档)
+- [Brigadier Command Parser](https://github.com/Mojang/brigadier) (Minecraft 命令解析库)

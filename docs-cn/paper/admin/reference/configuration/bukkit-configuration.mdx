@@ -1,0 +1,161 @@
+---
+slug: /reference/configuration/bukkit
+title: bukkit.yml
+description: bukkit.yml 配置文件的详细参考文档。
+---
+
+# Bukkit Configuration
+
+import React from 'react';
+import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
+import BukkitConfigSpec from '!!raw-loader!@site/config-specs/paper/bukkit.yml';
+
+:::info
+
+以下 YAML 展示了 `bukkit.yml` 文件的结构和默认值。
+
+点击配置项可以查看该项的详细说明。
+
+:::
+
+<ConfigDocBlock data={BukkitConfigSpec}/>
+
+# bukkit.yml
+
+`bukkit.yml` 文件是 Bukkit API 的核心配置文件，用于配置 Bukkit API 相关的各种服务器行为和功能。
+
+该文件位于服务器根目录下。
+
+**文件路径:** `bukkit.yml`
+
+**示例:**
+
+```yaml
+settings: # 常规设置
+  allow-end: true # 是否允许末地世界 (默认: true)
+  warn-on-overload: true # 当服务器 Tick 线程过载时是否发出警告 (默认: true)
+  permissions-file: permissions.yml # 权限文件路径 (默认: permissions.yml)
+  update-folder: update # 更新文件夹名称 (用于插件自动更新, 默认: update)
+  plugin-profiling: false # 是否启用插件性能分析 (默认: false)
+  connection-throttle: 4000 # 连接节流阈值 (毫秒, 默认: 4000)
+  debug-level: 0 # 调试级别 (0: 禁用, 1: 基本, 2: 详细, 默认: 0)
+   নেটওয়ার্ক-threads: 4 # 网络线程数 (默认: 4)
+   আইপি-forwarding: false # 是否启用 IP 转发 (用于 BungeeCord/Velocity 等代理, 默认: false)
+   আইপি-forwarding-velocity: false # 是否启用 Velocity IP 转发模式 (默认: false)
+   স্প্যাম-throttle:
+    max-tick-rate: 39.0 # 最大 Tick 速率 (TPS, 默认: 39.0)
+    ticks-for-warning: 10 # 触发警告的 Tick 数 (默认: 10)
+    log-errors: true # 是否记录错误日志 (默认: true)
+     спам-algorithm: 0 # 反垃圾邮件算法 (0: 默认, 1: 严格, 默认: 0)
+   বিলম্বিত-chunk-loads: true # 是否延迟区块加载 (优化启动速度, 默认: true)
+   বিলম্বিত-chunk-tasks: true # 是否延迟区块任务 (优化启动速度, 默认: true)
+   অঞ্চল-file-cache-size: 256 # 区域文件缓存大小 (MB, 默认: 256)
+   ট্রাস্টেড-session-sources: # 受信任的会话来源 (用于离线模式服务器)
+  - 127.0.0.1
+  - localhost
+   কিপ-웜-chunks: false # 是否保持暖区块 (预加载区块, 默认: false)
+   ক্যাসেল-chunks-persist: false # 是否持久化缓存区块 (默认: false)
+   লোড-permissions-yml-before-plugins: true # 是否在加载插件前加载 permissions.yml (默认: true)
+   লোড-plugins-early: [] # 提前加载的插件列表 (在其他插件之前加载)
+   shutdown-message: Server is shutting down # 服务器关闭消息 (默认: Server is shutting down)
+   কিপ-alive-packet-interval: 15 # Keep-Alive 数据包发送间隔 (秒, 默认: 15)
+   কিপ-alive-packet-threshold: 300 # Keep-Alive 数据包超时阈值 (秒, 默认: 300)
+   player-shuffle-percent: 0 # 玩家洗牌百分比 (用于负载均衡, 默认: 0)
+   কিপ-spawn-loaded: true # 是否保持出生点区块加载 (默认: true)
+   spawn-limits: # 生物生成限制
+    monsters: 70 # 怪物生成数量限制 (默认: 70)
+    animals: 10 # 动物生成数量限制 (默认: 10)
+    water-animals: 15 # 水生动物生成数量限制 (默认: 15)
+    ambient: 15 # 环境生物生成数量限制 (默认: 15)
+  chunk-gc: # 区块垃圾回收
+    period-in-ticks: 600 # 垃圾回收周期 (Tick, 默认: 600)
+  ticks-per: # 每 X Tick 运算
+    animal-spawns: 400 # 动物生成 Tick 间隔 (默认: 400)
+    monster-spawns: 1 # 怪物生成 Tick 间隔 (默认: 1)
+    autosave: 6000 # 自动保存 Tick 间隔 (默认: 6000)
+  ওয়ার্ল্ডs: # 世界配置 (每个世界单独配置)
+    world: # 世界名称 (例如 world, world_nether, world_the_end)
+      max-tick-time: # 最大 Tick 时间 (毫秒)
+        tile: 50 # 方块实体最大 Tick 时间 (默认: 50)
+        entity: 50 # 实体最大 Tick 时间 (默认: 50)
+config-version: 12 # 配置文件版本 (请勿修改)
+messages: # 消息配置
+  restart: Server is restarting # 服务器重启消息 (默认: Server is restarting)
+  whitelist_reasons: # 白名单原因
+    kick-banned: You are banned from this server! # 被 ban 踢出消息 (默认: You are banned from this server!)
+    kick-whitelist: You are not whitelisted on this server! # 未在白名单踢出消息 (默认: You are not whitelisted on this server!)
+    invalid-playername: ${player} is not a valid player name # 无效玩家名消息 (默认: ${player} is not a valid player name)
+    invalid-ip: Invalid IP # 无效 IP 消息 (默认: Invalid IP)
+    no-reason: Banned by an operator. No reason given. # 没有原因的 ban 消息 (默认: Banned by an operator. No reason given.)
+    generic: An error occurred # 通用错误消息 (默认: An error occurred)
+    outdated-server: Outdated server! I'm still on {0} # 服务器版本过时消息 (默认: Outdated server! I'm still on {0})
+    outdated-client: Outdated client! Please use version {0} # 客户端版本过时消息 (默认: Outdated client! Please use version {0})
+    server_full: The server is full! # 服务器已满消息 (默认: The server is full!)
+    plugin-failure: Plugin failure implementing command # 插件命令执行失败消息 (默认: Plugin failure implementing command)
+    invalid-arguments: Invalid argument # 无效参数消息 (默认: Invalid argument)
+    commands: # 命令相关消息
+      generic-help: Help: Use /help [command] to get help # 通用帮助消息 (默认: Help: Use /help [command] to get help)
+      tab_complete: Commands available: # Tab 补全提示消息 (默认: Commands available:)
+```
+
+**配置项说明:**
+
+### `settings` 节点
+
+*   **`settings.allow-end`**:  是否允许末地世界。
+    *   `true`:  允许末地世界。服务器将加载和运行末地世界。
+    *   `false`: 禁用末地世界。服务器将禁用末地世界，玩家无法进入末地。
+    *   **默认值:** `true`
+
+*   **`settings.warn-on-overload`**:  当服务器 Tick 线程过载时是否发出警告。
+    *   `true`:  发出警告。当服务器主线程 Tick 耗时超过阈值时，服务器将发出警告信息到控制台和日志文件。
+    *   `false`: 不发出警告。
+    *   **默认值:** `true`
+
+*   **`settings.permissions-file`**:  权限文件路径。用于指定服务器权限文件的路径。默认情况下，服务器使用 `permissions.yml` 文件作为权限文件。您可以修改此项来指定自定义的权限文件名或路径。
+    *   **默认值:** `permissions.yml`
+
+*   **`settings.update-folder`**:  更新文件夹名称。用于指定插件自动更新文件夹的名称。当服务器启动时，会自动检查 `plugins` 文件夹下名为 `update` 的文件夹，并将该文件夹中的插件 JAR 文件移动到 `plugins` 文件夹下，实现插件自动更新。
+    *   **默认值:** `update`
+
+*   **`settings.plugin-profiling`**:  是否启用插件性能分析。
+    *   `true`:  启用插件性能分析。服务器将记录插件的性能数据，例如插件方法的耗时、调用次数等。性能数据可以用于分析插件性能瓶颈。
+    *   `false`: 禁用插件性能分析。
+    *   **默认值:** `false`
+
+*   **`settings.connection-throttle`**:  连接节流阈值 (毫秒)。用于限制服务器在短时间内接受过多新连接，防止恶意连接攻击。此项配置指定了服务器接受新连接的最小时间间隔 (毫秒)。如果服务器在短时间内收到大量连接请求，超过此阈值，则会拒绝部分连接请求。
+    *   **默认值:** `4000` (4 秒)
+
+*   **`settings.debug-level`**:  调试级别。用于设置服务器的调试输出级别。
+    *   `0`:  禁用调试输出。服务器将只输出必要的日志信息。
+    *   `1`:  基本调试输出。服务器将输出基本的调试信息，例如错误、警告等。
+    *   `2`:  详细调试输出。服务器将输出更详细的调试信息，包括更详细的错误堆栈跟踪、性能数据等。
+    *   **默认值:** `0`
+
+*   **`settings.network-threads`**:  网络线程数。用于配置服务器网络处理线程的数量。增加网络线程数可以提高服务器的网络处理能力，在高并发情况下可能提升性能。
+    *   **默认值:** `4`
+
+*   **`settings.ip-forwarding`**:  是否启用 IP 转发。用于在服务器前端使用 BungeeCord 或 Velocity 等代理服务器时，正确获取玩家的真实 IP 地址。如果您的服务器使用了 BungeeCord 或 Velocity 等代理，请启用此项。
+    *   `true`:  启用 IP 转发。服务器将从代理服务器传递的协议头中获取玩家的真实 IP 地址。
+    *   `false`: 禁用 IP 转发。服务器将直接使用代理服务器的 IP 地址作为玩家的 IP 地址。
+    *   **默认值:** `false`
+
+*   **`settings.ip-forwarding-velocity`**:  是否启用 Velocity IP 转发模式。用于在服务器前端使用 Velocity 代理服务器时，启用 Velocity 特有的 IP 转发模式。如果您的服务器使用了 Velocity 代理，并且 `settings.ip-forwarding` 设置为 `true`，请启用此项。
+    *   `true`:  启用 Velocity IP 转发模式。
+    *   `false`:  禁用 Velocity IP 转发模式。
+    *   **默认值:** `false`
+
+*   **`settings.spam-throttle`**:  反垃圾邮件节流设置。用于配置服务器的反垃圾邮件节流机制，防止恶意玩家或机器人发送大量垃圾信息导致服务器卡顿。
+
+    *   **`settings.spam-throttle.max-tick-rate`**:  最大 Tick 速率 (TPS)。用于设置服务器允许的最大 Tick 速率。如果服务器 TPS 低于此值，则会触发反垃圾邮件节流机制。
+        *   **默认值:** `39.0`
+
+    *   **`settings.spam-throttle.ticks-for-warning`**:  触发警告的 Tick 数。用于设置服务器 TPS 低于最大 Tick 速率多少 Tick 后，触发警告信息。
+        *   **默认值:** `10`
+
+    *   **`settings.spam-throttle.log-errors`**:  是否记录错误日志。
+        *   `true`:  记录错误日志。当触发反垃圾邮件节流机制时，服务器将记录错误日志。
+        *   `false`: 不记录错误日志。
+        *   **默认值:** `true`
+
+    *   **`

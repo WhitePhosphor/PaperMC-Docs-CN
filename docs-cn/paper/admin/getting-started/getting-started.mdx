@@ -1,0 +1,63 @@
+---
+slug: /getting-started
+description: 如何开始下载和设置 Paper 服务器。
+---
+
+# 入门指南
+
+## 要求
+
+:::tip
+
+Paper 至少需要 **Java <Property name="PAPER_JAVA_MIN" />** 才能运行，[Java 非常容易下载和安装](/misc/java-install)。
+
+:::
+
+| Paper 版本    | 推荐的 Java 版本                         |
+|---------------|---------------------------------------------|
+| 1.8 到 1.11   | Java 8                                      |
+| 1.12 到 1.16.4 | Java 11                                     |
+| 1.16.5        | Java 16                                     |
+| 1.17.1-1.18.1+ | Java <Property name="PAPER_JAVA_MIN" /> |
+
+## 下载 Paper
+
+Paper 直接从我们的 [网站下载页面](https://papermc.io/downloads) 提供可运行的服务器 JAR 文件。
+
+单击构建版本号以下载文件。
+
+## 运行服务器
+
+要运行服务器，您需要创建一个启动脚本或在终端中运行命令。
+
+您可以使用我们的 [启动脚本生成器](/misc/tools/start-script-gen) 生成启动脚本。您也可以在那里获得运行服务器的优化终端命令。
+
+如果您只是在寻找一个简短的命令：
+```bash
+java -Xms4G -Xmx4G -jar paper.jar --nogui
+```
+确保您已将终端导航到服务器目录，并将 `paper.jar` 替换为您下载的 JAR 的名称。
+
+可以通过更改 `Xmx` 和 `Xms` 参数中的数字来设置 RAM 量。`--nogui` 禁用 Vanilla 的 GUI，因此在使用命令行时不会获得双重的界面。
+
+要配置您的服务器，请参阅 [全局配置](../reference/configuration/global-configuration.mdx) 和 [每个世界的配置](../reference/configuration/world-configuration.mdx) 页面。
+
+## 更新服务器
+
+更新 Paper 很简单！请参阅我们的 [更新教程](../how-to/update.md) 以获取更多信息。
+
+## 迁移到 Paper
+
+### 从 Vanilla 迁移
+
+从 Vanilla 迁移很容易，但存在一些差异，即世界存档。Paper（以及 CraftBukkit 和 Spigot）将世界的每个维度（下界、末地等）分隔到单独的世界文件夹中。
+
+Paper 将为您自动处理此转换。无需额外考虑。
+
+### 从 CraftBukkit 或 Spigot 迁移
+
+Paper 是 CraftBukkit 和 Spigot 的直接替代品，您无需进行任何更改。
+
+## 后续步骤
+
+查看我们的 [后续步骤](/paper/next-steps) 指南，以使您的服务器启动并以最佳性能和功能运行。

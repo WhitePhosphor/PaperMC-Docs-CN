@@ -1,0 +1,51 @@
+---
+slug: /get-to-vanilla
+title: Getting back to Vanilla
+description: 如何从 Paper 服务器迁移回 Vanilla 服务器。
+---
+
+# 迁移回 Vanilla
+
+如果您想从 Paper 服务器迁移回 Vanilla 服务器，本指南将帮助您完成迁移过程。由于 Paper 和 Vanilla 在世界存储方式上存在差异，因此需要进行一些手动操作才能确保世界数据正确迁移。
+
+:::caution[备份您的数据！]
+
+在开始之前，请务必备份您的 Paper 服务器数据，以防止数据丢失。
+
+:::
+
+## 迁移步骤
+
+由于 Paper 服务器将世界数据存储在与 Vanilla 不同的目录结构中，因此我们需要手动调整世界数据目录结构，使其与 Vanilla 服务器兼容。
+
+**世界目录结构差异:**
+
+| 服务器软件 | 主世界    | 下界                  | 末地                  |
+| -------- | --------- | --------------------- | --------------------- |
+| Vanilla  | `/world`  | `/world/DIM-1`        | `/world/DIM1`         |
+| Paper    | `/world`  | `/world_nether/DIM-1` | `/world_the_end/DIM1` |
+
+**迁移步骤:**
+
+1.  **停止 Paper 服务器。** 如果您的 Paper 服务器正在运行，请先停止服务器。
+2.  **删除 Vanilla 世界维度文件夹 (如果存在)。** 如果您之前已经使用 Vanilla 服务器启动过，请进入您的 Vanilla 服务器的 `world` 文件夹，并删除 `DIM-1` 和 `DIM1` 文件夹。如果这是您第一次启动 Vanilla 服务器，则可以跳过此步骤。
+3.  **复制下界维度文件夹。** 将 Paper 服务器的 `/world_nether/DIM-1` 文件夹复制到 Vanilla 服务器的 `/world` 文件夹中。
+4.  **复制末地维度文件夹。** 将 Paper 服务器的 `/world_the_end/DIM1` 文件夹复制到 Vanilla 服务器的 `/world` 文件夹中。
+5.  **删除 Paper 世界维度文件夹。** 删除 Paper 服务器的 `/world_nether` 和 `/world_the_end` 文件夹。
+6.  **替换服务器 JAR 文件。** 将您的 Paper 服务器 JAR 文件替换为 Vanilla 服务器 JAR 文件。
+7.  **启动 Vanilla 服务器。** 启动您的 Vanilla 服务器。
+
+完成以上步骤后，您的 Vanilla 服务器应该可以正确加载 Paper 服务器的世界数据，包括主世界、下界和末地。
+
+**注意事项:**
+
+*   请务必按照步骤操作，特别是世界目录结构的调整，否则可能导致下界和末地数据丢失或错乱。
+*   如果您在迁移过程中遇到任何问题，请参考 [迁移指南](/paper/admin/getting-started/migration) 或在 [PaperMC Discord](https://discord.gg/papermc) 的 `#paper-help` 频道中寻求帮助。
+
+## 迁移回 CraftBukkit 或 Spigot
+
+Paper **不** 支持迁移回 CraftBukkit 或 Spigot！虽然您可能会成功迁移 (CraftBukkit 和 Spigot 使用与 Paper 相同的目录结构)，但 **不要** 就您遇到的问题寻求支持，并注意可能会发生数据丢失。
+
+## 迁移回 Fabric/Forge
+
+由于 Fabric 和 Forge 都使用与 Vanilla 相同的世界存储目录结构，因此请按照 [迁移回 Vanilla 指南](#迁移步骤) 进行操作。请注意，Fabric 和 Forge 都不支持 Paper 插件！您将需要找到替代模组。

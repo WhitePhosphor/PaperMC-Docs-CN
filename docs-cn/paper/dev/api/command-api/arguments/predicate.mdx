@@ -1,0 +1,161 @@
+---
+slug: /dev/command-api/arguments/predicate
+description: 命令 API 中谓词相关的参数类型。
+---
+
+import DoubleRangeMp4 from "./assets/vanilla-arguments/doublerange.mp4";
+import IntegerRangeMp4 from "./assets/vanilla-arguments/integerrange.mp4";
+import ItemPredicateMp4 from "./assets/vanilla-arguments/itempredicate.mp4";
+
+# 谓词参数类型
+
+Paper 命令 API 提供了用于处理谓词 (Predicate) 的参数类型。 谓词通常用于条件判断，例如判断实体是否符合特定条件。
+
+## 谓词参数类型
+
+### Predicate
+
+`Predicate` 参数类型允许解析 Minecraft 的谓词。 谓词可以用于多种用途，例如：
+
+-  `/execute if predicate <predicate>` 命令
+-  数据包中的条件
+-  世界生成
+
+```java
+@CommandMethod("checkpredicate <predicate>")
+@CommandPermission("test.checkpredicate")
+public void checkPredicate(
+    final CommandSender sender,
+    final Predicate predicate
+) {
+    if (predicate.test(sender)) {
+        sender.sendMessage(Component.text("谓词测试通过!"));
+    } else {
+        sender.sendMessage(Component.text("谓词测试失败!"));
+    }
+}
+```
+
+## 示例
+
+以下是一个使用谓词参数类型的完整示例：
+
+```java
+public class PredicateCommand {
+
+    @CommandMethod("checkpredicate <predicate>")
+    @CommandPermission("test.checkpredicate")
+    public void checkPredicate(
+        final CommandSender sender,
+        final Predicate predicate
+    ) {
+        if (predicate.test(sender)) {
+            sender.sendMessage(Component.text("谓词测试通过!"));
+        } else {
+            sender.sendMessage(Component.text("谓词测试失败!"));
+        }
+    }
+}
+```
+
+## 注意事项
+
+- `Predicate` 参数类型允许使用 Minecraft 的谓词语法。
+- 谓词可以用于复杂的条件判断。
+- 可以结合 `/execute if predicate` 命令来使用谓词参数。
+- 谓词的定义和使用方式可以参考 Minecraft 相关的文档。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Minecraft Wiki - Predicate](https://minecraft.fandom.com/wiki/Predicate) (可能需要查阅更详细的 Minecraft 谓词文档)
+- [Brigadier Command Parser](https://github.com/Mojang/brigadier) (Minecraft 命令解析库)
+
+## Double range 参数类型
+此参数类型可以用作数字的谓词，需要精确输入。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> doubleRangeArgument() {
+    return Commands.literal("doublerange")
+        .then(Commands.argument("arg", ArgumentTypes.doubleRange())
+            .executes(ctx -> {
+                final DoubleRangeProvider doubleRangeProvider = ctx.getArgument("arg", DoubleRangeProvider.class);
+                final CommandSender sender = ctx.getSource().getSender();
+
+                for (int i = 0; i < 5; i++) {
+                    sender.sendRichMessage("索引 <index> 是否在范围内? <result>",
+                        Placeholder.unparsed("index", Integer.toString(i)),
+                        Placeholder.unparsed("result", Boolean.toString(doubleRangeProvider.range().test((double) i)))
+                    );
+                }
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={DoubleRangeMp4}/> */}
+
+
+## Integer range 参数类型
+此参数类型的工作方式与 double range 参数类型非常相似，唯一的区别在于此参数类型仅接受整数。
+
+### 用法示例
+```java title="MinecraftArguments.java"
+public static LiteralCommandNode<CommandSourceStack> integerRangeArgument() {
+    return Commands.literal("integerrange")
+        .then(Commands.argument("range", ArgumentTypes.integerRange())
+            .then(Commands.argument("tested_integer", IntegerArgumentType.integer())
+                .executes(MinecraftArguments::runIntegerRangeCommand)))
+        .build();
+}
+
+private static int runIntegerRangeCommand(final CommandContext<CommandSourceStack> ctx) {
+    final IntegerRangeProvider integerRangeProvider = ctx.getArgument("range", IntegerRangeProvider.class);
+    final int integerToTest = IntegerArgumentType.getInteger(ctx, "tested_integer");
+
+    if (integerRangeProvider.range().contains(integerToTest)) {
+        ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <green>在</green> 指定范围内!",
+            Placeholder.unparsed("input", Integer.toString(integerToTest))
+        );
+        return Command.SINGLE_SUCCESS;
+    }
+
+    ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <red>不在</red> 指定范围内!",
+        Placeholder.unparsed("input", Integer.toString(integerToTest))
+    );
+
+    return Command.SINGLE_SUCCESS;
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={IntegerRangeMp4}/> */}
+
+
+## Item predicate 参数类型
+此参数类型允许检查物品是否符合某些谓词。 它对于根据某些条件过滤掉某些物品非常有用。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> itemPredicateArgument() {
+    return Commands.literal("itempredicate")
+        .then(Commands.argument("predicate", ArgumentTypes.itemPredicate())
+            .executes(ctx -> {
+                final ItemStackPredicate predicate = ctx.getArgument("predicate", ItemStackPredicate.class);
+                final ItemStack defaultWoodenSword = ItemType.WOODEN_SWORD.createItemStack();
+
+                ctx.getSource().getSender().sendRichMessage("谓词是否包含默认的木剑? <result>",
+                    Placeholder.parsed("result", predicate.test(defaultWoodenSword) ? "<green>是</green>" : "<red>否</red>")
+                );
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={ItemPredicateMp4}/> */}

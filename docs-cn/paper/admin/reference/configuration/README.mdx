@@ -1,0 +1,106 @@
+---
+slug: /reference/configuration
+---
+
+# Paper Configuration
+
+import ConfigurationStructureDiagram from "@site/src/components/config/ConfigurationStructureDiagram";
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from "@docusaurus/theme-common";
+
+---
+
+## Paper 配置文件
+
+:::info
+
+我们的许多文件都有详细的文档说明。如果有文档，它们会提供指向其页面的链接。如果没有文档，它们会简要说明其用途。
+
+:::
+
+<ConfigurationStructureDiagram/>
+
+## 世界配置
+
+Paper 配置最强大但最不被理解的功能之一是**按世界**设置配置选项。虽然您无法按世界覆盖每个配置选项，但存储在 `paper-world-defaults.yml` 中的所有内容都可以被覆盖。
+
+### 默认值
+
+Paper 默认不设置任何按世界覆盖，而是将所有默认值存储在 `config/paper-world-defaults.yml` 中。此文件中的所有内容都可以按世界覆盖，但默认情况下不会覆盖。更改 `paper-world-defaults.yml` 中的某些内容将更改您**未**手动覆盖它的**所有世界**的值。
+
+### 每个世界的值
+
+要为特定世界设置值，请编辑世界文件夹中的 `paper-world.yml`。例如，如果您想为名为 `resource` 的世界启用 `lootables.auto-replenish`，您将像这样编辑 `resource` 文件夹中的 `paper-world.yml`：
+
+```yaml title=resource/paper-world.yml
+_version: 28
+
+# highlight-start
+lootables:
+  auto-replenish: true
+# highlight-end
+```
+
+默认情况下，`paper-world.yml` 配置文件中仅设置了 `_version`。要覆盖选项的默认值，您必须从 `paper-world-defaults.yml` 手动添加它。
+
+### 继承
+
+所有未明确为世界定义的配置都从 `paper-world-defaults.yml` 继承。这意味着您不需要在 `paper-world-defaults.yml` 和每个单独的 `paper-world.yml` 之间重复配置。您**不需要也不应该**将整个 `paper-world-default.yml` 文件复制到您想要修改的每个 `paper-world.yml` 文件中。只需复制您想要更改的具体值即可。
+
+对于更复杂的实际示例：在两个世界中设置不同的 `spawn-limits` 和 `auto-replenish`。
+
+```yaml title="paper-world-defaults.yml"
+lootables:
+  auto-replenish: true
+entities:
+  spawning:
+    spawn-limits:
+      ambient: 70
+      axolotls: 10
+      creature: 15
+      monster: 5
+      underground_water_creature: 5
+      water_ambient: 5
+      water_creature: 20
+```
+
+```yaml title="world_nether/paper-world.yml"
+entities:
+  spawning:
+    spawn-limits:
+      monster: 90
+```
+
+```yaml title="resource_world/paper-world.yml"
+lootables:
+  auto-replenish: false
+entities:
+  spawning:
+    spawn-limits:
+      axolotls: 8
+      creature: 15
+      monster: 2
+```
+
+此示例演示了继承的概念。对于每个世界，这是将应用的有效配置：
+
+| 配置项                                                     | world  | world_nether | world_the_end | resource_world |
+|----------------------------------------------------------|--------|--------------|---------------|----------------|
+| `lootables.auto-replenish`                                | `true` | `true`       | `true`        | `false`        |
+| `entities.spawning.spawn-limits.ambient`                  | `15`   | `15`         | `15`          | `15`           |
+| `entities.spawning.spawn-limits.axolotls`                 | `5`    | `5`          | `5`           | `8`            |
+| `entities.spawning.spawn-limits.creature`                 | `10`   | `10`         | `10`          | `15`           |
+| `entities.spawning.spawn-limits.monster`                  | `70`   | `90`         | `70`          | `2`            |
+| `entities.spawning.spawn-limits.underground_water_creature`| `5`    | `5`          | `5`           | `5`            |
+| `entities.spawning.spawn-limits.water_ambient`            | `20`   | `20`         | `20`          | `20`           |
+| `entities.spawning.spawn-limits.water_creature`           | `5`    | `5`          | `5`           | `5`            |
+
+请注意，`world_the_end/paper-world.yml` 从未被修改。因此，它从 `config/paper-world-defaults.yml` 继承了所有配置选项。此外，`auto-replenish` 仅在 `resource_world/paper-world.yml` 中被禁用，因为在 `config/paper-world-defaults.yml` 中，`auto-replenish` 设置为 `true`。
+
+## 配置参考
+
+Paper 的配置参考文档。
+
+---
+
+<DocCardList items={useCurrentSidebarCategory().items} />

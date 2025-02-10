@@ -1,0 +1,252 @@
+---
+slug: /dev/command-api/arguments/adventure
+description: 命令 API 中 Adventure 相关的参数类型。
+---
+
+import ComponentMp4 from "./assets/vanilla-arguments/component.mp4";
+import KeyMp4 from "./assets/vanilla-arguments/key.mp4";
+import NamedColorMp4 from "./assets/vanilla-arguments/namedcolor.mp4";
+import StyleMp4 from "./assets/vanilla-arguments/style.mp4";
+import SignedMessageMp4 from "./assets/vanilla-arguments/signedmessage.mp4";
+
+# Adventure 参数类型
+
+Paper 命令 API 提供了一些与 Adventure 组件相关的参数类型。
+
+## 组件参数类型
+
+### ComponentLike
+
+`ComponentLike` 参数类型允许解析任何 Adventure 组件。这包括原始文本、JSON 组件和 MiniMessage 格式的文本。
+
+```java
+@CommandMethod("broadcast <message>")
+public void broadcast(
+    @NotNull CommandSender sender,
+    @Argument("message") @NotNull ComponentLike message
+) {
+    Audience.audience(Bukkit.getOnlinePlayers()).sendMessage(message);
+}
+```
+
+### MiniMessage
+
+`MiniMessage` 参数类型专门用于解析 MiniMessage 格式的文本。
+
+```java
+@CommandMethod("announce <message>")
+public void announce(
+    @NotNull CommandSender sender,
+    @Argument(value = "message", parserName = "minimessage") @NotNull Component message
+) {
+    sender.sendMessage(message);
+}
+```
+
+## 示例
+
+这里有一些使用 Adventure 参数类型的完整示例：
+
+```java
+public class BroadcastCommand {
+    @CommandMethod("broadcast <message>")
+    public void broadcast(
+        @NotNull CommandSender sender,
+        @Argument("message") @NotNull ComponentLike message
+    ) {
+        // 将消息广播给所有在线玩家
+        Component component = message.asComponent();
+        Bukkit.broadcast(component);
+        
+        // 记录到控制台
+        sender.sendMessage(Component.text("已广播消息: ")
+            .append(component));
+    }
+
+    @CommandMethod("announce <message>")
+    public void announce(
+        @NotNull CommandSender sender,
+        @Argument(value = "message", parserName = "minimessage") @NotNull Component message
+    ) {
+        // 使用 MiniMessage 格式发送公告
+        Bukkit.broadcast(message);
+    }
+}
+```
+
+## 注意事项
+
+- `ComponentLike` 参数类型支持所有 Adventure 组件格式
+- 使用 `minimessage` 解析器时，参数类型应为 `Component`
+- 这些参数类型会自动处理颜色代码和格式化
+- 建议在处理富文本内容时使用这些参数类型，而不是普通的字符串
+
+---
+
+**相关链接**
+- [Adventure 文档](https://docs.adventure.kyori.net/)
+- [MiniMessage 文档](https://docs.adventure.kyori.net/minimessage.html)
+
+# Adventure 库参数类型
+这些参数类型返回 `net.kyori` 包中的类。从技术上讲，它们不是 Minecraft 或 Bukkit 原生的，但由于 Paper 包含了 Adventure 库，它们在 Paper 生态系统中被广泛使用。
+
+## Component 参数类型
+:::note
+
+这个参数类型非常技术性。它遵循 `/tellraw <player> <component>` 命令的第二个参数的格式，期望文本组件的 JSON 表示形式，这使得它不适合一般的用户输入。
+
+:::
+
+结果会作为 Adventure 组件返回以供使用。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> componentArgument() {
+    return Commands.literal("componentargument")
+        .then(Commands.argument("arg", ArgumentTypes.component())
+            .executes(ctx -> {
+                final Component component = ctx.getArgument("arg", Component.class);
+
+                ctx.getSource().getSender().sendRichMessage(
+                    "你的消息: <input>",
+                    Placeholder.component("input", component)
+                );
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={ComponentMp4}/> */}
+
+
+## Key 参数类型
+Key 参数类型允许用户输入任何人为的（命名空间的）键，并确保其有效性。这会返回一个 [`Key`](https://jd.advntr.dev/key/latest/net/kyori/adventure/key/Key.html)，可以在 Paper API 的其他各种地方使用。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> keyArgument() {
+    return Commands.literal("key")
+        .then(Commands.argument("key_input", ArgumentTypes.key())
+            .executes(ctx -> {
+                final Key key = ctx.getArgument("key_input", Key.class);
+
+                ctx.getSource().getSender().sendRichMessage("你输入了 <aqua><key></aqua>!",
+                    Placeholder.unparsed("key", key.asString())
+                );
+
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={KeyMp4}/> */}
+
+
+## Named color 参数类型
+此参数类型为用户提供了在 16 种内置"命名"文本颜色之间进行选择的能力。此参数类型返回一个 [`NamedTextColor`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/NamedTextColor.html)，你可以使用它来为组件应用颜色。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> namedColorArgument() {
+    return Commands.literal("namedcolor")
+        .then(Commands.argument("color", ArgumentTypes.namedColor())
+            .then(Commands.argument("message", StringArgumentType.greedyString())
+                .executes(ctx -> {
+                    final NamedTextColor color = ctx.getArgument("color", NamedTextColor.class);
+                    final String msg = StringArgumentType.getString(ctx, "message");
+
+                    ctx.getSource().getSender().sendMessage(
+                        Component.text(msg).color(color)
+                    );
+                    return Command.SINGLE_SUCCESS;
+                })))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={NamedColorMp4}/> */}
+
+
+## Adventure style 参数类型
+:::note
+
+与 component 参数类型类似，此参数类型不太适合一般的用户输入，因为它也遵循 JSON 格式来显示组件。大多数用户不知道如何使用该格式，因此不建议常规使用。
+
+:::
+
+Style 参数类型以 [`Style`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/Style.html) 对象的形式返回其值。这可以使用 `Component#style(Style)` 应用于任何组件。虽然 JSON 输入允许 `text` 字段，但其内容将被完全忽略。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> styleArgument() {
+    return Commands.literal("style")
+        .then(Commands.argument("style", ArgumentTypes.style())
+            .then(Commands.argument("message", StringArgumentType.greedyString())
+                .executes(ctx -> {
+                    final Style style = ctx.getArgument("style", Style.class);
+                    final String msg = StringArgumentType.getString(ctx, "message");
+
+                    ctx.getSource().getSender().sendRichMessage("你的输入: <input>",
+                        Placeholder.component("input", Component.text(message).style(style))
+                    );
+                    return Command.SINGLE_SUCCESS;
+                })))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={StyleMp4}/> */}
+
+
+## Signed message 参数类型
+Signed message 参数类型允许玩家以 **签名消息** 的形式向服务器发送参数。这种签名消息是一种特殊的类型 - 它允许服务器发送该消息，而无需直接修改它的能力，发送给任何玩家。可见的区别是未签名消息的左侧有一个白色条，而签名消息则没有。
+
+签名消息参数类型返回 `SignedMessageResolver`。为了调用它的 `#resolve` 方法，你必须传入两个参数：
+* 参数名称
+* `CommandContext<CommandSourceStack>` 对象
+
+解析后的值是一个 `CompletableFuture<SignedMessage>`，你可以使用 `thenAccept(Consumer<T>)` 处理它的 [`SignedMessage`](https://jd.advntr.dev/api/latest/net/kyori/adventure/chat/SignedMessage.html) 值。在 consumer 内部，你可以将签名消息发送给玩家或以其他方式使用它。
+
+:::warning
+
+默认情况下，传递给 `thenAccept` 的 consumer 不在主线程上执行，因此在其中使用大多数 Paper API 是不安全的。如果你需要使用 API，你可以安排一个任务在下一个可用的 tick 上运行。为此，你可以使用 <Javadoc name="org.bukkit.scheduler.BukkitScheduler#getMainThreadExecutor(org.bukkit.plugin.Plugin)">主线程执行器</Javadoc>。你可以在 [此处](../../scheduler.mdx) 阅读更多相关信息。
+
+:::
+
+:::note
+
+非玩家发送者无法发送签名消息，这意味着解析后的 `CompletableFuture` 将永远不会完成。你应该确保只有玩家可以使用你的参数，方法是在你的 `SignedArgument` 上使用 `.requires(ctx -> ctx.getSender() instanceof Player)`。如果你希望参数无论是否签名都执行，你可以为非玩家发送者添加一个回退的 greedy string 参数。
+
+:::
+
+### 用法示例
+```java title="MinecraftArguments.java"
+public static LiteralCommandNode<CommandSourceStack> signedMessageArgument() {
+    return Commands.literal("signedmessage")
+        .then(Commands.argument("target", ArgumentTypes.player())
+            .then(Commands.argument("message", ArgumentTypes.signedMessage())
+                .executes(MinecraftArguments::executeSignedMessageCommand)))
+        .build();
+}
+
+private static int executeSignedMessageCommand(final CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+    final Player target = ctx.getArgument("target", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+    final SignedMessageResolver messageResolver = ctx.getArgument("message", SignedMessageResolver.class);
+
+    messageResolver.resolveSignedMessage("message", ctx).thenAccept(msg -> {
+        target.sendMessage(msg, ChatType.CHAT.bind(ctx.getSource().getSender().name()));
+    });
+
+
+    return Command.SINGLE_SUCCESS;
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={SignedMessageMp4}/> */}

@@ -1,0 +1,117 @@
+---
+slug: /reference/configuration/bukkit-commands
+title: bukkit-commands.yml
+description: bukkit-commands.yml 配置文件的详细参考文档。
+---
+
+# Bukkit Commands Configuration
+
+import React from 'react';
+import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
+import BukkitCommandsSpec from '!!raw-loader!@site/config-specs/paper/commands.yml';
+
+:::info
+
+以下 YAML 展示了旧版 `commands.yml` 文件的结构和默认值。
+
+点击配置项可以查看该项的详细说明。
+
+:::
+
+:::warning
+
+此旧版文件定义的命令别名不支持现代功能，例如：
+- Tab 补全
+- 权限控制
+
+:::
+
+<ConfigDocBlock data={BukkitCommandsSpec}/>
+
+# bukkit-commands.yml
+
+`bukkit-commands.yml` 文件是 Bukkit API 的命令配置文件，用于配置 Bukkit 命令相关的选项，例如命令别名、命令方块白名单等。
+
+该文件位于服务器根目录下的 `bukkit.yml` 配置文件中的 `commands` 节点下。
+
+**文件路径:** `bukkit.yml`
+
+**示例:**
+
+```yaml
+commands:
+  replacecommands: # 是否替换原版命令 (默认: true)
+  log: false # 是否记录命令执行日志 (默认: false)
+  tab-complete: 0 # Tab 补全行为 (0: 默认, 1: 禁用玩家名补全, 2: 禁用所有补全, 默认: 0)
+  silent-commandblock-console: false # 命令方块控制台是否静默输出 (默认: false)
+  command-block-overrides: # 命令方块覆盖
+    - setblock
+    - summon
+    - testforblock
+    - tellraw
+  aliases: # 命令别名
+    icanhasbukkit: version
+    plugins: pl
+    version: ver
+```
+
+**配置项说明:**
+
+*   **`commands.replacecommands`**:  是否替换原版命令。
+    *   `true`:  替换原版命令。Paper 将使用 Bukkit API 提供的命令实现替换 Minecraft 原版命令。启用此项可以允许插件完全控制命令行为。
+    *   `false`: 不替换原版命令。Paper 将保留 Minecraft 原版命令，插件只能注册新的命令或修改现有命令的行为。
+    *   **默认值:** `true`
+
+*   **`commands.log`**:  是否记录命令执行日志。
+    *   `true`:  记录命令执行日志。服务器将记录所有命令的执行信息到日志文件。
+    *   `false`: 不记录命令执行日志。
+    *   **默认值:** `false`
+
+*   **`commands.tab-complete`**:  Tab 补全行为。用于控制服务器在玩家输入命令时，Tab 键自动补全的行为。
+    *   `0`:  默认行为。服务器将根据上下文提供命令和参数的 Tab 补全建议，包括玩家名、命令、参数等。
+    *   `1`:  禁用玩家名补全。服务器将禁用玩家名 Tab 补全，但仍然提供命令和参数的补全建议。
+    *   `2`:  禁用所有补全。服务器将完全禁用 Tab 补全功能。
+    *   **默认值:** `0`
+
+*   **`commands.silent-commandblock-console`**:  命令方块控制台是否静默输出。
+    *   `true`:  静默输出。命令方块控制台将不会输出命令执行结果和日志信息。
+    *   `false`:  非静默输出。命令方块控制台将正常输出命令执行结果和日志信息。
+    *   **默认值:** `false`
+
+*   **`commands.command-block-overrides`**:  命令方块覆盖。用于配置允许命令方块执行的命令列表。默认情况下，命令方块只能执行部分命令，例如 `setblock`, `summon`, `testforblock`, `tellraw`。您可以根据需要添加或删除列表中的命令，以控制命令方块可以执行的命令范围。
+
+    **示例:**
+
+    ```yaml
+    command-block-overrides:
+      - setblock
+      - summon
+      - testforblock
+      - tellraw
+      - give # 允许命令方块执行 /give 命令
+    ```
+
+*   **`commands.aliases`**:  命令别名。用于配置命令别名，允许您为命令设置更简洁或自定义的别名。
+
+    **别名格式:**  `别名: 目标命令`
+
+    **示例:**
+
+    ```yaml
+    aliases:
+      icanhasbukkit: version # 将 /icanhasbukkit 别名为 /version 命令
+      plugins: pl # 将 /plugins 别名为 /pl 命令
+      version: ver # 将 /version 别名为 /ver 命令
+    ```
+
+    配置命令别名后，玩家可以使用别名来执行目标命令。例如，配置 `plugins: pl` 后，玩家可以使用 `/pl` 命令来代替 `/plugins` 命令。
+
+**注意事项:**
+
+*   修改 `bukkit-commands.yml` 配置文件后，需要重启服务器才能使配置生效。
+*   请谨慎修改 `commands.command-block-overrides` 配置项，过度开放命令方块权限可能会导致安全风险。
+*   命令别名配置可能会与插件注册的命令冲突，请避免使用已存在的命令名称作为别名。
+
+---
+
+**希望本参考文档能够帮助您配置 `bukkit-commands.yml` 文件。祝您游戏愉快！**

@@ -1,0 +1,257 @@
+---
+slug: /dev/command-api/arguments/enums
+description: 命令 API 中枚举相关的参数类型。
+---
+
+import EntityAnchorMp4 from "./assets/vanilla-arguments/entityanchor.mp4";
+import GameModeMp4 from "./assets/vanilla-arguments/gamemode.mp4";
+import HeightMapMp4 from "./assets/vanilla-arguments/heightmap.mp4";
+import ScoreboardDisplaySlotMp4 from "./assets/vanilla-arguments/scoreboarddisplayslot.mp4";
+import TemplateMirrorMp4 from "./assets/vanilla-arguments/templatemirror.mp4";
+import TemplateRotationMp4 from "./assets/vanilla-arguments/templaterotation.mp4";
+
+# 枚举参数类型
+
+Paper 命令 API 提供了方便使用枚举类型的参数类型。
+
+## Enum 参数类型
+
+### EnumStringType
+
+`EnumStringType` 参数类型允许您直接使用 Java 枚举类型作为命令参数。
+
+```java
+public enum Color {
+    RED,
+    GREEN,
+    BLUE
+}
+
+@CommandMethod("setcolor <color>")
+public void setColor(
+    final CommandSender sender,
+    final Color color
+) {
+    sender.sendMessage(Component.text("颜色已设置为: " + color.name()));
+}
+```
+
+### EnumStringArgumentType
+
+`EnumStringArgumentType` 是 `EnumStringType` 的底层实现，如果您需要更精细的控制，可以直接使用它。
+
+```java
+@CommandMethod("setmode <mode>")
+public void setMode(
+    final CommandSender sender,
+    @Argument(value = "mode", parser = EnumStringArgumentType.class, enumType = GameMode.class) final GameMode mode
+) {
+    sender.sendMessage(Component.text("游戏模式已设置为: " + mode.name()));
+}
+```
+
+## 用法示例
+
+以下是一些使用枚举参数类型的完整示例：
+
+```java
+public class EnumCommands {
+
+    public enum Color {
+        RED,
+        GREEN,
+        BLUE
+    }
+
+    @CommandMethod("setcolor <color>")
+    public void setColor(
+        final CommandSender sender,
+        final Color color
+    ) {
+        sender.sendMessage(Component.text("颜色已设置为: " + color.name()));
+    }
+
+    public enum Mode {
+        NORMAL,
+        DEBUG,
+        ADMIN
+    }
+
+    @CommandMethod("setmode <mode>")
+    public void setMode(
+        final CommandSender sender,
+        final Mode mode
+    ) {
+        sender.sendMessage(Component.text("模式已设置为: " + mode.name()));
+    }
+
+    @CommandMethod("setgamemode <gamemode>")
+    public void setGameMode(
+        final CommandSender sender,
+        @Argument(value = "gamemode", parser = EnumStringArgumentType.class, enumType = GameMode.class) final GameMode gamemode
+    ) {
+        sender.sendMessage(Component.text("游戏模式已设置为: " + gamemode.name()));
+    }
+}
+```
+
+## 注意事项
+
+- `EnumStringType` 和 `EnumStringArgumentType` 都会自动将输入的字符串转换为枚举值，并处理无效的输入。
+- 使用 `@Argument` 注解和 `EnumStringArgumentType` 可以更灵活地指定参数名称和枚举类型。
+- 枚举参数类型可以提高命令的可读性和易用性，避免使用魔法字符串。
+
+---
+
+**相关链接**
+- [Paper 命令 API 文档](../../)
+- [Java 枚举类型](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html)
+
+# 枚举值参数
+
+## 实体锚点参数
+实体锚点参数有两个有效输入：`feet` 和 `eyes`。生成的 <Javadoc name='io.papermc.paper.entity.LookAnchor'>`LookAnchor`</Javadoc> 主要用于诸如 <Javadoc name='org.bukkit.entity.Entity#lookAt(io.papermc.paper.math.Position,io.papermc.paper.entity.LookAnchor)'>`Entity#lookAt(Position, LookAnchor)`</Javadoc> 或  <Javadoc name='org.bukkit.entity.Player#lookAt(org.bukkit.entity.Entity,io.papermc.paper.entity.LookAnchor,io.papermc.paper.entity.LookAnchor)'>`Player#lookAt(Entity, LookAnchor, LookAnchor)`</Javadoc> 之类的方法。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> entityAnchorArgument() {
+    return Commands.literal("entityanchor")
+        .then(Commands.argument("arg", ArgumentTypes.entityAnchor())
+            .executes(ctx -> {
+                final LookAnchor lookAnchor = ctx.getArgument("arg", LookAnchor.class);
+
+                ctx.getSource().getSender().sendRichMessage("你选择了 <aqua><anchor></aqua>!",
+                    Placeholder.unparsed("anchor", lookAnchor.name())
+                );
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={EntityAnchorMp4}/> */}
+
+
+## GameMode 参数
+GameMode 参数的工作方式与原版 `/gamemode <gamemode>` 命令的第一个参数相同。它接受 4 种有效的游戏模式中的任何一种，返回一个 <Javadoc name='org.bukkit.GameMode'>`GameMode`</Javadoc> 枚举以在代码中使用。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> gameModeArgument() {
+    return Commands.literal("gamemodearg")
+        .then(Commands.argument("arg", ArgumentTypes.gameMode())
+            .executes(ctx -> {
+                final GameMode gamemode = ctx.getArgument("arg", GameMode.class);
+
+                if (ctx.getSource().getExecutor() instanceof Player player) {
+                    player.setGameMode(gamemode);
+                    player.sendRichMessage("你的游戏模式已设置为 <red><gamemode></red>!",
+                        Placeholder.component("gamemode", Component.translatable(gamemode))
+                    );
+                    return Command.SINGLE_SUCCESS;
+                }
+
+                ctx.getSource().getSender().sendPlainMessage("此命令需要玩家执行!");
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={GameModeMp4}/> */}
+
+
+## HeightMap 参数
+<Javadoc name='org.bukkit.HeightMap'>`HeightMap`</Javadoc> 参数由以下有效输入组成：`motion_blocking`、`motion_blocking_no_leaves`、`ocean_floor` 和 `world_surface`。它通常用于为数据包或 `/execute positioned over <height_map>` 命令声明相对定位。例如，`world_surface` 将意味着应使用世界上表面在设定的 X/Z 值上的 Y 坐标。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> heightMapArgument() {
+    return Commands.literal("heightmap")
+        .then(Commands.argument("arg", ArgumentTypes.heightMap())
+            .executes(ctx -> {
+                final HeightMap heightMap = ctx.getArgument("arg", HeightMap.class);
+
+                ctx.getSource().getSender().sendRichMessage("你选择了 <gold><selection></gold>",
+                    Placeholder.unparsed("selection", heightMap.name())
+                );
+
+                return Command.SINGLE_SUCCESS;
+            }))
+        .build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={HeightMapMp4}/> */}
+
+
+## Scoreboard display slot 参数
+此参数允许您从用户那里检索 <Javadoc name='org.bukkit.scoreboard.DisplaySlot'>`DisplaySlot`</Javadoc> 枚举值。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> scoreboardDisplaySlotArgument() {
+    return Commands.literal("scoreboarddisplayslot")
+        .then(Commands.argument("slot", ArgumentTypes.scoreboardDisplaySlot())
+            .executes(ctx -> {
+                final DisplaySlot slot = ctx.getArgument("slot", DisplaySlot.class);
+
+                ctx.getSource().getSender().sendPlainMessage("你选择了: " + slot.getId());
+
+                return Command.SINGLE_SUCCESS;
+            })
+        ).build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={ScoreboardDisplaySlotMp4}/> */}
+
+
+## Template mirror 参数
+在这里，用户有 3 种有效的输入可能性：`front_back`、`left_right` 和 `none`。你可以将参数的结果检索为 <Javadoc name='org.bukkit.block.structure.Mirror'>`Mirror`</Javadoc> 枚举值。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> templateMirrorArgument() {
+    return Commands.literal("templatemirror")
+        .then(Commands.argument("mirror", ArgumentTypes.templateMirror())
+            .executes(ctx -> {
+                final Mirror mirror = ctx.getArgument("mirror", Mirror.class);
+
+                ctx.getSource().getSender().sendPlainMessage("你选择了: " + mirror.name());
+
+                return Command.SINGLE_SUCCESS;
+            })
+        ).build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={TemplateMirrorMp4}/> */}
+
+
+## Template rotation 参数
+对于模板旋转参数，用户有 4 种有效的输入可能性：`180`、`clockwise_90`、`counterclockwise_90` 和 `none`。你可以将参数的结果检索为 <Javadoc name='org.bukkit.block.structure.StructureRotation'>`StructureRotation`</Javadoc> 枚举值。
+
+### 用法示例
+```java
+public static LiteralCommandNode<CommandSourceStack> templateRotationArgument() {
+    return Commands.literal("templaterotation")
+        .then(Commands.argument("rotation", ArgumentTypes.templateRotation())
+            .executes(ctx -> {
+                final StructureRotation rotation = ctx.getArgument("rotation", StructureRotation.class);
+
+                ctx.getSource().getSender().sendPlainMessage("你选择了: " + rotation.name());
+
+                return Command.SINGLE_SUCCESS;
+            })
+        ).build();
+}
+```
+
+### 游戏内预览
+{/* <FullWidthVideo src={TemplateRotationMp4}/> */}

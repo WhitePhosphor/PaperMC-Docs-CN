@@ -1,0 +1,162 @@
+---
+slug: /reference/configuration/global
+title: paper-global.yml
+description: paper-global.yml 配置文件的详细参考文档。
+---
+
+# Global Configuration
+
+import React from 'react';
+import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
+import GlobalConfigSpec from '!!raw-loader!@site/config-specs/paper/paper-global.yml';
+
+:::info
+
+以下 YAML 展示了全局配置文件 (`config/paper-global.yml`) 的结构和默认值。
+
+点击配置项可以查看该项的详细说明。
+
+:::
+
+`paper-global.yml` 文件是 Paper 服务器的全局配置文件，包含了 Paper 独有的更底层的全局配置选项，通常用于高级配置和性能优化。
+
+**请注意：**  `paper-global.yml` 文件中的配置项通常不需要修改，除非您对 Paper 的内部机制有深入了解，并清楚知道修改这些配置项的后果。不当的配置可能会导致服务器运行不稳定或出现严重问题。
+
+该文件位于服务器根目录下的 `config` 文件夹中。
+
+**文件路径:** `config/paper-global.yml`
+
+**示例:**
+
+```yaml
+# Paper Global Configuration
+
+misc: # 其他杂项设置
+  flush-chunks-on-player-logout: true # 玩家登出时是否强制保存区块 (默认: true)
+  fix-climbing-bypasses-for-non-player: true # 修复非玩家实体 (例如投掷物) 绕过攀爬检测的 Bug (默认: true)
+  max-auto-save-chunks-per-tick: 64 # 每 Tick 自动保存的最大区块数量 (默认: 64)
+  max-player-auto-save-per-tick: 64 # 每 Tick 每个玩家自动保存的最大区块数量 (默认: 64)
+  region-file-cache-size: 256 # 区域文件缓存大小 (MB, 默认: 256)
+  remove-invalid-tab-completions: false # 是否移除无效的 Tab 补全项 (默认: false)
+  track-entity-chunk-loads: false # 是否追踪实体导致的区块加载 (用于调试, 默认: false)
+  use-alternative-luck-formula: false # 是否使用备用幸运值计算公式 (默认: false)
+  async-io-executor: # 异步 IO 执行器设置
+    thread-count: 4 # 异步 IO 线程数 (默认: 4)
+    task-queue-size: 512 # 异步 IO 任务队列大小 (默认: 512)
+  autosave-executor: # 自动保存执行器设置
+    scheduling-mode: AREA # 自动保存调度模式 (AREA: 区域, WORLD: 世界, 默认: AREA)
+    thread-count: 2 # 自动保存线程数 (默认: 2)
+    task-queue-size: 128 # 自动保存任务队列大小 (默认: 128)
+  chunk-loading: # 区块加载设置
+    async-player-chunk-load: true # 是否异步加载玩家附近的区块 (默认: true)
+    auto-tick-throttling: true # 是否自动节流区块 Tick (默认: true)
+    max-concurrent-票证ed-chunk-loads: 5.0 # 最大并发票证区块加载数 (每个世界, 默认: 5.0)
+    max-entity-per-chunk-load: 8 # 每个区块加载的最大实体数量 (默认: 8)
+    min-radius: 3 # 最小加载半径 (区块, 默认: 3)
+    target-chunk-loads-per-tick: 8 # 每 Tick 目标区块加载数 (默认: 8)
+  chunk-system: # 区块系统设置
+    max-concurrent-票证ed- chunk-generation: 8.0 # 最大并发票证区块生成数 (每个世界, 默认: 8.0)
+    max-concurrent-chunk-generation: 4.0 # 最大并发区块生成数 (每个世界, 默认: 4.0)
+    threads-per-region-loader: 2 # 每个区域加载器的线程数 (默认: 2)
+    use-vanilla-world-gen: false # 是否使用原版世界生成器 (默认: false)
+  entity-activation-range: # 实体激活范围 (性能优化)
+    animal-activation-range: 32 # 动物激活范围 (区块, 默认: 32)
+    monster-activation-range: 48 # 怪物激活范围 (区块, 默认: 48)
+    raider-activation-range: 48 # 袭击者激活范围 (区块, 默认: 48)
+    water-animal-activation-range: 32 # 水生动物激活范围 (区块, 默认: 32)
+    misc-activation-range: 16 # 杂项实体激活范围 (区块, 默认: 16)
+    tick-inactive-villagers: true # 是否 Tick 非激活村民 (默认: true)
+    ignore-spectators: false # 是否忽略旁观者模式玩家 (默认: false)
+    creature-spawning-range: 128 # 生物自然生成范围 (区块, 默认: 128)
+  entity-limit-per-chunk: # 每个区块实体数量限制 (防止实体堆积)
+    经验_orb: 16 # 经验球实体数量限制 (默认: 16)
+    item_entity: 32 # 掉落物实体数量限制 (默认: 32)
+  falling-block-settings: # 掉落方块实体设置
+    cache- падающий-blocks: true # 是否缓存掉落方块实体 (优化性能, 默认: true)
+    entries-before-purge: 1000 # 清理缓存前的最大缓存实体数量 (默认: 1000)
+  player-auto-save-rate: 3000 # 玩家数据自动保存频率 (Tick, 默认: 3000)
+  player-chunk- টিকিট-mechanism: # 玩家区块票证机制
+    max-player-票证ed-chunks: 900 # 每个玩家最大票证区块数量 (默认: 900)
+    player-票证-range: 5 # 玩家票证范围 (区块, 默认: 5)
+  player-settings: # 玩家设置
+    default-max-player-view-distance: -1 # 默认最大玩家视距 (-1: 服务器视距, 默认: -1)
+    enable-player-hopping: true # 是否启用玩家跳跃优化 (减少网络数据, 默认: true)
+    flush-骯dirty-player-files: true # 是否强制保存脏玩家数据文件 (默认: true)
+    log-player-commands: true # 是否记录玩家命令 (默认: true)
+    快的-warm-up: false # 是否快速预热玩家数据 (优化玩家加入速度, 默认: false)
+    remove-invalid-player- 书s: true # 是否移除无效的玩家书 (防止恶意书, 默认: true)
+    report-incorrect-block-placements: false # 是否报告不正确的方块放置 (用于调试, 默认: false)
+    resend- 书k-on-next-tick: false # 是否在下个 Tick 重新发送书本 (修复客户端 Bug, 默认: false)
+    save-player-data: true # 是否保存玩家数据 (默认: true)
+    send- এক্সট্রা-set- লিমিট-info: false # 是否发送额外的设置限制信息 (用于调试, 默认: false)
+    use-faster-resource-pack- ডাউনলোড: false # 是否使用更快的资源包下载 (默认: false)
+  region-locking: # 区域锁定设置 (多线程优化)
+    region-concurrent-limit: 8 # 每个区域最大并发操作数 (默认: 8)
+    region-lock-acquire-ms-timeout: 1000 # 区域锁获取超时时间 (毫秒, 默认: 1000)
+    region-lock-超时-ms: 500 # 区域锁超时时间 (毫秒, 默认: 500)
+  scheduler: # 调度器设置 (多线程优化)
+    max- задания-per-tick: 1000 # 每 Tick 最大任务数 (默认: 1000)
+    min- задание-sleep-ms: 50 # 最小任务休眠时间 (毫秒, 默认: 50)
+  unsupported-settings: # 不支持的设置 (原版配置项, Paper 不支持)
+    allow-piston-dupe: false # 是否允许活塞复制 Bug (Paper 默认修复, 默认: false)
+    allow-permanent-block-break-exploits: false # 是否允许永久方块破坏漏洞 (Paper 默认修复, 默认: false)
+    disable-teleportation-suffocation-check: false # 是否禁用传送窒息检查 (Paper 默认启用, 默认: false)
+    叙ন্ত্রণ-chunk-loads: false # 是否限制区块加载 (Paper 默认不限制, 默认: false)
+    use-async-lighting: true # 是否使用异步光照计算 (Paper 默认异步, 默认: true)
+  world-settings: # 世界设置 (每个世界单独配置)
+    default: # 默认世界设置 (适用于所有世界)
+      auto-save-interval: 6000 # 自动保存间隔 (Tick, 默认: 6000)
+      baby-zombie-movement-modifier: 0.5 # 幼年僵尸移动速度修正 (默认: 0.5)
+      disable-ice-and-snow: false # 是否禁用冰和雪融化 (默认: false)
+      duplicate-uuid-resolver: 安全_stop_server # 重复 UUID 冲突解决策略 (safe_stop_server: 安全停止服务器, warn_server_log: 警告服务器日志, 默认: safe_stop_server)
+      enable-treasure-maps: true # 是否启用藏宝图 (默认: true)
+      entity-broadcast-range-percentage: 100 # 实体广播范围百分比 (默认: 100)
+      falling-blocks-collide-with-creators: false # 掉落方块是否与创造者碰撞 (默认: false)
+      fix-cannons: false # 是否修复大炮 (投掷物穿透多个方块的 Bug, 默认: false)
+      fix-entity-position-desync: true # 是否修复实体位置不同步 (客户端和服务端实体位置不一致, 默认: true)
+      optimize-explosions: false # 是否优化爆炸 (默认: false)
+      prevent-tnt-duping: true # 是否防止 TNT 复制 Bug (默认: true)
+      remove-corrupt-tile-entities: false # 是否移除损坏的方块实体 (默认: false)
+      tnt-entity-height-offset: 0.0 # TNT 实体高度偏移 (默认: 0.0)
+      verbose: false # 是否启用详细日志输出 (默认: false)
+      view-distance: default # 世界视距 (default: 服务器视距, 默认: default)
+      despawn-ranges: # 实体自然消失范围 (区块)
+        monster: soft:32, hard:128 # 怪物自然消失范围 (软范围: 32, 硬范围: 128, 默认: soft:32, hard:128)
+        creature: soft:32, hard:128 # 动物自然消失范围 (软范围: 32, 硬范围: 128, 默认: soft:32, hard:128)
+        ambient: soft:32, hard:128 # 环境生物自然消失范围 (软范围: 32, 硬范围: 128, 默认: soft:32, hard:128)
+        water-animal: soft:32, hard:128 # 水生动物自然消失范围 (软范围: 32, 硬范围: 128, 默认: soft:32, hard:128)
+        misc: soft:16, hard:128 # 杂项实体自然消失范围 (软范围: 16, 硬范围: 128, 默认: soft:16, hard:128)
+      hopper: # 料斗设置
+        cooldown-when-full: false # 料斗满时是否冷却 (默认: false)
+        push-based: false # 是否使用推送式料斗 (默认: false)
+      mob-spawner-tick-rate: 1 # 刷怪笼 Tick 速率 (默认: 1)
+      merge-radius: # 实体合并半径
+        exp-orb: 3.0 # 经验球合并半径 (默认: 3.0)
+        item: 2.5 # 掉落物合并半径 (默认: 2.5)
+      growth: # 生长速度
+        cactus-modifier: 100 # 仙人掌生长速度修正 (%)
+        cane-modifier: 100 # 甘蔗生长速度修正 (%)
+        melon-modifier: 100 # 西瓜生长速度修正 (%)
+        mushroom-modifier: 100 # 蘑菇生长速度修正 (%)
+        pumpkin-modifier: 100 # 南瓜生长速度修正 (%)
+        sapling-modifier: 100 # 树苗生长速度修正 (%)
+        beetroot-modifier: 100 # 甜菜根生长速度修正 (%)
+        carrot-modifier: 100 # 胡萝卜生长速度修正 (%)
+        potato-modifier: 100 # 马铃薯生长速度修正 (%)
+        wheat-modifier: 100 # 小麦生长速度修正 (%)
+        wart-modifier: 100 # 地狱疣生长速度修正 (%)
+        vine-modifier: 100 # 藤蔓生长速度修正 (%)
+        cocoa-modifier: 100 # 可可豆生长速度修正 (%)
+        bamboo-modifier: 100 # 竹子生长速度修正 (%)
+        kelp-modifier: 100 # 海带生长速度修正 (%)
+        sweet-berry-modifier: 100 # 甜浆果生长速度修正 (%)
+        cave-vines-modifier: 100 # 洞穴藤蔓生长速度修正 (%)
+        glow-berry-modifier: 100 # 发光浆果生长速度修正 (%)
+        sea-pickle-modifier: 100 # 海泡菜生长速度修正 (%)
+        turtle-egg-modifier: 100 # 海龟蛋孵化速度修正 (%)
+        coral-modifier: 100 # 珊瑚生长速度修正 (%)
+        kelp-plant-modifier: 100 # 海带植物生长速度修正 (%)
+        twisting-vines-modifier: 100 # 缠绕藤蔓生长速度修正 (%)
+        weeping-vines-modifier: 100 # 哭泣藤蔓生长速度修正 (%)
+
+<ConfigDocBlock data={GlobalConfigSpec}/>

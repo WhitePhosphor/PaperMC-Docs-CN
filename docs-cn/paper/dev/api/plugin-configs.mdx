@@ -1,19 +1,19 @@
 ---
 slug: /dev/plugin-configurations
-description: How to create configuration files for your plugins to customize behavior.
+description: 如何为你的插件创建配置文件以自定义行为。
 ---
 
-# Plugin Configurations
+# 插件配置
 
-Configuration files allow users to change certain behavior and functionality of plugins. This guide will outline how to use them.
+配置文件允许用户更改插件的某些行为和功能。本指南将概述如何使用它们。
 
-## Format
+## 格式
 
-By default, plugins use a YAML configuration format (`.yml` file). Other formats, such as JSON or TOML, can be used;
-however, these are not natively supported by Paper, so they will not be covered in this guide.
+默认情况下，插件使用 YAML 配置格式（`.yml` 文件）。其他格式，如 JSON 或 TOML，也可以使用；
+但是，这些不是 Paper 原生支持的，所以本指南不会涉及这些内容。
 
-YAML works by having a tree-like `key: value` pair structure, as you would have seen in your [`plugin.yml`](../getting-started/plugin-yml.mdx).
-An example would look like this:
+YAML 通过树状的 `key: value` 键值对结构工作，就像你在 [`plugin.yml`](../getting-started/plugin-yml.mdx) 中看到的那样。
+一个例子看起来像这样：
 
 ```yaml
 root:
@@ -21,12 +21,12 @@ root:
   another-key: David
 ```
 
-When accessing indented values, you separate the levels with dots (`.`). For example, the key for the `David` string would be `root.another-key`.
+当访问缩进的值时，你用点（`.`）分隔各个层级。例如，`David` 字符串的键是 `root.another-key`。
 
-## Creating a `config.yml`
+## 创建 `config.yml`
 
-By placing a `config.yml` file inside your plugin, you can specify the default values for certain settings.
-This will be located in the `resources` directory:
+通过在你的插件中放置一个 `config.yml` 文件，你可以为某些设置指定默认值。
+这将位于 `resources` 目录中：
 ```
 example-plugin
 └── src
@@ -37,8 +37,8 @@ example-plugin
             └── plugin.yml
 ```
 
-When your plugin is initialized, you must save this resource into the plugin's data directory, so that a user can edit the values.
-Here is an example of how you would do this in your plugin's `onEnable`:
+当你的插件初始化时，你必须将此资源保存到插件的数据目录中，这样用户就可以编辑这些值。
+下面是你在插件的 `onEnable` 中如何做到这一点的示例：
 
 ```java title="TestPlugin.java"
 public class TestPlugin extends JavaPlugin {
@@ -47,9 +47,9 @@ public class TestPlugin extends JavaPlugin {
     public void onEnable() {
         saveResource("config.yml", /* replace */ false);
 
-        // You can also use this for configuration files:
+        // 你也可以使用这个来处理配置文件：
         saveDefaultConfig();
-        // Where the default config.yml will be saved if it does not already exist
+        // 如果默认的 config.yml 不存在，它将被保存
 
         // getConfig()...
     }
@@ -58,31 +58,30 @@ public class TestPlugin extends JavaPlugin {
 
 :::info
 
-The boolean `replace` parameter specifies whether it should replace an existing file if one exists.
-If set to true, the configuration will be overwritten on every call.
+布尔参数 `replace` 指定如果文件已经存在，是否应该替换它。
+如果设置为 true，配置将在每次调用时被覆盖。
 
 :::
 
-## Getting and setting data
+## 获取和设置数据
 
-The <Javadoc name={"org.bukkit.configuration.file.FileConfiguration"}>`FileConfiguration`</Javadoc> of the plugin can be fetched with
-<Javadoc name={"org.bukkit.plugin.java.JavaPlugin#getConfig()"}>`JavaPlugin#getConfig()`</Javadoc> once it has been saved.
-This will allow data to be fetched and set with the respective `#get...(key)` and
-<Javadoc name={"org.bukkit.configuration.ConfigurationSection#set(java.lang.String,java.lang.Object)"}>`#set(key, value)`</Javadoc>.
-By default, most basic data types are supported by YAML. These can be fetched simply with
-<Javadoc name={"org.bukkit.configuration.ConfigurationSection#getString(java.lang.String)"}>`#getString(key)`</Javadoc> or
-<Javadoc name={"org.bukkit.configuration.ConfigurationSection#getBoolean(java.lang.String)"}>`#getBoolean(key)`</Javadoc>.
+一旦配置文件被保存，可以通过 <Javadoc name={"org.bukkit.plugin.java.JavaPlugin#getConfig()"}>`JavaPlugin#getConfig()`</Javadoc> 
+获取插件的 <Javadoc name={"org.bukkit.configuration.file.FileConfiguration"}>`FileConfiguration`</Javadoc>。
+这将允许通过相应的 `#get...(key)` 和 <Javadoc name={"org.bukkit.configuration.ConfigurationSection#set(java.lang.String,java.lang.Object)"}>`#set(key, value)`</Javadoc> 
+来获取和设置数据。默认情况下，YAML 支持大多数基本数据类型。这些可以通过 
+<Javadoc name={"org.bukkit.configuration.ConfigurationSection#getString(java.lang.String)"}>`#getString(key)`</Javadoc> 或
+<Javadoc name={"org.bukkit.configuration.ConfigurationSection#getBoolean(java.lang.String)"}>`#getBoolean(key)`</Javadoc> 简单地获取。
 
-However, some more complex Bukkit data types are also supported. A few of these include
-<Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>,
-<Javadoc name={"org.bukkit.Location"}>`Location`</Javadoc> and <Javadoc name={"org.bukkit.util.Vector"}>`Vector`</Javadoc>s.
-Here is an example of loading a value from the config for teleporting a player:
+然而，一些更复杂的 Bukkit 数据类型也受支持。其中包括
+<Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>、
+<Javadoc name={"org.bukkit.Location"}>`Location`</Javadoc> 和 <Javadoc name={"org.bukkit.util.Vector"}>`Vector`</Javadoc>。
+这里是一个从配置中加载值以传送玩家的示例：
 
-:::info[Saving Configs]
+:::info[保存配置]
 
-Whenever setting data in configurations, you must call
+每当在配置中设置数据时，你必须调用
 <Javadoc name={"org.bukkit.configuration.file.FileConfiguration#save(java.io.File)"}>`FileConfiguration#save(File/String)`</Javadoc>
-for the changes to be persisted to disk.
+才能将更改持久化到磁盘。
 
 :::
 
@@ -96,8 +95,8 @@ public class TestPlugin extends JavaPlugin {
 }
 ```
 
-This is possible as they implement <Javadoc name={"org.bukkit.configuration.serialization.ConfigurationSerializable"}>`ConfigurationSerializable`</Javadoc>.
-You can use this yourself, by implementing and registering a custom class.
+这是可能的，因为它们实现了 <Javadoc name={"org.bukkit.configuration.serialization.ConfigurationSerializable"}>`ConfigurationSerializable`</Javadoc>。
+你可以通过实现和注册自定义类来自己使用这个。
 
 ```java title="TeleportOptions.java"
 public class TeleportOptions implements ConfigurationSerializable {
@@ -107,7 +106,7 @@ public class TeleportOptions implements ConfigurationSerializable {
     private String name;
 
     public TeleportOptions(int chunkX, int chunkZ, String name) {
-        // Set the values
+        // 设置值
     }
 
     public Map<String, Object> serialize() {
@@ -130,41 +129,41 @@ public class TeleportOptions implements ConfigurationSerializable {
 }
 ```
 
-Here we can see that we have an instance-based `serialize` method, which returns a map, and then a static `deserialize`
-method that takes a <Javadoc name={"java.util.Map"} project={"java"}>`Map`</Javadoc> as a parameter and returns an instance
-of the `TeleportOptions` class. Finally, for this to work, we must call:
+这里我们可以看到，我们有一个基于实例的 `serialize` 方法，它返回一个映射，然后有一个静态的 `deserialize`
+方法，它接受一个 <Javadoc name={"java.util.Map"} project={"java"}>`Map`</Javadoc> 作为参数并返回一个
+`TeleportOptions` 类的实例。最后，为了让这个工作，我们必须调用：
 `ConfigurationSerialization.registerClass(TeleportOptions.class)`
 
 :::warning
 
-If you do not call <Javadoc name={"org.bukkit.configuration.serialization.ConfigurationSerialization#registerClass(java.lang.Class)"}>`ConfigurationSerialization#registerClass(Class)`</Javadoc>
-with Paper plugins, you will not be able to load nor save your custom classes.
+如果你不对 Paper 插件调用 <Javadoc name={"org.bukkit.configuration.serialization.ConfigurationSerialization#registerClass(java.lang.Class)"}>`ConfigurationSerialization#registerClass(Class)`</Javadoc>，
+你将无法加载或保存你的自定义类。
 
 :::
 
-## Custom configuration files
+## 自定义配置文件
 
-It is highly likely that you will have many different things to configure in your plugin. If you choose to split these
-across multiple different files, you can still use the Bukkit `FileConfiguration` API to read the data from these.
-It is as simple as:
+你的插件很可能有许多不同的东西需要配置。如果你选择将这些分散到多个不同的文件中，
+你仍然可以使用 Bukkit `FileConfiguration` API 来读取这些数据。
+这很简单：
 
 ```java
 File file = new File(plugin.getDataFolder(), "items.yml");
 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-// Work with config here
+// 在这里处理配置
 config.save(file);
 ```
 
-This example reads the `items.yml` file from your plugin's data directory. This file must exist, else an error will be thrown.
+这个例子从你的插件的数据目录读取 `items.yml` 文件。这个文件必须存在，否则会抛出错误。
 
-:::danger[Blocking I/O]
+:::danger[阻塞 I/O]
 
-Loading and saving files on the main thread will slow your server. `load` and `save` operations should be executed asynchronously.
+在主线程上加载和保存文件会降低服务器速度。`load` 和 `save` 操作应该异步执行。
 
 :::
 
 ## Configurate
 
-Configurate is a third-party library for working with configurations, maintained by the Sponge project. This project is
-used internally by Paper for its configuration and offers many features that the `FileConfiguration` API doesn't have. See their project
-[here](https://github.com/SpongePowered/Configurate) for more information.
+Configurate 是一个由 Sponge 项目维护的用于处理配置的第三方库。该项目被 Paper 内部用于其配置，
+并提供了许多 `FileConfiguration` API 没有的功能。更多信息请参见他们的项目
+[这里](https://github.com/SpongePowered/Configurate)。

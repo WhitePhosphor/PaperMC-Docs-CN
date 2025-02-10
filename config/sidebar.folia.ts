@@ -5,7 +5,7 @@ const folia: SidebarsConfig = {
     "README",
     {
       type: "category",
-      label: "Administration",
+      label: "管理",
       collapsed: true,
       link: {
         type: "doc",
@@ -14,7 +14,7 @@ const folia: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Getting Started",
+          label: "入门",
           link: {
             type: "generated-index",
             slug: "/cat/admin/getting-started",
@@ -23,7 +23,7 @@ const folia: SidebarsConfig = {
             "admin/reference/faq",
             {
               type: "category",
-              label: "Reference",
+              label: "参考",
               collapsed: true,
               link: {
                 type: "generated-index",
@@ -37,7 +37,7 @@ const folia: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Development",
+      label: "开发",
       collapsed: true,
       link: {
         type: "doc",

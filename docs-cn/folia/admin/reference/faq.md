@@ -1,72 +1,66 @@
 ---
 slug: /faq
-title: FAQ
-description: Questions frequently asked by our community, answered by us!
+title: 常见问题
+description: 由我们回答社区经常提出的问题！
 ---
 
-# FAQ
+# 常见问题
 
-## What server types can benefit from Folia?
-Server types that naturally spread players out,
-like skyblock or SMP, will benefit the most from Folia. The server
-should have a sizeable player count, too.
+## 哪些类型的服务器可以从 Folia 中受益？
+那些玩家自然分散的服务器类型，比如空岛或生存服务器，将从 Folia 中获得最大收益。
+同时，服务器也应该有相当数量的玩家。
 
-## What hardware will Folia run best on?
-Ideally, at least 16 _cores_ (not threads).
+## Folia 在什么样的硬件上运行最好？
+理想情况下，至少需要 16 个物理核心（不是线程）。
 
-## How to best configure Folia?
-First, it is recommended that the world is pre-generated so that the number
-of chunk system worker threads required is reduced greatly.
+## 如何最好地配置 Folia？
+首先，建议预生成世界，这样可以大大减少所需的区块系统工作线程数量。
 
-The following is a _very rough_ estimation based off of the testing
-done before Folia was released on the test server we ran that
-had ~330 players peak. So, it is not exact and will require further tuning -
-just take it as a starting point.
+以下是基于 Folia 发布前在测试服务器上进行的测试的一个**非常粗略**的估算，
+该测试服务器峰值约有 330 名玩家。因此，这并不是精确的配置，需要进一步调整 - 
+仅将其作为一个起点。
 
-The total number of cores on the machine available should be
-taken into account. Then, allocate threads for:
-- netty IO: ~4 per 200-300 players
-- chunk system io threads: ~3 per 200-300 players
-- chunk system workers if pre-generated, ~2 per 200-300 players
-- There is no best guess for chunk system workers if not pre-generated, as
-  on the test server we ran we gave 16 threads but chunk generation was still
-  slow at ~300 players.
-- GC Settings: ???? But, GC settings _do_ allocate concurrent threads, and you need
-  to know exactly how many. This is typically through the `-XX:ConcGCThreads=n` flag. Do not
-  confuse this flag with `-XX:ParallelGCThreads=n`, as parallel GC threads only run when
-  the application is paused by GC and as such should not be taken into account.
+应该考虑机器上可用的总核心数。然后，为以下方面分配线程：
+- netty IO：每 200-300 名玩家约 4 个线程
+- 区块系统 IO 线程：每 200-300 名玩家约 3 个线程
+- 如果预生成了世界，区块系统工作线程：每 200-300 名玩家约 2 个线程
+- 如果没有预生成世界，区块系统工作线程没有最佳估计值，因为
+  在我们运行的测试服务器上，我们分配了 16 个线程，但在约 300 名玩家时区块生成仍然很慢。
+- GC 设置：???? 但是，GC 设置确实会分配并发线程，你需要
+  确切知道有多少。这通常通过 `-XX:ConcGCThreads=n` 标志设置。不要
+  将此标志与 `-XX:ParallelGCThreads=n` 混淆，因为并行 GC 线程仅在
+  应用程序被 GC 暂停时运行，因此不应考虑在内。
 
-After all of that allocation, the remaining cores on the system until 80%
-allocation (total threads allocated < 80% of cpus available) can be
-allocated to tickthreads (under global config, `threaded-regions.threads`).
+在所有这些分配之后，系统上剩余的核心数直到 80% 的分配
+（分配的总线程数 < 可用 CPU 的 80%）可以分配给
+tick 线程（在全局配置中的 `threaded-regions.threads`）。
 
-The reason you should not allocate more than 80% of the cores is due to the
-fact that plugins or even the server may make use of additional threads
-that you cannot configure or even predict.
+你不应该分配超过 80% 的核心的原因是因为
+插件甚至服务器可能会使用你无法配置甚至无法预测的额外线程。
 
-Additionally, the above is all a rough guess based on player count, but
-it is very likely that the thread allocation will not be ideal, and you
-will need to tune it based on usage of the threads that you end up seeing.
+此外，以上都是基于玩家数量的粗略估计，但
+很可能线程分配并不理想，你需要根据最终看到的
+线程使用情况进行调整。
 
-## What commands does Folia disable?
-Folia currently disables a handful of commands. These are them:
-- Bossbar commands
-- Clone commands
-- Data commands
-- Datapack
-- Debug
-- Function
-- Item commands
-- Loot
-- Reload
-- Ride
-- Schedule
-- Scoreboard
-- Tag
-- Team
-- TeamMsg
-- Trigger
-- WorldBorder
-- Perf
-- SaveAll
-- Restart
+## Folia 禁用了哪些命令？
+Folia 目前禁用了一些命令。这些是：
+- Bossbar（Boss 栏）命令
+- Clone（克隆）命令
+- Data（数据）命令
+- Datapack（数据包）
+- Debug（调试）
+- Function（函数）
+- Item（物品）命令
+- Loot（战利品）
+- Reload（重载）
+- Ride（骑乘）
+- Schedule（计划）
+- Scoreboard（计分板）
+- Tag（标签）
+- Team（队伍）
+- TeamMsg（队伍消息）
+- Trigger（触发器）
+- WorldBorder（世界边界）
+- Perf（性能）
+- SaveAll（保存全部）
+- Restart（重启）

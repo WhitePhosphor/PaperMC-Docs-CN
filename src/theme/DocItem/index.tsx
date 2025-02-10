@@ -11,7 +11,7 @@ function EOLMessage(message: string): JSX.Element {
   return (
     <div className={"eol-message"}>
       <p>
-        <strong>This project has reached end of life and is no longer maintained.</strong>
+        <strong>此项目已停止维护，不再提供支持。</strong>
       </p>
       <ReactMarkdown className={style.reactMarkDown}>{"**" + message + "**"}</ReactMarkdown>
     </div>

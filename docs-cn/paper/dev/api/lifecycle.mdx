@@ -1,26 +1,24 @@
 ---
 slug: /dev/lifecycle
-description: A guide to Paper's Lifecycle API
+description: Paper生命周期API指南
 ---
 
-# Lifecycle API
+# 生命周期API
 
-The lifecycle API can be used for lifecycle-related registration. It is currently used by the
-Brigadier command API. It is planned to be used for the Registry Modification API as well.
-Generally, systems that are initialized very early in the startup process can take advantage of this
-event system.
+生命周期API可用于生命周期相关的注册。它目前被Brigadier命令API使用。它也计划用于注册修改API。
+通常,在启动过程很早就初始化的系统可以利用这个事件系统。
 
-:::danger[Experimental]
+:::danger[实验性]
 
-The Lifecycle API and anything that uses it is currently experimental and may change in the future.
+生命周期API及其使用的任何内容目前都是实验性的,将来可能会发生变化。
 
 :::
 
 ## LifecycleEventManager
 
-The <Javadoc name={"io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager"}>LifecycleEventManager</Javadoc> is tied
-to either a <Javadoc name={"org.bukkit.plugin.Plugin"}>Plugin</Javadoc> instance or a
-<Javadoc name={"io.papermc.paper.plugin.bootstrap.BootstrapContext"}>BootstrapContext</Javadoc> depending on where you access it from. For example in your plugin's main class:
+<Javadoc name={"io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager"}>LifecycleEventManager</Javadoc>与
+<Javadoc name={"org.bukkit.plugin.Plugin"}>Plugin</Javadoc>实例或
+<Javadoc name={"io.papermc.paper.plugin.bootstrap.BootstrapContext"}>BootstrapContext</Javadoc>绑定,具体取决于你从哪里访问它。例如在你的插件的主类中:
 
 ```java title="TestPlugin.java"
 @Override
@@ -29,7 +27,7 @@ public void onEnable() {
 }
 ```
 
-Or, with a bootstrapper:
+或者,使用引导程序:
 
 ```java title="TestPluginBootstrap.java"
 @Override
@@ -40,120 +38,107 @@ public void bootstrap(BootstrapContext context) {
 
 ## LifecycleEvents
 
-After obtaining the correct `LifecycleEventManager`, create a event handler by selecting an
-event type from <Javadoc name={"io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents"}>LifecycleEvents</Javadoc>:
+获取正确的`LifecycleEventManager`后,通过从<Javadoc name={"io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents"}>LifecycleEvents</Javadoc>中选择事件类型来创建事件处理器:
 ```java title="TestPlugin.java"
 @Override
 public void onEnable() {
     final LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
     PrioritizedLifecycleEventHandlerConfiguration<LifecycleEventOwner> config = LifecycleEvents.SOME_EVENT.newHandler((event) -> {
-        // Handler for the event
+        // 事件的处理器
     });
 }
 ```
 
-### Configuration
+### 配置
 
-Each handler created can be configured in several ways. The available configuration options
-depend on the event type itself and will vary from event type to event type.
+每个创建的处理器都可以通过多种方式进行配置。可用的配置选项
+取决于事件类型本身,并且会因事件类型而异。
 
-#### Priority
+#### 优先级
 
-Setting the priority of a handler can determine where it runs relative to other handlers
-on the same event type. The lower the number, the earlier it will be run. The default priority
-is 0.
+设置处理器的优先级可以确定它相对于同一事件类型的其他处理器的运行位置。
+数字越小,运行越早。默认优先级是0。
 
-#### Monitor
+#### 监视器
 
-Marking the handler as a monitor will cause it to be called after all other non-monitor handlers
-have been called. Only use this to inspect some state in the event. Do not modify any state in
-the handler.
+将处理器标记为监视器将导致它在所有其他非监视器处理器
+被调用后才被调用。只使用这个来检查事件中的某些状态。不要在
+处理器中修改任何状态。
 
-The priority and monitor state are exclusive options, setting one will reset the other.
+优先级和监视器状态是互斥选项,设置一个将重置另一个。
 
 ```java title="TestPlugin.java"
 @Override
 public void onEnable() {
     final LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
     PrioritizedLifecycleEventHandlerConfiguration<LifecycleEventOwner> config = LifecycleEvents.SOME_EVENT.newHandler((event) -> {
-        // Handler for the event
+        // 事件的处理器
     });
-    config.priority(10); // sets a priority of 10
-    // or
-    config.monitor(); // marks the handler as a monitor
+    config.priority(10); // 设置优先级为10
+    // 或
+    config.monitor(); // 将处理器标记为监视器
 }
 ```
 
-### Registering
+### 注册
 
-Once the handler has been configured, it can be registered with the lifecycle manager:
+一旦处理器配置完成,就可以向生命周期管理器注册:
 
 ```java title="TestPlugin.java"
 @Override
 public void onEnable() {
     final LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
     PrioritizedLifecycleEventHandlerConfiguration<LifecycleEventOwner> config = LifecycleEvents.SOME_EVENT.newHandler((event) -> {
-        // Handler for the event
+        // 事件的处理器
     }).priority(10);
     lifecycleManager.registerEventHandler(config);
 }
 ```
-There is also a shorthand way to register just the handler without doing any configuration:
+还有一种不进行任何配置就直接注册处理器的简便方法:
 
 ```java title="TestPlugin.java"
 @Override
 public void onEnable() {
     final LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
     lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, (event) -> {
-        // Handler for the event
+        // 事件的处理器
     });
 }
 ```
 
 :::note
 
-Some event types have special behaviors that restrict certain mechanics. The reloading plugins
-functionality (via `/bukkit:reload` or `Server#reload()`) is disabled if plugins register handlers
-in certain situations. This is due to the plugin reloads having to fully unload the plugin and its
-classes which is an issue if an event has to run while the plugin is unloaded.
+某些事件类型具有限制某些机制的特殊行为。如果插件在某些情况下注册处理器,
+重新加载插件功能(通过`/bukkit:reload`或`Server#reload()`)将被禁用。这是因为插件重新加载必须完全卸载插件及其
+类,如果事件必须在插件卸载时运行,这就是一个问题。
 
 :::
 
-## Why does this exist?
+## 为什么需要这个?
 
-We already have an event system, why do we need another one? This is a fair question. The answer is
-that some of these events fire well before `JavaPlugin` instances are created, before the
-`MinecraftServer` instance is created, right at the very start of server startup. These can be
-before all the registries have been initialized which is one of the first things to happen on a Vanilla
-server. The existing Bukkit event system is not designed to exist at this time, and modifying it to
-support this environment is more trouble than just having a separate system for specific events that
-can fire during this early initialization.
+我们已经有了一个事件系统,为什么还需要另一个?这是一个合理的问题。答案是
+有些事件在`JavaPlugin`实例创建之前就触发了,在`MinecraftServer`实例创建之前,就在服务器启动的最开始。这可以是在
+所有注册表初始化之前,这是原版服务器上最先发生的事情之一。现有的Bukkit事件系统不是为在这个时间存在而设计的,
+修改它以支持这个环境比仅仅为特定事件有一个单独的系统更麻烦。
 
-:::info[Technical Explanation]
+:::info[技术解释]
 
-Here is an ever-expanding list of specific reasons why we can't just modify the existing event
-system to support this new need for events:
+这里是一个不断扩展的列表,列出了为什么我们不能仅仅修改现有事件
+系统来满足这个新需求的具体原因:
 
-- You cannot have generics on Bukkit events because there is 0 compile time checking since they are
-  registered reflectively. This is a problem because the events are mostly going to follow a very
-  similar pattern, specifically the registry modification events. If we can’t use generics, there’s
-  going to be many useless classes.
+- 你不能在Bukkit事件上使用泛型,因为它们是通过反射注册的,所以没有编译时检查。这是一个问题,因为事件大多会遵循一个非常
+  相似的模式,特别是注册表修改事件。如果我们不能使用泛型,就会有很多无用的类。
 
-- Another reason is that the existing system has priorities, but always has them. With the lifecycle
-  events, there may be some events for which we do not want to support priorities (it would
-  be based purely on plugin load order then).
+- 另一个原因是现有系统有优先级,但总是有优先级。对于生命周期事件,可能有一些事件我们不想支持优先级(那么它将
+  仅基于插件加载顺序)。
 
-- Exists too late. `HandlerList` and event registration all use the `Plugin` instance which does not exist,
-  and cannot exist, during the bootstrapper. Changing this would require a substantial rewrite of the
-  existing system and probably confuse API users who expect all `RegisteredListeners` to have a
-  Plugin attached.
+- 存在得太晚。`HandlerList`和事件注册都使用`Plugin`实例,而这在引导程序期间不存在,也不能存在。改变这一点将需要对现有系统进行大量重写,
+  并可能让期望所有`RegisteredListeners`都附加了Plugin的API用户感到困惑。
 
-- A new system lets us use interfaces and server implementations for events which dramatically
-  simplifies them. With the Bukkit system you could kind of do this with a server impl event
-  extending the API event, but interfaces are more flexible.
+- 新系统让我们可以使用接口和服务器实现来实现事件,这大大简化了它们。在Bukkit系统中,你可以通过让服务器实现事件
+  扩展API事件来实现这一点,但接口更灵活。
 
-- A new system lets us enforce, at compile time, which events you can register where based on the
-  context of the registration. So you can’t even register a handler for an event in the wrong spot,
-  that will be a compiler error thanks to our implementation using Generics.
+- 新系统让我们可以在编译时强制执行基于注册上下文的事件注册位置。所以你甚至不能在错误的地方注册事件处理器,
+  这将是一个编译器错误,这要归功于我们使用泛型的实现。
 
 :::

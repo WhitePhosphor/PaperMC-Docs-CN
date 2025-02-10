@@ -5,7 +5,7 @@ const paper: SidebarsConfig = {
     "README",
     {
       type: "category",
-      label: "Administration",
+      label: "管理",
       collapsed: true,
       link: {
         type: "doc",
@@ -14,7 +14,7 @@ const paper: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Getting Started",
+          label: "入门",
           link: {
             type: "generated-index",
             slug: "/cat/admin/getting-started",
@@ -28,7 +28,7 @@ const paper: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "How-to Guides",
+          label: "操作指南",
           link: {
             type: "generated-index",
             slug: "/cat/admin/how-to-guides",
@@ -44,7 +44,7 @@ const paper: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "Reference",
+          label: "参考",
           link: {
             type: "generated-index",
             slug: "/cat/admin/reference",
@@ -52,7 +52,7 @@ const paper: SidebarsConfig = {
           items: [
             {
               type: "category",
-              label: "Configuration",
+              label: "配置",
               link: {
                 type: "doc",
                 id: "admin/reference/configuration/README",
@@ -73,7 +73,7 @@ const paper: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "Miscellaneous",
+          label: "杂项",
           link: {
             type: "generated-index",
             slug: "/cat/admin/misc",
@@ -84,7 +84,7 @@ const paper: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Development",
+      label: "开发",
       collapsed: true,
       link: {
         type: "doc",
@@ -93,7 +93,7 @@ const paper: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Getting started",
+          label: "入门",
           collapsed: true,
           link: {
             type: "doc",
@@ -118,7 +118,7 @@ const paper: SidebarsConfig = {
           items: [
             {
               type: "category",
-              label: "Event API",
+              label: "事件 API",
               collapsed: true,
               items: [
                 "dev/api/event-api/event-listeners",
@@ -129,12 +129,12 @@ const paper: SidebarsConfig = {
             },
             {
               type: "category",
-              label: "Brigadier Command API",
+              label: "Brigadier 命令 API",
               collapsed: true,
               items: [
                 {
                   type: "category",
-                  label: "Basics",
+                  label: "基础",
                   collapsed: true,
                   items: [
                     "dev/api/command-api/basics/introduction",
@@ -147,7 +147,7 @@ const paper: SidebarsConfig = {
                 },
                 {
                   type: "category",
-                  label: "Arguments",
+                  label: "参数",
                   collapsed: true,
                   items: [
                     "dev/api/command-api/arguments/minecraft",
@@ -162,7 +162,7 @@ const paper: SidebarsConfig = {
                 },
                 {
                   type: "category",
-                  label: "Misc",
+                  label: "其他",
                   collapsed: true,
                   items: [
                     "dev/api/command-api/misc/comparison-bukkit-brigadier",
@@ -173,13 +173,13 @@ const paper: SidebarsConfig = {
             },
             {
               type: "category",
-              label: "Entity API",
+              label: "实体 API",
               collapsed: true,
               items: ["dev/api/entity-api/entity-teleport", "dev/api/entity-api/display-entities"],
             },
             {
               type: "category",
-              label: "Text Component API (Adventure)",
+              label: "文本组件 API (Adventure)",
               collapsed: true,
               items: [
                 "dev/api/component-api/intro",
@@ -202,7 +202,7 @@ const paper: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "Miscellaneous",
+          label: "杂项",
           collapsed: true,
           link: {
             type: "doc",
@@ -215,17 +215,17 @@ const paper: SidebarsConfig = {
             "dev/misc/internal-code",
           ],
         },
+        {
+          type: "category",
+          label: "贡献",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "contributing/README",
+          },
+          items: ["contributing/events"],
+        },
       ],
-    },
-    {
-      type: "category",
-      label: "Contributing",
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "contributing/README",
-      },
-      items: ["contributing/events"],
     },
   ],
 };

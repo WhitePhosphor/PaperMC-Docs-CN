@@ -1,16 +1,15 @@
 ---
 slug: /dev/api-basics
-description: How to get started with the Velocity API.
+description: 如何开始使用 Velocity API。
 ---
 
-# Velocity Plugin Basics
+# Velocity 插件基础
 
-Now we will lay the groundwork for your first plugin. We will cover how to create your very first
-Velocity plugin.
+现在我们将为你的第一个插件奠定基础。我们将介绍如何创建你的第一个 Velocity 插件。
 
-## Create the plugin class
+## 创建插件类
 
-Create a new class (let's say `com.example.velocityplugin.VelocityTest`) and paste this in:
+创建一个新类（比如说 `com.example.velocityplugin.VelocityTest`) 并粘贴以下内容：
 
 ```java
 package com.example.velocityplugin;
@@ -21,7 +20,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
 @Plugin(id = "myfirstplugin", name = "My First Plugin", version = "0.1.0-SNAPSHOT",
-        url = "https://example.org", description = "I did it!", authors = {"Me"})
+        url = "https://example.org", description = "我做到了！", authors = {"我"})
 public class VelocityTest {
 
     private final ProxyServer server;
@@ -32,25 +31,23 @@ public class VelocityTest {
         this.server = server;
         this.logger = logger;
 
-        logger.info("Hello there! I made my first plugin with Velocity.");
+        logger.info("你好！我用 Velocity 制作了我的第一个插件。");
     }
 }
 ```
 
-What did you just do there? There's quite a bit to unpack, so let's focus on the Velocity-specific
-bits:
+你刚才做了什么？这里有很多内容需要解释，让我们专注于 Velocity 特有的部分：
 
 ```java
 @Plugin(id = "myfirstplugin", name = "My First Plugin", version = "0.1.0-SNAPSHOT",
-        url = "awesome.org", description = "I did it!", authors = {"Me"})
+        url = "awesome.org", description = "我做到了！", authors = {"我"})
 public class VelocityTest {
 ```
 
-This tells Velocity that this class contains your plugin (`myfirstplugin`) so that it can be loaded
-once the proxy starts up. Velocity will detect where the plugin will reside when you compile your
-plugin.
+这告诉 Velocity 这个类包含你的插件（`myfirstplugin`），这样它就可以在代理启动时加载。
+当你编译插件时，Velocity 会检测到插件将驻留的位置。
 
-Moving on, what's this?
+继续，这是什么？
 
 ```java
 @Inject
@@ -58,70 +55,60 @@ public VelocityTest(ProxyServer server, Logger logger) {
     this.server = server;
     this.logger = logger;
 
-    logger.info("Hello there, it's a test plugin I made!");
+    logger.info("你好，这是我制作的测试插件！");
 }
 ```
 
-This looks like magic! How is Velocity doing this? The answer lies in the
-[`@Inject`](https://javadoc.io/doc/com.google.inject/guice/latest/com/google/inject/Inject.html)
-which indicates that Velocity should inject a
-<Javadoc name={"com.velocitypowered.api.proxy.ProxyServer"} project={"velocity"}>`ProxyServer`</Javadoc>
-and the [`Logger`](https://www.slf4j.org/api/org/slf4j/Logger.html) when constructing your plugin.
-These two interfaces will help you out as you begin working with Velocity. We won't talk too much about
-dependency injection: all you need to know is that Velocity will do this.
+这看起来像魔法！Velocity 是如何做到的？答案在于 [`@Inject`](https://javadoc.io/doc/com.google.inject/guice/latest/com/google/inject/Inject.html)，
+它表示 Velocity 应该在构造你的插件时注入一个 <Javadoc name={"com.velocitypowered.api.proxy.ProxyServer"} project={"velocity"}>`ProxyServer`</Javadoc>
+和 [`Logger`](https://www.slf4j.org/api/org/slf4j/Logger.html)。当你开始使用 Velocity 时，这两个接口会对你有帮助。
+我们不会过多讨论依赖注入：你只需要知道 Velocity 会帮你完成这个工作。
 
-All you need to do is build your plugin, put it in your `plugins/` directory, and try it! Isn't that
-nice? In the next section you'll learn more about how to use the API.
+你只需要构建你的插件，将它放在你的 `plugins/` 目录中，然后试试看！这不是很好吗？
+在下一节中，你将学习更多关于如何使用 API 的内容。
 
-## Choosing <Javadoc name={"com.velocitypowered.api.plugin.Plugin"} project={"velocity"}>`@Plugin`</Javadoc> information
+## 选择 <Javadoc name={"com.velocitypowered.api.plugin.Plugin"} project={"velocity"}>`@Plugin`</Javadoc> 信息
 
-Choose your plugin's ID wisely. Other plugins will use this ID to depend on yours. If you change it,
-you could break compatibility.
+明智地选择你的插件 ID。其他插件将使用这个 ID 来依赖你的插件。如果你改变它，
+可能会破坏兼容性。
 
-The plugin name is somewhat less important. It will be shown to users as the display name of your
-plugin, but tweaking it will not be catastrophic.
+插件名称相对不那么重要。它将作为你的插件的显示名称显示给用户，
+但调整它不会造成灾难性的后果。
 
-For the version, we recommend sticking to semantic versioning - you can read more about this concept
-at [semver.org](https://semver.org). Basically, use 3 numbers in your version, such as 1.4.25.
-Increment the major number when you make a backwards-incompatible breaking change, increment the
-minor number when you add functionality that is backwards compatible, and increment the patch number
-when you fix a bug or make an otherwise unnoticeable change in the implementation.
+对于版本，我们建议遵循语义化版本控制 - 你可以在 [semver.org](https://semver.org) 上阅读更多关于这个概念的内容。
+基本上，在你的版本中使用 3 个数字，比如 1.4.25。当你进行向后不兼容的破坏性更改时增加主版本号，
+当你添加向后兼容的功能时增加次版本号，当你修复错误或进行其他在实现中不易察觉的更改时增加补丁版本号。
 
-You can also describe your plugin's URL, authors, and description in your `@Plugin` annotation.
-Dependencies on other plugins are also to be specified there, but we'll get to that later on the
-[Dependency Management](../how-to/dependencies.mdx) page.
+你也可以在你的 `@Plugin` 注解中描述你的插件的 URL、作者和描述。
+对其他插件的依赖也要在那里指定，但我们稍后会在[依赖管理](../how-to/dependencies.mdx)页面中讨论这个问题。
 
-### A word of caution
+### 一个警告
 
 :::caution
 
-In Velocity, plugin loading is split into two steps: construction and initialization. The code in
-your plugin's constructor is part of the construction phase. There is very little you can do safely
-during construction, especially as the API does not specify which operations are safe to run during
-construction. Notably, you can't register an event listener in your constructor, because you need to
-have a valid plugin registration, but Velocity can't register the plugin until the plugin has been
-constructed, causing a "chicken or the egg" problem.
+在 Velocity 中，插件加载分为两个步骤：构造和初始化。你的插件构造函数中的代码是构造阶段的一部分。
+在构造期间你能安全做的事情很少，特别是因为 API 没有指定在构造期间哪些操作是安全的。
+值得注意的是，你不能在构造函数中注册事件监听器，因为你需要有一个有效的插件注册，
+但 Velocity 在插件构造完成之前无法注册插件，这导致了"先有鸡还是先有蛋"的问题。
 
-To break this vicious cycle, you should always wait for initialization, which is indicated when
-Velocity fires the <Javadoc name={"com.velocitypowered.api.event.proxy.ProxyInitializeEvent"} project={"velocity"}>`ProxyInitializeEvent`</Javadoc>.
-We can do things on initialization by adding a listener for this event, as shown below.
-Note that Velocity automatically registers your plugin main class as a listener.
+要打破这个恶性循环，你应该始终等待初始化，当 Velocity 触发 <Javadoc name={"com.velocitypowered.api.event.proxy.ProxyInitializeEvent"} project={"velocity"}>`ProxyInitializeEvent`</Javadoc> 时就表示初始化完成。
+我们可以通过为这个事件添加一个监听器来在初始化时执行操作，如下所示。
+注意，Velocity 会自动将你的插件主类注册为监听器。
 
 ```java
 @Subscribe
 public void onProxyInitialization(ProxyInitializeEvent event) {
-    // Do some operation demanding access to the Velocity API here.
-    // For instance, we could register an event:
+    // 在这里执行需要访问 Velocity API 的操作。
+    // 例如，我们可以注册一个事件：
     server.getEventManager().register(this, new PluginListener());
 }
 ```
 
 :::
 
-## Getting your plugin's directory
+## 获取你的插件目录
 
-At some point you may need your plugin's directory. To do this, add
-`@DataDirectory Path dataDirectory` to your plugin's constructor parameters:
+在某些时候你可能需要你的插件目录。要做到这一点，在你的插件构造函数参数中添加 `@DataDirectory Path dataDirectory`：
 
 ```java
 private final Path dataDirectory;
@@ -134,7 +121,7 @@ public VelocityTest(ProxyServer server, Logger logger, @DataDirectory Path dataD
 }
 ```
 
-This will get you a <Javadoc name={"java.nio.file.Path"} project={"java"}>`Path`</Javadoc> of your plugin directory.
-If you absolutely need a <Javadoc name={"java.io.File"} project={"java"}>`File`</Javadoc>,
-you may use <Javadoc name={"java.nio.file.Path#toFile()"} project={"java"}>`Path#toFile()`</Javadoc>.
-However, Velocity usually works with `Path`.
+这将为你提供一个你的插件目录的 <Javadoc name={"java.nio.file.Path"} project={"java"}>`Path`</Javadoc>。
+如果你绝对需要一个 <Javadoc name={"java.io.File"} project={"java"}>`File`</Javadoc>，
+你可以使用 <Javadoc name={"java.nio.file.Path#toFile()"} project={"java"}>`Path#toFile()`</Javadoc>。
+但是，Velocity 通常使用 `Path`。

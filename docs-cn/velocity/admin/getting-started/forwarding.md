@@ -1,126 +1,88 @@
 ---
 slug: /player-information-forwarding
-description: How to configure information forwarding on Velocity.
+description: 如何在Velocity上配置信息转发。
 ---
 
-# Configuring player information forwarding
+# 配置玩家信息转发
 
-Velocity supports forwarding information about your players to your servers, such as IP addresses,
-UUIDs and skins. Velocity supports three forwarding formats:
+Velocity支持将玩家的信息转发到你的服务器,如IP地址、UUID和皮肤。Velocity支持三种转发格式:
 
-- **Velocity modern forwarding** is a custom forwarding format (modern forwarding) that is more
-  secure.
-- **BungeeCord forwarding** (also known as _legacy forwarding_) which has better compatibility but
-  is less secure.
-- **BungeeGuard**, which is the same as BungeeCord forwarding but includes a secret key. It is
-  better than BungeeCord forwarding alone, but it is less ideal than Velocity modern forwarding.
+- **Velocity现代转发**是一种更安全的自定义转发格式(现代转发)。
+- **BungeeCord转发**(也称为_传统转发_)具有更好的兼容性但安全性较低。
+- **BungeeGuard**,与BungeeCord转发相同但包含一个密钥。它比单独的BungeeCord转发更好,但不如Velocity现代转发理想。
 
 :::info
 
-You may choose between only one of these forwarding formats. It is not currently possible to "mix
-and match" forwarding modes or use all the forwarding formats together. In general, if you are
-supporting clients using Minecraft 1.13 and newer only, use Velocity modern forwarding, else you
-must use BungeeCord forwarding.
+你只能选择这些转发格式中的一种。目前不可能"混合搭配"转发模式或同时使用所有转发格式。通常,如果你只支持Minecraft 1.13及更新版本的客户端,请使用Velocity现代转发,否则你必须使用BungeeCord转发。
 
 :::
 
-## Configuring modern forwarding
+## 配置现代转发
 
-`modern` forwarding is a Velocity-native format. It forwards all player information in an efficient
-binary format and employs a MAC code to make it much more difficult to trick the server into
-impersonating your Velocity proxy. However, it is only available for Minecraft 1.13 or higher.
+`modern`转发是Velocity原生格式。它以高效的二进制格式转发所有玩家信息,并使用MAC码使服务器更难冒充你的Velocity代理。但是,它仅适用于Minecraft 1.13或更高版本。
 
 :::caution
 
-Modern forwarding is incompatible with Minecraft versions below 1.13 and the
-ProtocolSupport plugin. If you use any of these, you will need to use legacy BungeeCord-compatible
-forwarding instead.
+现代转发与Minecraft 1.13以下版本和ProtocolSupport插件不兼容。如果你使用这些,你需要改用传统的BungeeCord兼容转发。
 
 :::
 
-To use modern forwarding with any supported server implementation, set the `player-info-forwarding-mode`
-setting in `velocity.toml` to `modern`. Then, you need to ensure your server is properly configured
-to use Velocity forwarding.
+要在任何支持的服务器实现中使用现代转发,请将`velocity.toml`中的`player-info-forwarding-mode`设置为`modern`。然后,你需要确保你的服务器正确配置以使用Velocity转发。
 
-### Configuring modern forwarding for Paper
+### 为Paper配置现代转发
 
-Paper 1.14+ and above, along with Paper 1.13.1/1.13.2 build 377 and above support Velocity modern
-forwarding natively.
+Paper 1.14+及以上版本,以及Paper 1.13.1/1.13.2 build 377及以上版本原生支持Velocity现代转发。
 
-First, you need to disable the `online-mode` setting in the [`server.properties`](/paper/reference/server-properties#online_mode) file. This prevents
-the server from authenticating players, which the proxy will do instead.
+首先,你需要在[`server.properties`](/paper/reference/server-properties#online_mode)文件中禁用`online-mode`设置。这可以防止服务器验证玩家身份,代理将代替它进行验证。
 
-You also need to disable BungeeCord forwarding if you had it enabled beforehand. Make sure
-`settings.bungeecord` is set to `false` in your `spigot.yml`.
+如果你之前启用了BungeeCord转发,你也需要禁用它。确保在你的`spigot.yml`中将`settings.bungeecord`设置为`false`。
 
-In `config/paper-global.yml`, set `proxies.velocity.enabled` to true and
-`proxies.velocity.secret`, to match the secret in your `forwarding.secret` file. You must also set
-`proxies.velocity.online-mode` to the `online-mode` setting in your `velocity.toml`. Once
-you're done editing `paper-global.yml`, reboot your server.
+在`config/paper-global.yml`中,将`proxies.velocity.enabled`设置为true,并将`proxies.velocity.secret`设置为与你的`forwarding.secret`文件中的密钥匹配。你还必须将`proxies.velocity.online-mode`设置为与你的`velocity.toml`中的`online-mode`设置相同。完成编辑`paper-global.yml`后,重启你的服务器。
 
 :::info
 
-If you are using Paper 1.18.2 or lower, you will find these options as `settings.velocity-support.enabled`,
-`settings.velocity-support.secret` and `settings.velocity-support.online-mode` in the `paper.yml` file.
+如果你使用的是Paper 1.18.2或更低版本,你会在`paper.yml`文件中找到这些选项,分别为`settings.velocity-support.enabled`、`settings.velocity-support.secret`和`settings.velocity-support.online-mode`。
 
 :::
 
-## Configuring modern forwarding for Fabric
+## 为Fabric配置现代转发
 
-A mod called [FabricProxy-Lite](https://modrinth.com/mod/fabricproxy-lite) allows you to use
-Velocity modern forwarding with a modded server using Fabric.
+一个名为[FabricProxy-Lite](https://modrinth.com/mod/fabricproxy-lite)的模组允许你在使用Fabric的模组服务器上使用Velocity现代转发。
 
-## Configuring modern forwarding for Forge
+## 为Forge配置现代转发
 
-A mod called [ProxyCompatibleForge](https://modrinth.com/mod/proxy-compatible-forge) allows you to use
-Velocity modern forwarding with a modded server using Forge 1.14 or higher.
+一个名为[ProxyCompatibleForge](https://modrinth.com/mod/proxy-compatible-forge)的模组允许你在使用Forge 1.14或更高版本的模组服务器上使用Velocity现代转发。
 
-## Configuring legacy BungeeCord-compatible forwarding
+## 配置传统BungeeCord兼容转发
 
 :::danger
 
-Legacy forwarding is **fundamentally insecure**. If you must use it, you should understand
-[how to secure your server properly](../how-to/security.md). That page reviews all the possible
-options to secure your server so that nothing aside from the proxy can connect to your server.
+传统转发在**本质上是不安全的**。如果你必须使用它,你应该了解[如何正确保护你的服务器](../how-to/security.md)。该页面回顾了所有可能的选项,以确保除了代理之外没有其他东西可以连接到你的服务器。
 
 :::
 
-`legacy` forwarding is the player information forwarding protocol that is used by BungeeCord when
-enabling IP forwarding from BungeeCord. Due to this, it is ubiquitous and well-supported by most
-server implementations. It has excellent compatibility (supporting versions as old as 1.7.2,
-released in 2013) and will work with Forge if you also install SpongeForge/BungeeForge on your modded server and
-configure it correctly. However, it is not secure.
+`legacy`转发是BungeeCord在启用IP转发时使用的玩家信息转发协议。由于这一点,它在大多数服务器实现中都得到了广泛支持。它具有出色的兼容性(支持早至2013年发布的1.7.2版本),如果你在模组服务器上安装SpongeForge/BungeeForge并正确配置,它也可以与Forge一起工作。但是,它不安全。
 
-If you must use BungeeCord-compatible forwarding, simply set your `player-info-forwarding-mode` setting
-in `velocity.toml` to `legacy`. You will also need to make sure your server can accept the forwarded
-player data sent by Velocity.
+如果你必须使用BungeeCord兼容转发,只需将`velocity.toml`中的`player-info-forwarding-mode`设置为`legacy`。你还需要确保你的服务器可以接受Velocity发送的转发玩家数据。
 
-To add some security, particularly for proxies hosted on shared hosting, Velocity optionally
-supports the [BungeeGuard](https://www.spigotmc.org/resources/bungeeguard.79601/) plugin. To use it,
-set the `player-info-forwarding-mode` setting in `velocity.toml` to `bungeeguard`, then add the value in
-the `forwarding.secret` file to the token section in the BungeeGuard configuration.
+为了增加一些安全性,特别是对于托管在共享主机上的代理,Velocity可选地支持[BungeeGuard](https://www.spigotmc.org/resources/bungeeguard.79601/)插件。要使用它,请将`velocity.toml`中的`player-info-forwarding-mode`设置为`bungeeguard`,然后将`forwarding.secret`文件中的值添加到BungeeGuard配置的token部分。
 
-### Configuring legacy forwarding for Spigot / Paper
+### 为Spigot / Paper配置传统转发
 
-To make Spigot or Paper understand the data forwarded from Velocity, set `settings.bungeecord` to
-`true` in your `spigot.yml` and then reboot your server.
+要使Spigot或Paper理解从Velocity转发的数据,请在你的`spigot.yml`中将`settings.bungeecord`设置为`true`,然后重启你的服务器。
 
-### Configuring legacy forwarding for Sponge
+### 为Sponge配置传统转发
 
-To configure Sponge to understand the data forwarded from Velocity, you will need to stop the server
-first, set `modules.bungeecord` to `true` and `bungeecord.ip-forwarding` to `true` in your
-`config/sponge/global.conf` file, and then restart your Sponge server.
+要配置Sponge以理解从Velocity转发的数据,你需要先停止服务器,在你的`config/sponge/global.conf`文件中将`modules.bungeecord`设置为`true`并将`bungeecord.ip-forwarding`设置为`true`,然后重启你的Sponge服务器。
 
-### Configuring legacy forwarding for Forge
+### 为Forge配置传统转发
 
-To configure Forge to understand the data forwarded from Velocity, you will need to stop the server
-first, download your correct [BungeeForge](https://github.com/caunt/BungeeForge/releases) version and place the mod into the mods folder, and then restart your Forge server.
+要配置Forge以理解从Velocity转发的数据,你需要先停止服务器,下载正确版本的[BungeeForge](https://github.com/caunt/BungeeForge/releases)并将模组放入mods文件夹,然后重启你的Forge服务器。
 
-### Configuring legacy forwarding for Fabric
+### 为Fabric配置传统转发
 
 :::caution
 
-There are no longer any actively supported mods that support legacy forwarding. Please use Velocity
-modern forwarding instead.
+目前没有任何活跃支持传统转发的模组。请改用Velocity现代转发。
 
 :::

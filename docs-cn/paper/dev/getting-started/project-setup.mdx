@@ -1,33 +1,33 @@
 ---
 slug: /dev/project-setup
-description: Step-by-step instructions on how to set up a plugin development environment.
+description: 如何设置插件开发环境的分步说明。
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Paper Project Setup
+# Paper项目设置
 
-As the Paper team primarily uses [IntelliJ IDEA](https://www.jetbrains.com/idea/), this guide will be focused on that IDE.
-However, the steps below should apply to other IDEs as well, with some minor changes.
+由于Paper团队主要使用[IntelliJ IDEA](https://www.jetbrains.com/idea/),本指南将重点介绍该IDE。
+但是,以下步骤也适用于其他IDE,只需做一些小的改动。
 
-The Paper team uses [Gradle](https://gradle.org/) as its build system, and its tools are implemented for Gradle.
-Most of the code below can be altered to work with other build systems, such as Maven, but this guide will only cover Gradle.
+Paper团队使用[Gradle](https://gradle.org/)作为其构建系统,其工具都是为Gradle实现的。
+下面的大部分代码可以修改为适用于其他构建系统(如Maven),但本指南仅涵盖Gradle。
 
-Follow the guide [here](https://docs.gradle.org/current/userguide/migrating_from_maven.html) to learn how to migrate from Maven to Gradle.
+在[这里](https://docs.gradle.org/current/userguide/migrating_from_maven.html)了解如何从Maven迁移到Gradle。
 
-## Creating a new project
+## 创建新项目
 
-Open your IDE and select the option to create a new project.
-In IntelliJ, you will get the option to select the type of project you want to create - select `New Project`.
-Select `Gradle - Kotlin DSL` and click `Create`.
+打开你的IDE并选择创建新项目的选项。
+在IntelliJ中,你将可以选择要创建的项目类型 - 选择`New Project`。
+选择`Gradle - Kotlin DSL`并点击`Create`。
 
-You will land into the `build.gradle.kts` file where you can add your dependencies.
+你将进入`build.gradle.kts`文件,在这里你可以添加你的依赖。
 
-### Adding Paper as a dependency
+### 添加Paper作为依赖
 
-To add Paper as a dependency, you will need to add the Paper repository to your `build.gradle.kts` or `pom.xml` file as well as the dependency itself.
+要添加Paper作为依赖,你需要将Paper仓库添加到你的`build.gradle.kts`或`pom.xml`文件中,以及依赖本身。
 
 <Tabs groupId="author-front-matter">
     <TabItem value="gradle-kotlin" label="Gradle Kotlin DSL" default>
@@ -91,18 +91,18 @@ To add Paper as a dependency, you will need to add the Paper repository to your 
     </TabItem>
 </Tabs>
 
-### Setting up the `src` directory
+### 设置`src`目录
 
 :::note
 
-If your IDE creates a `src` directory automatically, you can skip this step.
+如果你的IDE自动创建了`src`目录,你可以跳过这一步。
 
 :::
 
-To set up the `src` directory, you will need to create a new directory called `src` and then create a new directory called `main` inside of it.
-Inside of `main`, create two new directories called `java` and `resources`.
+要设置`src`目录,你需要创建一个名为`src`的新目录,然后在其中创建一个名为`main`的新目录。
+在`main`内,创建两个名为`java`和`resources`的新目录。
 
-It should look like this:
+它应该看起来像这样:
 
 ```
 ...
@@ -116,10 +116,10 @@ example-plugin
 ...
 ```
 
-### Setting up the `java` directory
+### 设置`java`目录
 
-You will place your Java source files in the `java` directory. You first need to create some packages to organize your code.
-For this example, we will create three packages called `io.papermc.testplugin` and then create a class called `ExamplePlugin` inside of it.
+你将在`java`目录中放置你的Java源文件。你首先需要创建一些包来组织你的代码。
+对于这个例子,我们将创建三个名为`io.papermc.testplugin`的包,然后在其中创建一个名为`ExamplePlugin`的类。
 
 ```
 ...
@@ -137,25 +137,25 @@ example-plugin
 ...
 ```
 
-### Packages
+### 包
 
-You can see here that the `ExamplePlugin` class is inside the `io.papermc.testplugin` package.
-A package is a way to organize your code - essentially, it's a folder. Java packages are used to group related classes.
-Oracle has a guide on [packages](https://docs.oracle.com/javase/tutorial/java/package/packages.html) if you want to learn more.
+你可以看到这里`ExamplePlugin`类位于`io.papermc.testplugin`包中。
+包是一种组织代码的方式 - 本质上,它是一个文件夹。Java包用于对相关类进行分组。
+如果你想了解更多,Oracle有一个关于[包](https://docs.oracle.com/javase/tutorial/java/package/packages.html)的指南。
 
-When [naming](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html) your packages, you should use your domain name in reverse order. For example, if your domain name is `papermc.io`,
-your package name should be `io.papermc`. If you do not have a domain name, you could use something like your GitHub username.
-If you were Linus Torvalds, your package would be `io.github.torvalds`.
+在[命名](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html)包时,你应该使用反向顺序的域名。例如,如果你的域名是`papermc.io`,
+你的包名应该是`io.papermc`。如果你没有域名,你可以使用类似你的GitHub用户名的东西。
+如果你是Linus Torvalds,你的包将是`io.github.torvalds`。
 
-This is then followed by the name of your project.
-For example, if your project was called `ExamplePlugin`, your package would be `io.github.torvalds.exampleplugin`.
-This allows for a unique package name for every plugin.
+然后是你的项目名称。
+例如,如果你的项目叫做`ExamplePlugin`,你的包将是`io.github.torvalds.exampleplugin`。
+这允许每个插件都有一个唯一的包名。
 
-### The _main_ class
+### _main_类
 
-The main class is the entry point to your plugin and will be the only class that extends
-<Javadoc name={"org.bukkit.plugin.java.JavaPlugin"}>`JavaPlugin`</Javadoc> in your plugin.
-This is an example of what your `ExamplePlugin` class could look like:
+主类是你的插件的入口点,并且将是你的插件中唯一继承
+<Javadoc name={"org.bukkit.plugin.java.JavaPlugin"}>`JavaPlugin`</Javadoc>的类。
+这是你的`ExamplePlugin`类可能的样子:
 
 ```java title="ExamplePlugin.java"
 package io.papermc.testplugin;
@@ -176,86 +176,86 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(Component.text("Hello, " + event.getPlayer().getName() + "!"));
+        event.getPlayer().sendMessage(Component.text("你好, " + event.getPlayer().getName() + "!"));
     }
 
 }
 ```
 
-### Setting up the `resources`
+### 设置`resources`
 
-The `resources` directory is where you will place your plugin's `plugin.yml` file. See the [Plugin YML](plugin-yml) page for more information.
+`resources`目录是你放置插件的`plugin.yml`文件的地方。有关更多信息,请参见[Plugin YML](plugin-yml)页面。
 
-## Using the Minecraft Development IntelliJ plugin
+## 使用Minecraft Development IntelliJ插件
 
-Alternatively, you can use the [Minecraft Development IntelliJ plugin](https://plugins.jetbrains.com/plugin/8327-minecraft-development)
-to create a new project.
+或者,你可以使用[Minecraft Development IntelliJ插件](https://plugins.jetbrains.com/plugin/8327-minecraft-development)
+来创建新项目。
 
 :::info
 
-This tutorial only works with IntelliJ IDEA. If you are using another IDE, please follow the manual project setup guide described above.
+本教程仅适用于IntelliJ IDEA。如果你使用其他IDE,请按照上述手动项目设置指南进行操作。
 
 :::
 
-### Installing the Minecraft Development plugin
-The first thing you need to do is install the [Minecraft Development](https://plugins.jetbrains.com/plugin/8327-minecraft-development) plugin.
-You can do this by going to `File > Settings > Plugins` and searching for `Minecraft Development` under the `Marketplace` section.
+### 安装Minecraft Development插件
+首先你需要安装[Minecraft Development](https://plugins.jetbrains.com/plugin/8327-minecraft-development)插件。
+你可以通过转到`File > Settings > Plugins`并在`Marketplace`部分搜索`Minecraft Development`来完成此操作。
 
 ![](assets/installing-plugin.png)
 
-Once you have installed the plugin, you will need to restart IntelliJ.
-To do that you can click the `Restart IDE` button that appears after installing the plugin.
+安装插件后,你需要重启IntelliJ。
+要重启,你可以点击安装插件后出现的`Restart IDE`按钮。
 
 ![](assets/restart-ide.png)
 
-### Creating a new project
-Once you have installed the plugin, you can create a new project by going to `File > New > Project...` and selecting `Minecraft` from the list of options.
+### 创建新项目
+安装插件后,你可以通过转到`File > New > Project...`并从选项列表中选择`Minecraft`来创建新项目。
 
 ![](assets/new-project-paper.png)
 
-You will be asked to provide some information about your project.
+你将被要求提供一些关于你的项目的信息。
 
-| Field                 | Explanation                                                                                                                                                                                                                                                          |
+| 字段                 | 说明                                                                                                                                                                                                                                                          |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**              | The name of your project.                                                                                                                                                                                                                                            |
-| **Location**          | The location of your project. This is where the project files will be stored.                                                                                                                                                                                        |
-| **Platform Type**     | The platform type you are developing for. This should be `Plugin`.                                                                                                                                                                                                   |
-| **Platform**          | The platform you are developing for. This should be `Paper`.                                                                                                                                                                                                         |
-| **Minecraft Version** | The version of Minecraft you are developing for.                                                                                                                                                                                                                     |
-| **Plugin Name**       | The name of your plugin.                                                                                                                                                                                                                                             |
-| **Main Class**        | The main class of your plugin. This should be the class that extends `JavaPlugin`.                                                                                                                                                                                   |
-| **Optional Settings** | Here you can define things like authors, website, description, etc. These are optional and not required for the plugin to work.                                                                                                                                      |
-| **Build System**      | The build system you want to use. Paper recommends using Gradle but you can use Maven if you prefer.                                                                                                                                                                 |
-| **Paper Manifest**    | Whether you want to use the new Paper plugins or not. For now this is not recommended as it is still in development.                                                                                                                                                 |
-| **Group ID**          | The group ID of your project. This is used for Maven and Gradle. This is usually your domain name in reverse. If you don't know what you should put here, you can use something like `io.github.<yourname>` or if you don't have GitHub you can use `me.<yourname>`. |
-| **Artifact ID**       | The artifact ID of your project. This is used for Maven and Gradle. This is usually the name of your project. This is usually the same as the `Name` field.                                                                                                          |
-| **Version**           | The version of your project. This is used for Maven and Gradle. This is usually `1.0-SNAPSHOT` and does not really matter for now.                                                                                                                                   |
-| **JDK**               | The JDK you want to use. This can be anything from Java <Property name="PAPER_JAVA_MIN" /> and above.                                                                                                                                                                                                |
+| **Name**              | 你的项目名称。                                                                                                                                                                                                                                            |
+| **Location**          | 你的项目位置。这是项目文件将存储的位置。                                                                                                                                                                                        |
+| **Platform Type**     | 你正在开发的平台类型。这应该是`Plugin`。                                                                                                                                                                                                   |
+| **Platform**          | 你正在开发的平台。这应该是`Paper`。                                                                                                                                                                                                         |
+| **Minecraft Version** | 你正在开发的Minecraft版本。                                                                                                                                                                                                                     |
+| **Plugin Name**       | 你的插件名称。                                                                                                                                                                                                                             |
+| **Main Class**        | 你的插件的主类。这应该是继承`JavaPlugin`的类。                                                                                                                                                                                   |
+| **Optional Settings** | 在这里你可以定义作者、网站、描述等内容。这些是可选的,插件工作不需要它们。                                                                                                                                      |
+| **Build System**      | 你想使用的构建系统。Paper推荐使用Gradle,但如果你喜欢也可以使用Maven。                                                                                                                                                                 |
+| **Paper Manifest**    | 是否要使用新的Paper插件。目前不推荐这样做,因为它仍在开发中。                                                                                                                                                 |
+| **Group ID**          | 你的项目的组ID。这用于Maven和Gradle。这通常是你的域名的反向。如果你不知道应该在这里放什么,你可以使用类似`io.github.<yourname>`的东西,或者如果你没有GitHub,你可以使用`me.<yourname>`。 |
+| **Artifact ID**       | 你的项目的工件ID。这用于Maven和Gradle。这通常是你的项目名称。这通常与`Name`字段相同。                                                                                                          |
+| **Version**           | 你的项目的版本。这用于Maven和Gradle。这通常是`1.0-SNAPSHOT`,现在并不重要。                                                                                                                                   |
+| **JDK**               | 你想使用的JDK。这可以是Java <Property name="PAPER_JAVA_MIN" />及以上的任何版本。                                                                                                                                                                                                |
 
-Now you can click on the `Create` button and IntelliJ will create the project for you.
-If everything went well, you should see something like this:
+现在你可以点击`Create`按钮,IntelliJ将为你创建项目。
+如果一切顺利,你应该看到类似这样的内容:
 
 ![](assets/paper-plugin-overview.png)
 
-## Plugin remapping
+## 插件重映射
 
-As of 1.20.5, Paper ships with a Mojang-mapped runtime instead of reobfuscating the server to Spigot mappings.
-If you are using Spigot/Bukkit plugins, your plugin will be assumed to be Spigot-mapped.
-This means that the server will have to deobfuscate and remap the plugin JAR when it's loaded for the first time.
+从1.20.5开始,Paper使用Mojang映射的运行时而不是将服务器重新混淆为Spigot映射。
+如果你使用Spigot/Bukkit插件,你的插件将被假定为Spigot映射。
+这意味着服务器在首次加载时必须反混淆并重新映射插件JAR。
 
 :::info
 
-`paperweight-userdev` already sets this attribute automatically. For more information see the [userdev](./userdev) documentation.
+`paperweight-userdev`已经自动设置了这个属性。有关更多信息,请参见[userdev](./userdev)文档。
 
 :::
 
-### Mojang mappings
+### Mojang映射
 
-To tell the server that your plugin is Mojang-mapped, you need to add the following code to your build script:
+要告诉服务器你的插件是Mojang映射的,你需要将以下代码添加到你的构建脚本中:
 
-:::note[Paper plugins]
+:::note[Paper插件]
 
-If you are using Paper plugins, this step is not needed as plugins will be assumed to be Mojang-mapped.
+如果你使用Paper插件,不需要这一步,因为插件将被假定为Mojang映射。
 
 :::
 
@@ -267,7 +267,7 @@ If you are using Paper plugins, this step is not needed as plugins will be assum
         attributes["paperweight-mappings-namespace"] = "mojang"
       }
     }
-    // if you have shadowJar configured
+    // 如果你配置了shadowJar
     tasks.shadowJar {
       manifest {
         attributes["paperweight-mappings-namespace"] = "mojang"
@@ -293,9 +293,9 @@ If you are using Paper plugins, this step is not needed as plugins will be assum
   </TabItem>
 </Tabs>
 
-### Spigot mappings
+### Spigot映射
 
-If you explicitly want to tell the server that your plugin is Spigot-mapped, you need to add the following code to your build script:
+如果你明确想告诉服务器你的插件是Spigot映射的,你需要将以下代码添加到你的构建脚本中:
 
 <Tabs groupId="author-front-matter">
   <TabItem value="gradle" label="Gradle Kotlin DSL">
@@ -305,7 +305,7 @@ If you explicitly want to tell the server that your plugin is Spigot-mapped, you
         attributes["paperweight-mappings-namespace"] = "spigot"
       }
     }
-    // if you have shadowJar configured
+    // 如果你配置了shadowJar
     tasks.shadowJar {
       manifest {
         attributes["paperweight-mappings-namespace"] = "spigot"
@@ -331,21 +331,21 @@ If you explicitly want to tell the server that your plugin is Spigot-mapped, you
   </TabItem>
 </Tabs>
 
-## Conclusion
+## 结论
 
-You should now have a project set up with Paper as a dependency.
-All you have left to do now is to compile your plugin and run it on a Paper server.
+现在你应该已经设置好了一个带有Paper依赖的项目。
+你剩下要做的就是编译你的插件并在Paper服务器上运行它。
 
 :::note
 
-If you want to streamline the process of testing a plugin, you can use the [Run-Task](https://github.com/jpenilla/run-task) Gradle plugin.
-It will automatically download a Paper server and run it for you.
+如果你想简化测试插件的过程,你可以使用[Run-Task](https://github.com/jpenilla/run-task) Gradle插件。
+它将自动下载Paper服务器并为你运行它。
 
 :::
 
 :::info
 
-If you are using IntelliJ, you can use the Gradle GUI `Build` menu to compile your plugin - found on the top right of your IDE.
-The output JAR of your plugin will be in the `build/libs` directory.
+如果你使用IntelliJ,你可以使用在IDE右上角找到的Gradle GUI `Build`菜单来编译你的插件。
+你的插件的输出JAR将在`build/libs`目录中。
 
 :::

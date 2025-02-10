@@ -1,29 +1,27 @@
 ---
-title: Installing or Updating Java
-description: How to install or update to Java 21 on Linux (apt/rpm), Windows, or Mac.
+title: 安装或更新 Java
+description: 如何在 Linux（apt/rpm）、Windows 或 Mac 上安装或更新到 Java 21。
 toc_max_heading_level: 5
 ---
 
-Installing Java is a critical first step to using or developing plugins for Paper and Velocity. 
-This guide will walk you through the recommended installation steps for most major
-platforms.
+安装 Java 是使用或开发 Paper 和 Velocity 插件的关键第一步。
+本指南将为您介绍大多数主要平台上推荐的安装步骤。
 
-:::caution[Do not use headless variants of Java!]
+:::caution[不要使用无头（headless）版本的 Java！]
 
-There are `headless` variants of Java which usually have a suffix of `-headless` in their package
-name. Those variants miss required dependencies for Paper. Therefore, using them is not recommended.
+有一些 Java 的 `headless` 变体，它们的包名通常带有 `-headless` 后缀。
+这些变体缺少 Paper 所需的依赖项。因此，不建议使用它们。
 
 :::
 
 :::tip
 
-This guide focuses on Amazon's Corretto OpenJDK distribution. This is because it offers the best
-installation experience on the most platforms. Corretto is, however, not the only OpenJDK vendor to
-choose from. Many alternatives exist such as [Eclipse Adoptium](https://adoptium.net/),
-[Microsoft](https://www.microsoft.com/openjdk) and
-[Azul Zulu](https://www.azul.com/downloads/?package=jdk). Note that the JDK Oracle distributes,
-while functionally identical, is **not** recommended due to an extremely unfriendly installer and
-previous hostile licensing.
+本指南主要介绍 Amazon 的 Corretto OpenJDK 发行版。这是因为它在大多数平台上提供了
+最好的安装体验。然而，Corretto 并不是唯一可选的 OpenJDK 供应商。
+还有许多替代选择，如 [Eclipse Adoptium](https://adoptium.net/)、
+[Microsoft](https://www.microsoft.com/openjdk) 和
+[Azul Zulu](https://www.azul.com/downloads/?package=jdk)。请注意，虽然 Oracle 分发的 JDK
+在功能上是相同的，但由于其安装程序极不友好且之前的许可证政策不友好，因此**不**推荐使用。
 
 :::
 
@@ -31,39 +29,39 @@ previous hostile licensing.
 
 ### Ubuntu/Debian
 
-Installing Java 21 on Debian-based Linux distributions is very simple. First, ensure your system has
-all required tools to successfully install Java.
+在基于 Debian 的 Linux 发行版上安装 Java 21 非常简单。首先，确保您的系统有
+所有成功安装 Java 所需的工具。
 
 ```bash
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install ca-certificates apt-transport-https gnupg wget
 ```
 
-Second, import the Amazon Corretto public key and apt repository.
+其次，导入 Amazon Corretto 公钥和 apt 仓库。
 
 ```bash
 wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
 echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
 ```
 
-Then, install Java 21 and other dependencies using the following command:
+然后，使用以下命令安装 Java 21 和其他依赖项：
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y java-21-amazon-corretto-jdk libxi6 libxtst6 libxrender1
 ```
 
-Proceed to [verify your installation](#verifying-installation).
+继续[验证您的安装](#验证安装)。
 
-### RPM-based
+### 基于 RPM 的系统
 
-To install Java 21 on CentOS, RHEL, Fedora, openSUSE, SLES, or any other RPM-based Linux
-distribution, execute the following commands depending on your package manager. Once you have
-finished, precede to [verify your installation](#verifying-installation).
+要在 CentOS、RHEL、Fedora、openSUSE、SLES 或任何其他基于 RPM 的 Linux
+发行版上安装 Java 21，请根据您的包管理器执行以下命令。完成后，
+继续[验证您的安装](#验证安装)。
 
 #### DNF
 
-DNF is used on Fedora, CentOS/RHEL 7+, and related distributions.
+DNF 用于 Fedora、CentOS/RHEL 7+ 及相关发行版。
 
 ```bash
 sudo rpm --import https://yum.corretto.aws/corretto.key
@@ -73,7 +71,7 @@ sudo dnf -y install java-21-amazon-corretto-devel
 
 #### Zypper
 
-Zypper is used on openSUSE, SLES, and related distributions.
+Zypper 用于 openSUSE、SLES 及相关发行版。
 
 ```bash
 sudo zypper addrepo https://yum.corretto.aws/corretto.repo
@@ -83,7 +81,7 @@ sudo zypper install java-21-amazon-corretto-devel
 
 #### YUM
 
-YUM is used on older releases of CentOS/RHEL, and excessively old releases of Fedora.
+YUM 用于较旧版本的 CentOS/RHEL 和非常旧的 Fedora 版本。
 
 ```bash
 sudo rpm --import https://yum.corretto.aws/corretto.key
@@ -91,69 +89,69 @@ sudo curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.r
 sudo yum -y install java-21-amazon-corretto-devel
 ```
 
-## Windows 10 & 11
+## Windows 10 和 11
 
-If you're on Windows 10 or 11, installing Java is just like installing any other program. Download
-the Amazon Corretto installer from
-[their website](https://corretto.aws/downloads/latest/amazon-corretto-21-x64-windows-jdk.msi).
+如果您使用的是 Windows 10 或 11，安装 Java 就像安装任何其他程序一样。从
+[他们的网站](https://corretto.aws/downloads/latest/amazon-corretto-21-x64-windows-jdk.msi)
+下载 Amazon Corretto 安装程序。
 
-Once you have run the installer, it is safe to click "next" through the whole process. No additional
-bloatware or toolbars will be installed, and all the required features are enabled out of the box.
+运行安装程序后，可以安全地一直点击"下一步"完成整个过程。不会安装任何额外的
+广告软件或工具栏，所有必需的功能都已默认启用。
 
-Now, open a command prompt and precede to [verify your installation](#verifying-installation).
+现在，打开命令提示符并继续[验证您的安装](#验证安装)。
 
 ## macOS/OS X
 
-If you're on macOS, the best way to manage Java installations is with a tool called
-[Homebrew](https://brew.sh). Follow the instructions on their homepage to install it. Then, in your
-terminal run the following command:
+如果您使用的是 macOS，管理 Java 安装的最佳方式是使用一个名为
+[Homebrew](https://brew.sh) 的工具。按照他们主页上的说明进行安装。然后，在您的
+终端中运行以下命令：
 
 ```bash
 brew install openjdk@21
 ```
 
-Once this command has completed, continue to [verify your installation](#verifying-installation).
+此命令完成后，继续[验证您的安装](#验证安装)。
 
 ## Pterodactyl
 
 :::note
 
-On Pterodactyl versions lower than `1.2.0`, an administrator account is required to change the Java
-version. These instructions will not apply.
+在低于 `1.2.0` 版本的 Pterodactyl 上，需要管理员账户才能更改 Java
+版本。这些说明将不适用。
 
 :::
 
-If you have started a Paper server with an incorrect Java version, Pterodactyl will automatically
-prompt you to update like this:
+如果您使用了错误的 Java 版本启动 Paper 服务器，Pterodactyl 将自动
+提示您更新，如下所示：
 
-![Pterodactyl Automatic Prompt](pterodactyl-prompt.png)
+![Pterodactyl 自动提示](pterodactyl-prompt.png)
 
-If this does not show up for you, the Java version can be manually changed. Navigate to the
-"Startup" tab of your server, select `Java 21` from the "Docker Image"
-dropdown as shown in the image below.
+如果您没有看到这个提示，可以手动更改 Java 版本。导航到服务器的
+"Startup"（启动）选项卡，从"Docker Image"（Docker 镜像）
+下拉菜单中选择 `Java 21`，如下图所示。
 
-![Pterodactyl Manual Java Version Change](pterodactyl-manual.png)
+![Pterodactyl 手动更改 Java 版本](pterodactyl-manual.png)
 
 :::note
 
-If you don't see `Java 21` in the dropdown, an administrator account is required to update the Paper egg.
+如果您在下拉菜单中没有看到 `Java 21`，需要管理员账户来更新 Paper egg。
 
 :::
 
-The Verifying Installation section does not apply for Pterodactyl.
+验证安装部分不适用于 Pterodactyl。
 
-## Verifying Installation
+## 验证安装
 
-Now that you have installed Java 21, run this command in your terminal to ensure the process was
-successful.
+现在您已经安装了 Java 21，在终端中运行此命令以确保安装过程
+成功。
 
 ```bash
 java -version
 ```
 
-The output should be similar to this. The important parts to look out for is that it starts with
-`openjdk 21` and contains `64-Bit` in the last line. If the output you get is similar to
-`java: command not found`, try creating a new terminal session.
+输出应该类似于这样。需要注意的重要部分是它以 `openjdk 21` 开头，
+并且在最后一行包含 `64-Bit`。如果您得到的输出类似于
+`java: command not found`，请尝试创建一个新的终端会话。
 
 ```
 openjdk version "21" 2023-09-19 LTS
@@ -161,5 +159,5 @@ OpenJDK Runtime Environment Corretto-21.0.0.35.1 (build 21+35-LTS)
 OpenJDK 64-Bit Server VM Corretto-21.0.0.35.1 (build 21+35-LTS, mixed mode, sharing)
 ```
 
-If your installation has failed, do not hesitate to reach out in the `#paper-help` channel of our
-[Discord](https://discord.gg/papermc) for support.
+如果您的安装失败了，请不要犹豫，在我们的 [Discord](https://discord.gg/papermc) 的
+`#paper-help` 频道寻求支持。

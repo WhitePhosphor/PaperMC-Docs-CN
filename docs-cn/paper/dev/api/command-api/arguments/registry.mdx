@@ -1,6 +1,6 @@
 ---
 slug: /dev/command-api/arguments/registry
-description: Documentation for arguments retrieving registry values.
+description: 检索注册表值的参数的文档。
 ---
 
 import ResourceAttributes from "./assets/registry-arguments/resource-attributes.mp4";
@@ -36,19 +36,19 @@ import ResourceWolfVariant from "./assets/registry-arguments/resource-wolf-varia
 import ResourceKeyItem from "./assets/registry-arguments/resourcekey-item.mp4";
 import EnchantsRegistry from "./assets/registry-arguments/enchants-registry.mp4";
 
-# Registry Arguments
-Registries in Minecraft hold all sort of information - possible item or block types, enchantments, potion effects, ... and more!
+# 注册表参数
+Minecraft 中的注册表保存了各种信息 - 可能的物品或方块类型、附魔、药水效果等等！
 
-There are two types of registry arguments: `resource` and `resourceKey`.
-The main difference between those arguments is the return value: The `resource` argument returns the parsed value, whilst the `resourceKey` only returns a `TypedKey`, which
-you can use to retrieve the value yourself.
+有两种类型的注册表参数：`resource` 和 `resourceKey`。
+这两个参数的主要区别在于返回值：`resource` 参数返回解析后的值，而 `resourceKey` 只返回一个 `TypedKey`，你可以用它
+来自己检索值。
 
-## Resource argument
-Just like any other argument, you can get a `ArgumentType<T>` reference to it using `ArgumentTypes.resource(RegistryKey<T>)`. A selection of possible registry keys can be
-found below. They are accessed in a static context using the <Javadoc name='io.papermc.paper.registry.RegistryKey'>`RegistryKey`</Javadoc> interface.
+## Resource 参数
+就像任何其他参数一样，你可以使用 `ArgumentTypes.resource(RegistryKey<T>)` 获取对它的 `ArgumentType<T>` 引用。可以在下面找到可能的注册表键的选择。
+它们通过使用 <Javadoc name='io.papermc.paper.registry.RegistryKey'>`RegistryKey`</Javadoc> 接口在静态上下文中访问。
 
-Each entry in `RegistryKey` returns a `RegistryKey<T>`. The `<T>` generic parameter here describes the return type. This means that if we were to retrieve
-<Javadoc name='io.papermc.paper.registry.RegistryKey#ITEM'>`RegistryKey.ITEM`</Javadoc>, the return type would be an `ItemType`, since it is defined as follows:
+`RegistryKey` 中的每个条目都返回一个 `RegistryKey<T>`。这里的 `<T>` 泛型参数描述了返回类型。这意味着如果我们要检索
+<Javadoc name='io.papermc.paper.registry.RegistryKey#ITEM'>`RegistryKey.ITEM`</Javadoc>，返回类型将是 `ItemType`，因为它的定义如下：
 
 ```java title="RegistryKey.java"
 public sealed interface RegistryKey<T> extends Keyed permits RegistryKeyImpl {
@@ -58,7 +58,7 @@ public sealed interface RegistryKey<T> extends Keyed permits RegistryKeyImpl {
 }
 ```
 
-And really, there isn't much more to it. For that exact reason, here is an example on the implementation of such an argument:
+实际上，就是这么简单。正是因为这个原因，这里有一个这样参数的实现示例：
 
 ```java
 public static LiteralCommandNode<CommandSourceStack> enchantmentRegistry() {
@@ -70,7 +70,7 @@ public static LiteralCommandNode<CommandSourceStack> enchantmentRegistry() {
                 if (ctx.getSource().getExecutor() instanceof Player player) {
                     final ItemStack stack = player.getInventory().getItemInMainHand();
                     stack.addUnsafeEnchantment(enchantment, 10);
-                    ctx.getSource().getSender().sendRichMessage("Enchanted <player>'s <item> with <enchantment>!",
+                    ctx.getSource().getSender().sendRichMessage("已为 <player> 的 <item> 添加 <enchantment>！",
                         Placeholder.component("player", player.name()),
                         Placeholder.component("item", Component.translatable(stack)),
                         Placeholder.component("enchantment", enchantment.displayName(10))
@@ -78,68 +78,67 @@ public static LiteralCommandNode<CommandSourceStack> enchantmentRegistry() {
                     return Command.SINGLE_SUCCESS;
                 }
 
-                ctx.getSource().getSender().sendRichMessage("<red>This command requires a player!");
+                ctx.getSource().getSender().sendRichMessage("<red>此命令需要一个玩家！");
                 return Command.SINGLE_SUCCESS;
             }))
         .build();
 }
 ```
 
-We define an `enchantment` argument using a enchantment registry key resource and retrieve the value of that using `ctx.getArgument("enchantment", Enchantment.class)`.
-Finally, we enchant the item of the executing player's hand with whatever enchantment the sender chose at level 10 and send a success message.
+我们使用附魔注册表键资源定义一个 `enchantment` 参数，并使用 `ctx.getArgument("enchantment", Enchantment.class)` 检索该值。
+最后，我们用发送者选择的任何附魔为玩家手中的物品附魔，等级为 10，并发送一条成功消息。
 
-Here is how it looks in-game:
+它在游戏中的效果如下：
 <FullWidthVideo src={EnchantsRegistry}/>
 
 :::warning
 
-There are certain edge-cases, where this argument, due to missing registries on the client, will cause a **Network Protocol Error**.
-Basically, the only argument where this is the case right now is with the `STRUCTURE` registry key.
+在某些边缘情况下，由于客户端缺少注册表，此参数会导致**网络协议错误**。
+基本上，目前唯一出现这种情况的参数是 `STRUCTURE` 注册表键。
 
 ```java
-// Registering this command will cause clients to not be able to connect to the server.
+// 注册此命令将导致客户端无法连接到服务器。
 final LiteralCommandNode<CommandSourceStack> invalidRegistryArgument = Commands.literal("registry-structure")
     .then(Commands.argument("value", ArgumentTypes.resource(RegistryKey.STRUCTURE)))
     .build();
 ```
 
-Due to this fact, it is advised to only use the `STRUCTURE` registry key argument with a `resourceKey(...)` argument type and parse the values yourself.
+由于这个事实，建议只使用带有 `resourceKey(...)` 参数类型的 `STRUCTURE` 注册表键，并自己解析值。
 
 :::
 
-## Resource key argument
-For the client, there is barely any difference between the using `ArgumentTypes.resource` or `ArgumentTypes.resourceKey`. The only difference is that
-using `ArgumentTypes.resourceKey` does not provide **error checking**. We can visualize this using `RegistryKey.ITEM`.
+## Resource key 参数
+对于客户端来说，使用 `ArgumentTypes.resource` 或 `ArgumentTypes.resourceKey` 几乎没有区别。唯一的区别是
+使用 `ArgumentTypes.resourceKey` 不提供**错误检查**。我们可以使用 `RegistryKey.ITEM` 来可视化这一点。
 
-Here is the tab completion when using `ArgumentTypes.resource(RegistryKey.ITEM)`:
+这是使用 `ArgumentTypes.resource(RegistryKey.ITEM)` 时的 tab 补全：
 <FullWidthVideo src={ResourceItem}/><br/>
 
-And here is the tab completion when using `ArgumentTypes.resourceKey(RegistryKey.ITEM)`:
+这是使用 `ArgumentTypes.resourceKey(RegistryKey.ITEM)` 时的 tab 补全：
 <FullWidthVideo src={ResourceKeyItem}/><br/>
 
 :::note
 
-In the example given above, due to an unhandled null pointer exception, the command does not successfully run. The code for that command is directly trying to use the value retrieved
-by the registry access by doing `ItemType item = RegistryAccess.registryAccess().getRegistry(itemKey.registryKey()).get(itemKey.key())`. If you try to do any
-operation with the result, it might be null and error.
+在上面给出的示例中，由于未处理的空指针异常，命令没有成功运行。该命令的代码直接尝试使用注册表访问检索的值
+通过执行 `ItemType item = RegistryAccess.registryAccess().getRegistry(itemKey.registryKey()).get(itemKey.key())`。如果你尝试对结果进行任何
+操作，它可能为空并出错。
 
-You should **always** check the result of a registry retrieval operation. An example for that is given below in the [direct code comparison](#direct-code-comparison).
+你应该**始终**检查注册表检索操作的结果。下面的[直接代码比较](#直接代码比较)中给出了一个示例。
 
 :::
 
-The resource argument provides a much cleaner user experience, whilst the `resourceKey` argument has one very important use case: You get the raw
-`TypedKey<T>` returned as an argument result. This object is particularly useful, as it provides all information required to be able to retrieve
-a value from a registry yourself.
+resource 参数提供了更好的用户体验，而 `resourceKey` 参数有一个非常重要的用例：你得到原始的
+`TypedKey<T>` 作为参数结果返回。这个对象特别有用，因为它提供了从注册表中检索
+值所需的所有信息。
 
 :::tip
 
-Unless you have a specific reason for using the `resourceKey` argument over the `resource` one, the `resource` argument is preferred due to the client-side error
-checking and simple usability.
+除非你有特定的理由使用 `resourceKey` 参数而不是 `resource` 参数，否则由于客户端错误检查和简单的可用性，推荐使用 `resource` 参数。
 
 :::
 
-### Direct code comparison
-Here is a simple code snipped on how one could use the `RegistryKey.ITEM` registry with a `resource` argument type:
+### 直接代码比较
+这是一个使用 `RegistryKey.ITEM` 注册表和 `resource` 参数类型的简单代码片段：
 
 ```java
 Commands.argument("item", ArgumentTypes.resource(RegistryKey.ITEM))
@@ -154,8 +153,8 @@ Commands.argument("item", ArgumentTypes.resource(RegistryKey.ITEM))
     });
 ```
 
-Here is the same code, using a `resourceKey` argument type. Instead of directly retrieving the argument using `ctx.getArgument("item", TypedKey.class)`, we instead use the
-<Javadoc name="io.papermc.paper.command.brigadier.argument.RegistryArgumentExtractor">`RegistryArgumentExtractor`</Javadoc> to retrieve our `TypedKey<ItemType>`.
+这是相同的代码，使用 `resourceKey` 参数类型。我们不直接使用 `ctx.getArgument("item", TypedKey.class)` 检索参数，而是使用
+<Javadoc name="io.papermc.paper.command.brigadier.argument.RegistryArgumentExtractor">`RegistryArgumentExtractor`</Javadoc> 来检索我们的 `TypedKey<ItemType>`。
 
 ```java
 Commands.argument("item", ArgumentTypes.resourceKey(RegistryKey.ITEM))
@@ -164,7 +163,7 @@ Commands.argument("item", ArgumentTypes.resourceKey(RegistryKey.ITEM))
         ItemType item = RegistryAccess.registryAccess().getRegistry(itemKey.registryKey()).get(itemKey.key());
 
         if (item == null) {
-            ctx.getSource().getSender().sendRichMessage("<red>Please provide a valid item!");
+            ctx.getSource().getSender().sendRichMessage("<red>请提供一个有效的物品！");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -176,21 +175,21 @@ Commands.argument("item", ArgumentTypes.resourceKey(RegistryKey.ITEM))
     })
 ```
 
-### Using a TypedKey
-First, in order to get the correct registry, you can run `RegistryAccess#getRegistry(RegistryKey)`. In order to get a `RegistryAccess`, you can just use the static
-`RegistryAccess.registryAccess()` method. The `RegistryKey` is retrieved using `TypedKey#registryKey()`.
-Now, in order to get the final value `T`, you can run `Registry#get(Key)`, where the key can be retrieved using `TypedKey#key()`. This will return the backing instance
-from that resource key or null, if no value has been found.
+### 使用 TypedKey
+首先，为了获取正确的注册表，你可以运行 `RegistryAccess#getRegistry(RegistryKey)`。要获取 `RegistryAccess`，你可以直接使用静态的
+`RegistryAccess.registryAccess()` 方法。`RegistryKey` 可以使用 `TypedKey#registryKey()` 检索。
+现在，要获取最终的值 `T`，你可以运行 `Registry#get(Key)`，其中的键可以使用 `TypedKey#key()` 检索。这将返回该资源键的后备实例
+或 null（如果未找到值）。
 
-### Use case over resource argument
-The main use case for this argument type is the ability to store the key (the value returned to you by `TypedKey#key`). If you want to be able to store the exact user
-input and be able to retrieve the backed instance without much trouble, that is the way to do it.
+### 相对于 resource 参数的用例
+此参数类型的主要用例是能够存储键（由 `TypedKey#key` 返回给你的值）。如果你想能够存储确切的用户
+输入并且能够在不费太多力气的情况下检索后备实例，那就是这样做的方法。
 
-## Registry key previews
+## 注册表键预览
 
-At the time of writing, the following RegistryKeys exist:
+在编写时，存在以下 RegistryKeys：
 
-|   RegistryKeys Field   |      Return Value      |                Preview Video                |
+|   RegistryKeys 字段   |      返回值      |                预览视频                |
 |------------------------|------------------------|---------------------------------------------|
 | ATTRIBUTE              | Attribute              | [Attribute](#attribute)                     |
 | BANNER_PATTERN         | PatternType            | [Banner Pattern](#banner-pattern)           |
@@ -293,7 +292,7 @@ At the time of writing, the following RegistryKeys exist:
 <FullWidthVideo src={ResourceSoundEvent}/>
 
 ### Structure
-This argument kicks the client, so no preview for this one ¯\\\_(ツ)\_/¯
+这个参数会踢出客户端，所以没有预览 ¯\\\_(ツ)\_/¯
 
 ### Structure type
 <FullWidthVideo src={ResourceStructureType}/>

@@ -1,98 +1,98 @@
 ---
 slug: /dev/roadmap
-description: Outlines the future intents and plans of the Paper project.
+description: 概述Paper项目的未来意图和计划。
 ---
 
-# Roadmap
+# 路线图
 
-Paper offers a rich API with a wide range of features that can help you unlock the full potential of your server.
-However, in order to make room for new features and improvements, some of the older APIs will be phased out. This page
-is intended to document any future API changes that are planned or possible deprecations that may be coming up.
+Paper提供了一个丰富的API,具有广泛的功能,可以帮助你充分发挥服务器的潜力。
+然而,为了给新功能和改进腾出空间,一些旧的API将被逐步淘汰。本页面
+旨在记录任何计划中的API变更或可能即将到来的弃用。
 
-## Future plans
+## 未来计划
 
-### Interface `ItemStack`s
+### 接口化的`ItemStack`
 
-When you create `ItemStack`s, you create an API representation of an <Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>.
-However, there are also places where you can obtain an `ItemStack` that is backed by a NMS object instead.
-This can lead to inconsistencies and unnecessary upkeep, since we need to maintain our own `ItemStack` implementation and also
-support the NMS-backed object using ugly methods due to it not being a plain interface.
+当你创建`ItemStack`时,你创建的是<Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>的API表示。
+然而,在某些地方你也可以获得由NMS对象支持的`ItemStack`。
+这可能导致不一致性和不必要的维护工作,因为我们需要维护我们自己的`ItemStack`实现,并且还要
+通过丑陋的方法支持NMS支持的对象,因为它不是一个简单的接口。
 
-In the future, `ItemStack` will be converted to an interface that allows developers to use an underlying
-`ItemStack` directly, instead of going through the API implementation.
+在未来,`ItemStack`将被转换为一个接口,允许开发者直接使用底层的
+`ItemStack`,而不是通过API实现。
 
-#### Precautions
+#### 注意事项
 
-- Avoid directly extending the `ItemStack` class.
-  - Custom implementations of this class are not supported.
+- 避免直接扩展`ItemStack`类。
+  - 不支持此类的自定义实现。
 
-### `ServerPlayer` reuse
-*Note: Only applies to NMS usage, will not apply to API.*
+### `ServerPlayer`重用
+*注意:仅适用于NMS使用,不适用于API。*
 
-Avoid directly storing player (`ServerPlayer`) entity instances. Currently, the player instance is reused when switching
-worlds, however, in the future, this behavior will be reverted to match Vanilla behavior. API entities (wrappers) will
-continue to function and will have their underlying instance replaced automatically.
+避免直接存储玩家(`ServerPlayer`)实体实例。目前,在切换
+世界时会重用玩家实例,但在未来,这种行为将恢复为匹配原版行为。API实体(包装器)将
+继续工作,并且会自动替换其底层实例。
 
-This is done to help reduce possible inconsistencies between world switching between Vanilla and Paper.
+这样做是为了帮助减少在原版和Paper之间切换世界时可能出现的不一致性。
 
-## Deprecation policy
+## 弃用政策
 
 :::warning
 
-It is highly recommended that you avoid using any APIs that are marked as deprecated.
+强烈建议你避免使用任何标记为已弃用的API。
 
 :::
 
-If you continue to use deprecated APIs, your server may become unstable and may not function as expected.
-You may also experience performance issues and other problems. To ensure the best possible experience and longevity
-of your plugins, it is important to stay up-to-date with the latest API changes and avoid using any APIs
-that are marked for deprecation.
+如果你继续使用已弃用的API,你的服务器可能会变得不稳定,可能无法按预期工作。
+你也可能遇到性能问题和其他问题。为了确保插件获得最佳体验和长期
+可用性,重要的是要跟上最新的API变更,避免使用任何标记为
+弃用的API。
 
-API marked with <Javadoc name={"java.lang.Deprecated"} project={"java"}>`@Deprecated`</Javadoc> should not be used in your code base,
-as alternative API may be able to be used instead. While certain API may continue to function despite being deprecated,
-it **cannot** be promised that this API won't be marked as deprecated for removal in the future.
+标记为<Javadoc name={"java.lang.Deprecated"} project={"java"}>`@Deprecated`</Javadoc>的API不应该在你的代码库中使用,
+因为可能有替代的API可以使用。虽然某些API可能在被弃用后仍然可以工作,
+但**不能**保证这些API将来不会被标记为待移除。
 ```java
 @Deprecated
-public void exampleMethod(); // Example deprecated method
+public void exampleMethod(); // 示例已弃用方法
 ```
 
-### Deprecated for removal
+### 标记为待移除
 
-In addition to being marked as `@Deprecated`, API may be marked as `forRemoval` with a given
-[`@ApiStatus.ScheduledForRemoval`](https://javadoc.io/doc/org.jetbrains/annotations/latest/org/jetbrains/annotations/ApiStatus.ScheduledForRemoval.html) version.
-API scheduled for removal should only occur within major release versions of Minecraft.
-It is highly recommended you migrate away from API scheduled for removal.
+除了标记为`@Deprecated`外,API还可能被标记为`forRemoval`,并给出
+[`@ApiStatus.ScheduledForRemoval`](https://javadoc.io/doc/org.jetbrains/annotations/latest/org/jetbrains/annotations/ApiStatus.ScheduledForRemoval.html)版本。
+计划移除的API应该只在Minecraft的主要版本更新中发生。
+强烈建议你迁移到不使用计划移除的API。
 
-It should be noted, that API scheduled for removal will be given adequate time to allow plugin developers to migrate
-away from said API.
+应该注意的是,计划移除的API将给予足够的时间让插件开发者迁移
+到其他API。
 ```java
 @ApiStatus.ScheduledForRemoval(inVersion = "1.20")
 @Deprecated(forRemoval = true)
-public void exampleMethod(); // Example method marked for removal in 1.20
+public void exampleMethod(); // 示例在1.20中标记为移除的方法
 ```
 
-## Deprecation reasons
+## 弃用原因
 
-There are many possible reasons why an API might be deprecated.
-Some of the common reasons why API can be deprecated is:
+API可能因多种可能的原因而被弃用。
+一些常见的API弃用原因是:
 
-### Old API
+### 旧API
 
-As the game evolves, the API may represent concepts that no longer exist in the core game.
+随着游戏的发展,API可能代表核心游戏中不再存在的概念。
 
-Old API is most likely not functional and/or may behave unexpectedly in newer versions of the game,
-therefore it may be scheduled for removal.
+旧API很可能在较新版本的游戏中无法正常工作和/或可能表现异常,
+因此可能会被计划移除。
 
-### Duplicate API
+### 重复的API
 
-Since Paper used to downstream Spigot, it can occasionally include APIs added by Spigot that clash with what Paper already has.
-Typically, Paper will deprecate Spigot’s API in favor of their own API.
+由于Paper过去是从Spigot下游而来,它有时可能包含与Paper已有的API冲突的Spigot添加的API。
+通常,Paper会弃用Spigot的API,转而使用自己的API。
 
-However, in cases where upstream offers a more powerful API, Paper’s may be deprecated instead.
+然而,在上游提供更强大的API的情况下,Paper的API可能会被弃用。
 
-### Obsolete API
-Paper strives to improve on APIs that may already be included. There may be some cases where we have built new
-APIs to offer as a replacement to another.
+### 过时的API
+Paper致力于改进可能已经包含的API。在某些情况下,我们可能已经构建了新的
+API作为另一个API的替代品。
 
-Obsolete API is expected for function for the far future and may not be scheduled for removal
-for a fair amount of time.
+过时的API预计在很长一段时间内都能正常工作,可能在相当长的时间内
+不会被计划移除。

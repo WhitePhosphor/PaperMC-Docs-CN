@@ -1,52 +1,51 @@
 ﻿---
 slug: /dev/scheduler
-description: A guide on how to use BukkitScheduler to run code at specific times.
+description: 如何使用BukkitScheduler在特定时间运行代码的指南。
 ---
 
-# Using the Scheduler
+# 使用调度器
 
-The <Javadoc name={"org.bukkit.scheduler.BukkitScheduler"}>`BukkitScheduler`</Javadoc> can be used to schedule your code to be run later or repeatedly.
+<Javadoc name={"org.bukkit.scheduler.BukkitScheduler"}>`BukkitScheduler`</Javadoc>可以用来调度你的代码在稍后或重复运行。
 
 :::info[Folia]
 
-This guide is designed for non-Folia Bukkit servers. If you are using Folia, you should use its respective schedulers.
+本指南是为非Folia的Bukkit服务器设计的。如果你使用Folia,你应该使用它各自的调度器。
 
 :::
 
-## What is a tick?
+## 什么是tick?
 
-Every game runs something called a game loop ,which essentially executes all the logic of the game over and over.
-A single execution of that loop in Minecraft is called a 'tick'.
+每个游戏都运行一个叫做游戏循环的东西,它本质上是一遍又一遍地执行游戏的所有逻辑。
+在Minecraft中,游戏循环的一次执行被称为一个"tick"。
 
-In Minecraft, there are 20 ticks per second or in other words, one tick every 50 milliseconds. This means that the game loop is executed
-20 times per second. A tick taking more than 50ms to execute is the moment when your server starts to fall behind on
-its work and lag.
+在Minecraft中,每秒有20个tick,换句话说,每50毫秒一个tick。这意味着游戏循环每秒执行
+20次。当一个tick执行时间超过50毫秒时,就是你的服务器开始落后于其工作并出现延迟的时候。
 
-A task that should run after 100 ticks will run after 5 seconds (100 ticks / 20 ticks per second = 5 seconds). However,
-if the server is only running at 10 ticks per second, a task that is scheduled to run after 100 ticks will take 10
-seconds.
+一个应该在100个tick后运行的任务将在5秒后运行(100个tick / 每秒20个tick = 5秒)。然而,
+如果服务器只以每秒10个tick的速度运行,那么一个计划在100个tick后运行的任务将需要10
+秒。
 
-### Converting between human units and Minecraft ticks
+### 在人类单位和Minecraft tick之间转换
 
-Every method of the scheduler that takes a delay or period uses ticks as a unit of time.
+调度器的每个方法在接受延迟或周期时都使用tick作为时间单位。
 
-Converting from human units to ticks and back is as simple as:
+在人类单位和tick之间转换很简单:
 - `ticks = seconds * 20`
 - `seconds = ticks / 20`
 
-You can make your code more readable by using the
-<Javadoc name={"java.util.concurrent.TimeUnit"} project={"java"}>`TimeUnit`</Javadoc>
-enum, e.g. to convert 5 minutes to ticks and back:
+你可以使用<Javadoc name={"java.util.concurrent.TimeUnit"} project={"java"}>`TimeUnit`</Javadoc>
+枚举使你的代码更易读,例如将5分钟转换为tick并返回:
 - `TimeUnit.MINUTES.toSeconds(5) * 20`
 - `TimeUnit.SECONDS.toMinutes(ticks / 20)`
 
-You can also use the `Tick` class from Paper to convert between human units and ticks, e.g. to convert 5 minutes to ticks:
-`Tick.tick().fromDuration(Duration.ofMinutes(5))` will yield `6000` ticks.
+你也可以使用Paper的`Tick`类在人类单位和tick之间转换,例如将5分钟转换为tick:
+`Tick.tick().fromDuration(Duration.ofMinutes(5))`将得到`6000`个tick。
 
-## Obtaining the scheduler
+## 获取调度器
 
-To obtain a scheduler, you can use the <Javadoc name={"org.bukkit.Server#getScheduler()"}>`getScheduler`</Javadoc> method
-on the <Javadoc name={"org.bukkit.Server"}>`Server`</Javadoc> class, e.g. in your `onEnable` method:
+要获取调度器,你可以使用<Javadoc name={"org.bukkit.Server"}>`Server`</Javadoc>类上的
+<Javadoc name={"org.bukkit.Server#getScheduler()"}>`getScheduler`</Javadoc>方法,
+例如在你的`onEnable`方法中:
 
 ```java
 @Override
@@ -55,58 +54,58 @@ public void onEnable() {
 }
 ```
 
-## Scheduling tasks
+## 调度任务
 
-Scheduling a task requires you to pass:
+调度任务需要你传递:
 
-- Your plugin's instance
-- The code to run, either with a <Javadoc name={"java.lang.Runnable"} project={"java"}>`Runnable`</Javadoc>
-or <Javadoc name={"java.util.function.Consumer"} project={"java"}>`Consumer`</Javadoc>`<`<Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc>`>`
-- The delay in ticks before the task should run for the first time
-- The period in ticks between each execution of the task, if you're scheduling a repeating task
+- 你的插件实例
+- 要运行的代码,可以是<Javadoc name={"java.lang.Runnable"} project={"java"}>`Runnable`</Javadoc>
+或<Javadoc name={"java.util.function.Consumer"} project={"java"}>`Consumer`</Javadoc>`<`<Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc>`>`
+- 任务首次运行前的延迟(以tick为单位)
+- 如果你在调度重复任务,则需要任务每次执行之间的周期(以tick为单位)
 
-### Difference between synchronous and asynchronous tasks
+### 同步和异步任务的区别
 
-#### Synchronous tasks (on the main thread)
+#### 同步任务(在主线程上)
 
-Synchronous tasks are tasks that are executed on the main server thread. This is the same
-thread that handles all game logic.
+同步任务是在服务器主线程上执行的任务。这是处理所有游戏逻辑的
+同一个线程。
 
-All tasks scheduled on the main thread will affect the server's performance. If your task
-is making web requests, accessing files, databases or otherwise time-consuming operations, you should consider using
-an asynchronous task.
+所有在主线程上调度的任务都会影响服务器的性能。如果你的任务
+正在进行网络请求、访问文件、数据库或其他耗时操作,你应该考虑使用
+异步任务。
 
-#### Asynchronous tasks (off the main thread)
+#### 异步任务(在主线程之外)
 
-Asynchronous tasks are tasks that are executed on separate threads, therefore will not directly affect
-your server's performance.
+异步任务是在单独的线程上执行的任务,因此不会直接影响
+你的服务器性能。
 
 :::warning
 
-**Large portions of the Bukkit API are not safe to use from within asynchronous tasks**. If a method changes or
-accesses the world state, it is not safe to be used from an asynchronous task.
+**Bukkit API的大部分内容在异步任务中使用都是不安全的**。如果一个方法改变或
+访问世界状态,它在异步任务中使用是不安全的。
 
 :::
 
 :::info
 
-While the tasks are executed on separate threads, they are still started from the main thread
-and will be affected if the server is lagging, an example would be 20 ticks not being exactly 1 second.
+虽然任务是在单独的线程上执行的,但它们仍然是从主线程启动的,
+并且如果服务器出现延迟,它们会受到影响,例如20个tick可能不正好是1秒。
 
-If you need a scheduler that runs independently of the server, consider using your own
-<Javadoc name={"java.util.concurrent.ScheduledExecutorService"} project={"java"}>`ScheduledExecutorService`</Javadoc>.
-You can follow [this guide](https://www.baeldung.com/java-executor-service-tutorial#ScheduledExecutorService) to learn how to use it.
+如果你需要一个独立于服务器运行的调度器,考虑使用你自己的
+<Javadoc name={"java.util.concurrent.ScheduledExecutorService"} project={"java"}>`ScheduledExecutorService`</Javadoc>。
+你可以按照[本指南](https://www.baeldung.com/java-executor-service-tutorial#ScheduledExecutorService)学习如何使用它。
 
 :::
 
-### Different ways to schedule tasks
+### 调度任务的不同方式
 
-#### Using `Runnable`
+#### 使用`Runnable`
 
-The <Javadoc name={"java.lang.Runnable"} project={"java"}>`Runnable`</Javadoc> interface is used for the simplest tasks
-that don't require a <Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc> instance.
+<Javadoc name={"java.lang.Runnable"} project={"java"}>`Runnable`</Javadoc>接口用于最简单的任务,
+这些任务不需要<Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc>实例。
 
-You can either implement it in a separate class, e.g.:
+你可以在单独的类中实现它,例如:
 
 ```java title="MyRunnableTask.java"
 public class MyRunnableTask implements Runnable {
@@ -119,7 +118,7 @@ public class MyRunnableTask implements Runnable {
 
     @Override
     public void run() {
-        this.plugin.getServer().broadcast(Component.text("Hello, World!"));
+        this.plugin.getServer().broadcast(Component.text("你好,世界!"));
     }
 }
 ```
@@ -127,21 +126,21 @@ public class MyRunnableTask implements Runnable {
 scheduler.runTaskLater(plugin, new MyRunnableTask(plugin), 20);
 ```
 
-Or use a lambda expression, which is great for simple and short tasks:
+或者使用lambda表达式,这对于简单和短小的任务来说很好:
 
 ```java
 scheduler.runTaskLater(plugin, /* Lambda: */ () -> {
-    this.plugin.getServer().broadcast(Component.text("Hello, World!"));
-}, /* End of the lambda */ 20);
+    this.plugin.getServer().broadcast(Component.text("你好,世界!"));
+}, /* Lambda结束 */ 20);
 ```
 
-#### Using `Consumer<BukkitTask>`
+#### 使用`Consumer<BukkitTask>`
 
-The <Javadoc name={"java.util.function.Consumer"} project={"java"}>`Consumer`</Javadoc> interface is used for tasks
-that require a <Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc> instance (usually in repeated tasks),
-e.g. when you want to cancel the task from inside it.
+<Javadoc name={"java.util.function.Consumer"} project={"java"}>`Consumer`</Javadoc>接口用于需要
+<Javadoc name={"org.bukkit.scheduler.BukkitTask"}>`BukkitTask`</Javadoc>实例的任务(通常在重复任务中),
+例如当你想从任务内部取消任务时。
 
-You can either implement it in a separate class similarly to the `Runnable`, e.g.:
+你可以类似于`Runnable`在单独的类中实现它,例如:
 
 ```java title="MyConsumerTask.java"
 public class MyConsumerTask implements Consumer<BukkitTask> {
@@ -161,7 +160,7 @@ public class MyConsumerTask implements Consumer<BukkitTask> {
             return;
         }
 
-        task.cancel(); // The entity is no longer valid, there's no point in continuing to run this task
+        task.cancel(); // 实体不再有效,继续运行这个任务没有意义
     }
 }
 ```
@@ -169,7 +168,7 @@ public class MyConsumerTask implements Consumer<BukkitTask> {
 scheduler.runTaskTimer(plugin, new MyConsumerTask(someEntityId), 0, 20);
 ```
 
-Or use a lambda expression, which again is much cleaner for short and simple tasks:
+或者使用lambda表达式,这对于简单和短小的任务来说同样更清晰:
 
 ```java
 scheduler.runTaskTimer(plugin, /* Lambda: */ task -> {
@@ -180,15 +179,15 @@ scheduler.runTaskTimer(plugin, /* Lambda: */ task -> {
         return;
     }
 
-    task.cancel(); // The entity is no longer valid, there's no point in continuing to run this task
-} /* End of the lambda */, 0, 20);
+    task.cancel(); // 实体不再有效,继续运行这个任务没有意义
+} /* Lambda结束 */, 0, 20);
 ```
 
-##### Using `BukkitRunnable`
+##### 使用`BukkitRunnable`
 
-<Javadoc name={"org.bukkit.scheduler.BukkitRunnable"}>`BukkitRunnable`</Javadoc> is a class that implements `Runnable`
-and holds a `BukkitTask` instance. This means that you do not need to access the task from inside the `run()` method,
-you can simply use the <Javadoc name={"org.bukkit.scheduler.BukkitRunnable#cancel()"}>`this.cancel()`</Javadoc> method:
+<Javadoc name={"org.bukkit.scheduler.BukkitRunnable"}>`BukkitRunnable`</Javadoc>是一个实现了`Runnable`
+并持有`BukkitTask`实例的类。这意味着你不需要从`run()`方法内部访问任务,
+你可以简单地使用<Javadoc name={"org.bukkit.scheduler.BukkitRunnable#cancel()"}>`this.cancel()`</Javadoc>方法:
 
 ```java title="CustomRunnable.java"
 public class CustomRunnable extends BukkitRunnable {
@@ -208,14 +207,14 @@ public class CustomRunnable extends BukkitRunnable {
             return;
         }
 
-        this.cancel(); // The entity is no longer valid, there's no point in continuing to run this task
+        this.cancel(); // 实体不再有效,继续运行这个任务没有意义
     }
 }
 ```
 
-This simply adds a potion effect until the entity dies.
+这只是在实体死亡之前一直添加药水效果。
 
-#### Using a delay of 0 ticks
+#### 使用0 tick延迟
 
-A delay of 0 ticks is treated as you wanting to run the task on the next tick. If you schedule a task with a delay of 0 ticks
-while the server is starting, or before it is enabled, it will be executed before the server is enabled.
+0 tick的延迟被视为你想在下一个tick运行任务。如果你在服务器启动时或在启用之前调度一个延迟为0 tick的任务,
+它将在服务器启用之前执行。

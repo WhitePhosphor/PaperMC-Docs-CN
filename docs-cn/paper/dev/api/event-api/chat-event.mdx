@@ -1,38 +1,38 @@
 ---
 slug: /dev/chat-events
-description: An outline on AsyncChatEvent and how to handle it.
+description: AsyncChatEvent 及其处理方法的概述。
 ---
 
-# Chat Events
+# 聊天事件
 
-The chat event has evolved a few times over the years.
-This guide will explain how to properly use the new <Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
-and its <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc>.
-The <Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
-is an improved version of the old <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent"}>`AsyncPlayerChatEvent`</Javadoc>
-that allows you to render chat messages individually for each player.
+聊天事件在过去几年中经历了几次演变。
+本指南将解释如何正确使用新的 <Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
+及其 <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc>。
+<Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
+是旧的 <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent"}>`AsyncPlayerChatEvent`</Javadoc> 的改进版本，
+它允许你为每个玩家单独渲染聊天消息。
 
 :::note[`AsyncChatEvent` vs `ChatEvent`]
 
-The key difference between <Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
-and <Javadoc name={"io.papermc.paper.event.player.ChatEvent"}>`ChatEvent`</Javadoc> is that
-<Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc> is fired asynchronously.
+<Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc>
+和 <Javadoc name={"io.papermc.paper.event.player.ChatEvent"}>`ChatEvent`</Javadoc> 的主要区别在于
+<Javadoc name={"io.papermc.paper.event.player.AsyncChatEvent"}>`AsyncChatEvent`</Javadoc> 是异步触发的。
 
-This means that it does not block the main thread and sends the chat message when the listener has completed.
-Be aware that using the Bukkit API in an asynchronous context (i.e. the event handler) is unsafe and exceptions may be thrown.
-If you need to use the Bukkit API, you can use <Javadoc name={"io.papermc.paper.event.player.ChatEvent"}>`ChatEvent`</Javadoc>.
-However, we recommend using [`BukkitScheduler`](../scheduler.mdx).
+这意味着它不会阻塞主线程，并在监听器完成后发送聊天消息。
+请注意，在异步上下文（即事件处理器）中使用 Bukkit API 是不安全的，可能会抛出异常。
+如果你需要使用 Bukkit API，你可以使用 <Javadoc name={"io.papermc.paper.event.player.ChatEvent"}>`ChatEvent`</Javadoc>。
+不过，我们建议使用 [`BukkitScheduler`](../scheduler.mdx)。
 
 :::
 
-## Understanding the renderer
+## 理解渲染器
 
-Before we can start using the new chat event, we need to understand how the new renderer works.
-The renderer is Paper's way of allowing plugins to modify the chat message before it is sent to the player.
-This is done by using the <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> interface with its
+在我们开始使用新的聊天事件之前，我们需要理解新的渲染器是如何工作的。
+渲染器是 Paper 允许插件在消息发送给玩家之前修改聊天消息的方式。
+这是通过使用 <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> 接口及其
 <Javadoc name={"io.papermc.paper.chat.ChatRenderer#render(org.bukkit.entity.Player,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,net.kyori.adventure.audience.Audience)"}>`render`</Javadoc>
-method. Previously, this was done by using the <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent"}>`AsyncPlayerChatEvent`</Javadoc>
-with its <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent#setFormat(java.lang.String)"}>`setFormat`</Javadoc> method.
+方法来实现的。之前，这是通过使用 <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent"}>`AsyncPlayerChatEvent`</Javadoc>
+的 <Javadoc name={"org.bukkit.event.player.AsyncPlayerChatEvent#setFormat(java.lang.String)"}>`setFormat`</Javadoc> 方法来完成的。
 
 ```java title="ChatRenderer#render"
 public Component render(Player source, Component sourceDisplayName, Component message, Audience viewer) {
@@ -40,47 +40,47 @@ public Component render(Player source, Component sourceDisplayName, Component me
 }
 ```
 
-- The <Javadoc name={"io.papermc.paper.chat.ChatRenderer#render(org.bukkit.entity.Player,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,net.kyori.adventure.audience.Audience)"}>`render`</Javadoc> method is called when a chat message is sent to the player.
-- The `source` parameter is the player that sent the message.
-- The `sourceDisplayName` parameter is the display name of the player that sent the message.
-- The `message` parameter is the message that was sent.
-- The `viewer` parameter is the player that is receiving the message.
+- <Javadoc name={"io.papermc.paper.chat.ChatRenderer#render(org.bukkit.entity.Player,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,net.kyori.adventure.audience.Audience)"}>`render`</Javadoc> 方法在聊天消息发送给玩家时被调用。
+- `source` 参数是发送消息的玩家。
+- `sourceDisplayName` 参数是发送消息的玩家的显示名称。
+- `message` 参数是发送的消息。
+- `viewer` 参数是接收消息的玩家。
 
 :::tip[`ChatRenderer.ViewerUnaware`]
 
-If your renderer does not need to know about the viewer, you can use the
+如果你的渲染器不需要知道查看者的信息，你可以使用
 <Javadoc name={"io.papermc.paper.chat.ChatRenderer$ViewerUnaware"}>`ChatRenderer.ViewerUnaware`</Javadoc>
-interface instead of the <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> interface.
-This will benefit performance as the message will only be rendered once instead of each individual player.
+接口而不是 <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> 接口。
+这将提高性能，因为消息只会被渲染一次，而不是为每个玩家单独渲染。
 
 :::
 
-## Using the renderer
+## 使用渲染器
 
-There are two ways to use the renderer.
-1. Implementing the <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> interface in a class.
-2. Using a lambda expression.
+有两种使用渲染器的方式：
+1. 在一个类中实现 <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc> 接口。
+2. 使用 lambda 表达式。
 
-Depending on the complexity of your renderer, you may want to use one or the other.
+根据你的渲染器的复杂程度，你可能想使用其中一种方式。
 
-### Implementing the `ChatRenderer` interface
+### 实现 `ChatRenderer` 接口
 
-The first way of using the renderer is by implementing the <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc>
-interface in a class. In this example, we will be using our `ChatListener` class.
+使用渲染器的第一种方式是在一个类中实现 <Javadoc name={"io.papermc.paper.chat.ChatRenderer"}>`ChatRenderer`</Javadoc>
+接口。在这个例子中，我们将使用我们的 `ChatListener` 类。
 
-Next, we need to tell the event to use the renderer by using the
-<Javadoc name={"io.papermc.paper.event.player.AbstractChatEvent#renderer()"}>`renderer`</Javadoc> method.
+接下来，我们需要通过使用
+<Javadoc name={"io.papermc.paper.event.player.AbstractChatEvent#renderer()"}>`renderer`</Javadoc> 方法告诉事件使用渲染器。
 
 ```java title="ChatListener.java"
-public class ChatListener implements Listener, ChatRenderer { // Implement the ChatRenderer and Listener interface
+public class ChatListener implements Listener, ChatRenderer { // 实现 ChatRenderer 和 Listener 接口
 
-    // Listen for the AsyncChatEvent
+    // 监听 AsyncChatEvent
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        event.renderer(this); // Tell the event to use our renderer
+        event.renderer(this); // 告诉事件使用我们的渲染器
     }
 
-    // Override the render method
+    // 重写 render 方法
     @Override
     public Component render(Player source, Component sourceDisplayName, Component message, Audience viewer) {
         // ...
@@ -90,14 +90,14 @@ public class ChatListener implements Listener, ChatRenderer { // Implement the C
 
 :::note
 
-If you decide to create a separate class for your renderer, it is important to know that you don't need to instantiate the class every time the event is called.
-In this case, you can use [the singleton pattern](https://en.wikipedia.org/wiki/Singleton_pattern) to create a single instance of the class.
+如果你决定为你的渲染器创建一个单独的类，重要的是要知道你不需要在每次调用事件时都实例化该类。
+在这种情况下，你可以使用[单例模式](https://en.wikipedia.org/wiki/Singleton_pattern)来创建该类的单个实例。
 
 :::
 
-### Using a lambda expression
+### 使用 lambda 表达式
 
-Another way of using the renderer is by using a lambda expression.
+使用渲染器的另一种方式是使用 lambda 表达式。
 
 ```java title="ChatListener.java"
 public class ChatListener implements Listener {
@@ -111,20 +111,20 @@ public class ChatListener implements Listener {
 }
 ```
 
-## Rendering the message
+## 渲染消息
 
-Now that we have our renderer, we can start rendering the message.
+现在我们有了渲染器，我们可以开始渲染消息了。
 
-Let's say we want to render our chat to look like this:
+假设我们想要让我们的聊天看起来像这样：
 
 ![](./assets/plain-message-rendering.png)
 
-To do this, we need to return a new [`Component`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/Component.html) that contains the message we want to send.
+要做到这一点，我们需要返回一个包含我们想要发送的消息的新 [`Component`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/Component.html)。
 
 ```java title="ChatListener.java"
 public class ChatListener implements Listener, ChatRenderer {
 
-    // Listener logic
+    // 监听器逻辑
 
     @Override
     public Component render(Player source, Component sourceDisplayName, Component message, Audience viewer) {
@@ -135,10 +135,10 @@ public class ChatListener implements Listener, ChatRenderer {
 }
 ```
 
-Now you can see that the message is rendered as we wanted it to be.
+现在你可以看到消息按照我们想要的方式渲染了。
 
-## Conclusion
+## 总结
 
-That is all you need to know about the new chat event and its renderer.
-Of course there are many more things you can do with components in general.
-If you want to learn more about components, you can read the [Component Documentation](https://docs.advntr.dev/text.html).
+这就是你需要了解的关于新的聊天事件及其渲染器的全部内容。
+当然，你可以用组件做更多的事情。
+如果你想了解更多关于组件的信息，你可以阅读 [Component 文档](https://docs.advntr.dev/text.html)。

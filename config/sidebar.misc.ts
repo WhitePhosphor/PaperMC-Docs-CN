@@ -4,7 +4,7 @@ const misc: SidebarsConfig = {
   primary: [
     {
       type: "category",
-      label: "Miscellaneous Documentation",
+      label: "杂项文档",
       collapsed: false,
       collapsible: false,
       link: {
@@ -14,7 +14,7 @@ const misc: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Tools",
+          label: "工具",
           collapsed: false,
           collapsible: true,
           link: {

@@ -2,32 +2,25 @@
 slug: /getting-started
 ---
 
-# Getting Started
+# 入门指南
 
-This page covers how to install and set up a minimal configuration of Velocity.
+本页面介绍如何安装和设置Velocity的最小配置。
 
-## Installing Java
+## 安装Java
 
-Velocity is written in Java, so if you do not already have Java installed, you will need to install
-it before you continue. Velocity requires Java <Property name="VELOCITY_JAVA_MIN" /> or newer. See our
-[Java installation guide](/misc/java-install) for detailed instructions.
+Velocity是用Java编写的,所以如果你还没有安装Java,你需要在继续之前安装它。Velocity需要Java <Property name="VELOCITY_JAVA_MIN" />或更新版本。有关详细说明,请参阅我们的[Java安装指南](/misc/java-install)。
 
-## Downloading Velocity
+## 下载Velocity
 
-Head over to the [downloads](https://papermc.io/downloads/velocity) page to get the latest version
-of Velocity. We recommend getting the latest stable version. After downloading Velocity, move the
-JAR file to a dedicated folder for just the proxy or upload it to your server.
+前往[下载](https://papermc.io/downloads/velocity)页面获取最新版本的Velocity。我们建议获取最新的稳定版本。下载Velocity后,将JAR文件移动到专门用于代理的文件夹中或上传到你的服务器。
 
-## Launching Velocity for the first time
+## 首次启动Velocity
 
-Once you have downloaded Velocity, we will launch it for the first time to generate the
-configuration file, `velocity.toml`. You can use the start script created to launch Velocity once
-you're done configuring Velocity.
+一旦你下载了Velocity,我们将首次启动它以生成配置文件`velocity.toml`。配置完Velocity后,你可以使用创建的启动脚本来启动Velocity。
 
-### Launching Velocity under Windows
+### 在Windows下启动Velocity
 
-Create a `start.bat` with the following contents in the same directory where you intend to place the
-proxy files.
+在你打算放置代理文件的同一目录中创建一个包含以下内容的`start.bat`。
 
 ```batch title="start.bat"
 @echo off
@@ -37,19 +30,15 @@ pause
 
 :::tip
 
-Make sure to change the `velocity.jar` to the name of the Velocity JAR that you downloaded, or
-rename the Velocity JAR to `velocity.jar`.
+确保将`velocity.jar`更改为你下载的Velocity JAR的名称,或将Velocity JAR重命名为`velocity.jar`。
 
 :::
 
-Once saved, double-click the `start.bat` file. If it worked, you should now receive a console
-similar to the output in the next section.
+保存后,双击`start.bat`文件。如果成功,你现在应该会看到类似下一节中输出的控制台。
 
-### Launching Velocity under macOS or Linux
+### 在macOS或Linux下启动Velocity
 
-Create a `start.sh` with the following contents in the same directory where you intend to place the
-proxy files. You may do this using a file transfer client, or using a text editor running on the
-host.
+在你打算放置代理文件的同一目录中创建一个包含以下内容的`start.sh`。你可以使用文件传输客户端或在主机上运行的文本编辑器来完成此操作。
 
 ```bash title="start.sh"
 #!/bin/sh
@@ -57,14 +46,11 @@ host.
 java -Xms1G -Xmx1G -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15 -jar velocity*.jar
 ```
 
-Once saved, open a terminal (or log into the machine) if you haven't already, navigate to the
-directory where you have placed the Velocity JAR file and the `start.sh` file. Then run
-`chmod +x start.sh` and then `./start.sh`. If it worked, you should now receive a console similar to
-the output in the next section.
+保存后,如果你还没有打开终端(或登录到机器),请打开终端,导航到你放置Velocity JAR文件和`start.sh`文件的目录。然后运行`chmod +x start.sh`和`./start.sh`。如果成功,你现在应该会看到类似下一节中输出的控制台。
 
-## After launch
+## 启动后
 
-Here's a sample of what you'll see once we've started the proxy:
+以下是我们启动代理后你将看到的示例:
 
 ```log
 [05:41:13 INFO]: Booting up Velocity 3.3.0-SNAPSHOT (git-74c932e5-b363)...
@@ -76,8 +62,7 @@ Here's a sample of what you'll see once we've started the proxy:
 [05:41:13 INFO]: Done (0.36s)!
 ```
 
-Velocity has launched, and you are now ready to configure the proxy completely. Go ahead and type
-`end` at the console and press enter. The proxy will shut down:
+Velocity已启动,你现在可以完全配置代理了。在控制台输入`end`并按回车。代理将关闭:
 
 ```log
 > end
@@ -85,59 +70,38 @@ Velocity has launched, and you are now ready to configure the proxy completely. 
 [05:42:10 INFO]: Closing endpoint /0.0.0.0:25565
 ```
 
-If you used the Windows batch script from earlier, the window will ask you to press a key. You can
-either press a key or close the command window.
+如果你使用了前面的Windows批处理脚本,窗口会要求你按任意键。你可以按任意键或关闭命令窗口。
 
-### Configuring your servers
+### 配置你的服务器
 
-We now need to configure each server to accept connections from the proxy.
+现在我们需要配置每个服务器以接受来自代理的连接。
 
-Velocity is a highly configurable proxy. While most users will not need to change everything in the
-config, there are tons of options covered
-[on the configuration reference page](../reference/configuration.md) along with an explanation on
-how each option works. However, in this section we will do the bare minimum to get the proxy up and
-running.
+Velocity是一个高度可配置的代理。虽然大多数用户不需要更改配置中的所有内容,但在[配置参考页面](../reference/configuration.md)上有大量选项,并附有每个选项的工作原理说明。但是,在本节中,我们将做最低限度的配置以使代理启动并运行。
 
-Open the `velocity.toml` file in a text editor and search for the `[servers]` section. This section
-specifies the servers that Velocity can connect to. Here's what the `[servers]` section will look
-like initially:
+在文本编辑器中打开`velocity.toml`文件,搜索`[servers]`部分。此部分指定Velocity可以连接的服务器。以下是`[servers]`部分最初的样子:
 
 ```toml title="velocity.toml"
 [servers]
-# Configure your servers here. Each key represents the server's name, and the value
-# represents the IP address of the server to connect to.
+# 在此处配置你的服务器。每个键代表服务器的名称,值代表要连接的服务器的IP地址。
 lobby = "127.0.0.1:30066"
 factions = "127.0.0.1:30067"
 minigames = "127.0.0.1:30068"
 
-# In what order we should try servers when a player logs in or is kicked from a server.
+# 当玩家登录或从服务器被踢出时,我们应该按什么顺序尝试服务器。
 try = [
   "lobby",
   "factions"
 ]
 ```
 
-On the left side, you will specify a name for the server (for example, `lobby`) and on right is a
-string indicating the IP address and port for the server. You will now need to add your servers to
-the list. You can change the list of servers as needed.
+在左侧,你将为服务器指定一个名称(例如,`lobby`),右侧是一个字符串,指示服务器的IP地址和端口。你现在需要将你的服务器添加到列表中。你可以根据需要更改服务器列表。
 
-The `try` setting is special. It is a list of servers Velocity should try to connect the player to
-when the player first logs onto the proxy or gets kicked from a server. If you decided to change the
-name of the `lobby` server, then you should replace `lobby` in this list with the name you chose for
-the first server the player should log into first.
+`try`设置很特殊。它是一个列表,列出了当玩家首次登录到代理或从服务器被踢出时,Velocity应该尝试连接玩家的服务器。如果你决定更改`lobby`服务器的名称,那么你应该在此列表中将`lobby`替换为你为玩家应该首先登录的服务器选择的名称。
 
 :::caution
 
-The following setup is generic and is intended to apply to any Minecraft server. This setup is not
-only not ergonomic (players will lack skins, proper UUIDs, and all connections will appear to come
-from the proxy) but also **dangerously insecure**. After you place your servers in offline mode, you
-**must** follow the "Player Information Forwarding" and "Securing Your Servers" topics to complete
-your setup.
+以下设置是通用的,旨在适用于任何Minecraft服务器。这种设置不仅不符合人体工程学(玩家将缺少皮肤、正确的UUID,所有连接都将显示来自代理),而且还**危险地不安全**。在你将服务器设置为离线模式后,你**必须**按照"玩家信息转发"和"保护你的服务器"主题完成设置。
 
 :::
 
-Open the `server.properties` file for each of your servers and set the `online-mode` setting to
-`false`. This allows Velocity to connect to your server. Once you're done, restart your server.
-While Velocity is now ready for use, you will almost certainly want to
-[secure your servers](../how-to/security.md) and
-[configure player information forwarding](forwarding.md).
+打开每个服务器的`server.properties`文件,将`online-mode`设置为`false`。这允许Velocity连接到你的服务器。完成后,重启你的服务器。虽然Velocity现在已准备好使用,但你几乎肯定想要[保护你的服务器](../how-to/security.md)和[配置玩家信息转发](forwarding.md)。

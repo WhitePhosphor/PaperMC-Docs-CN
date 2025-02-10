@@ -1,13 +1,13 @@
 ---
 slug: /credits
-description: The credits for all the different libraries used by Velocity.
+description: Velocity使用的不同库的致谢。
 ---
 
-# Libraries Used
+# 使用的库
 
-Velocity uses a number of open-source libraries:
+Velocity使用了许多开源库:
 
-| Name                                                                            | Author                                                                   | License                                                                                                      |
+| 名称                                                                            | 作者                                                                   | 许可证                                                                                                      |
 |---------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | [Guava](https://github.com/google/guava)                                        | [Google](https://github.com/google)                                      | [Apache License 2.0](https://github.com/google/guava/blob/master/COPYING)                                    |
 | [Gson](https://github.com/google/gson)                                          | [Google](https://github.com/google)                                      | [Apache License 2.0](https://github.com/google/gson/blob/master/LICENSE)                                     |

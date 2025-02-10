@@ -1,43 +1,43 @@
 ---
 slug: /dev/command-api/basics/requirements
-description: A guide to setting requirements for commands.
+description: 命令要求设置指南。
 ---
 
 import ClientServerMismatch from "./assets/client-server-mismatch.png";
 
-# Command Requirements
-Sometimes you want to limit a player's ability to use and/or view certain commands or subcommands. Exactly for this purpose,
-the `ArgumentBuilder<S>` class has a `requires(Predicate<S>)` method to define a requirement in order to use that specific branch of a command tree.
-As always, the generic parameter `S` is just a `CommandSourceStack`, providing us with the executing entity, the command sender, and the location of the command.
+# 命令要求
+有时你想限制玩家使用和/或查看某些命令或子命令的能力。正是为了这个目的，
+`ArgumentBuilder<S>` 类有一个 `requires(Predicate<S>)` 方法来定义使用命令树特定分支的要求。
+和往常一样，泛型参数 `S` 就是一个 `CommandSourceStack`，为我们提供执行实体、命令发送者和命令位置。
 
-## Defining permissions
-One of the most common usecases for requirements are permissions. Usually, these are checked on the **command sender**, as that is the actual entity/console/object
-which ran the command, even if it is run as someone else (the executor). A simple command with a permission might look like this:
+## 定义权限
+要求最常见的用例之一是权限。通常，这些权限是在**命令发送者**上检查的，因为那是实际运行命令的实体/控制台/对象，
+即使它是作为其他人（执行者）运行的。一个带有权限的简单命令可能看起来像这样：
 
 ```java
 Commands.literal("testcmd")
     .requires(sender -> sender.getSender().hasPermission("permission.test"))
     .executes(ctx -> {
-        ctx.getSource().getSender().sendRichMessage("<gold>You have permission to run this command!");
+        ctx.getSource().getSender().sendRichMessage("<gold>你有权限运行这个命令！");
         return Command.SINGLE_SUCCESS;
     });
 ```
 
-This command requires the `permission.test` permission to be had by a sender.
-But you cannot only define permissions, you can also require a sender to be a server operator, like this:
+这个命令要求发送者具有 `permission.test` 权限。
+但你不仅可以定义权限，还可以要求发送者是服务器操作员，像这样：
 
 ```java
 Commands.literal("testcmd")
     .requires(sender -> sender.getSender().isOp())
     .executes(ctx -> {
-        ctx.getSource().getSender().sendRichMessage("<gold>You are a server operator!");
+        ctx.getSource().getSender().sendRichMessage("<gold>你是服务器操作员！");
         return Command.SINGLE_SUCCESS;
     });
 ```
 
-## Defining more advanced predicates
-You don't have to limit yourself to checking just for permissions - since it is a predicate, any boolean can be returned. For example, you can check for whether
-a player has a diamond sword in their inventory:
+## 定义更高级的谓词
+你不必仅限于检查权限 - 因为它是一个谓词，可以返回任何布尔值。例如，你可以检查
+玩家的物品栏中是否有钻石剑：
 
 ```java
 Commands.literal("givesword")
@@ -51,28 +51,28 @@ Commands.literal("givesword")
     });
 ```
 
-At first glance, this works just fine. But it does have a very big flaw - since the player's client is not aware of the requirement, it still shows the command
-as executable, even if the requirement resolves as false. But if the client tries to run the command, the server reports that this command doesn't exist (meaning
-the requirement was not met):
+乍看之下，这工作得很好。但它有一个很大的缺陷 - 由于客户端不知道这个要求，它仍然显示命令
+可以执行，即使要求解析为 false。但如果客户端尝试运行该命令，服务器会报告该命令不存在（意味着
+要求未满足）：
 
 <img src={ClientServerMismatch} style={{width: '100%', marginBottom: '1%'}}/>
 
-How can we solve this? The `Player` interface has a method called <Javadoc name='org.bukkit.entity.Player#updateCommands()'>`#updateCommands()`</Javadoc> just for this usecase. It resends the currently registered commands back to the
-client in an attempt to reload commands. For now, we can create a new command with which the player can update its own commands in order to resync its command state:
+我们如何解决这个问题？`Player` 接口有一个名为 <Javadoc name='org.bukkit.entity.Player#updateCommands()'>`#updateCommands()`</Javadoc> 的方法专门用于这种情况。它重新发送当前注册的命令回
+客户端，试图重新加载命令。现在，我们可以创建一个新命令，让玩家可以更新自己的命令以重新同步其命令状态：
 
 ```java
 Commands.literal("reloadcommands")
     .executes(ctx -> {
         if (ctx.getSource().getExecutor() instanceof Player player) {
             player.updateCommands();
-            player.sendRichMessage("<gold>Successfully updated your commands!");
+            player.sendRichMessage("<gold>成功更新了你的命令！");
         }
 
         return Command.SINGLE_SUCCESS;
     });
 ```
 
-## Automating command reloads
-Forcing a player to reload their own commands is not a viable option for user experience. For this reason, you can **automate** this behavior. It is safe to call
-the update commands method as often as required, but it should generally be avoided as it can cost a great deal of bandwidth. If possible, you should instead place
-these in very specific spots. Furthermore, this method is completely thread safe, meaning you are free to call it from an asynchronous context.
+## 自动化命令重载
+强制玩家重载自己的命令对用户体验来说不是一个可行的选择。出于这个原因，你可以**自动化**这个行为。调用
+更新命令方法次数多少都是安全的，但通常应该避免，因为它可能会消耗大量带宽。如果可能的话，你应该将这些
+放在非常具体的位置。此外，这个方法是完全线程安全的，这意味着你可以从异步上下文中自由调用它。

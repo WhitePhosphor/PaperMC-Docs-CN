@@ -1,6 +1,6 @@
 ---
 slug: /dev/command-api/misc/basic-command
-description: An overview of a Bukkit-style command declaration using Brigadier.
+description: 使用 Brigadier 以 Bukkit 风格声明命令的概述。
 ---
 
 import BroadcastCommand from "./assets/broadcast-command.png";
@@ -8,19 +8,19 @@ import BroadcastSuggestionsFinished from "./assets/broadcast-suggestions-finishe
 import BroadcastSuggestionsUnfinished from "./assets/broadcast-suggestions-unfinished.png";
 import BroadcastSuggestionsNone from "./assets/broadcast-suggestions-none.png";
 
-# Basic Commands
-For very simple commands Paper has a way to declare Bukkit-style commands by implementing the <Javadoc name='io.papermc.paper.command.brigadier.BasicCommand'>`BasicCommand`</Javadoc> interface.
+# 基础命令
+对于非常简单的命令，Paper 提供了一种通过实现 <Javadoc name='io.papermc.paper.command.brigadier.BasicCommand'>`BasicCommand`</Javadoc> 接口来声明 Bukkit 风格命令的方式。
 
-This interface has one method you have to override:
+这个接口有一个你必须重写的方法：
 - `void execute(CommandSourceStack commandSourceStack, String[] args)`
 
-And three more, optional methods which you can, but don't have to override:
+还有三个可选的方法，你可以选择重写，但不是必须的：
 - `Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)`
 - `boolean canUse(CommandSender sender)`
 - `@Nullable String permission()`
 
-## Simple usage
-Implementing the execute method, your class might look like this:
+## 简单用法
+实现 execute 方法，你的类可能看起来像这样：
 ```java title="YourCommand.java"
 package your.package.name;
 
@@ -38,31 +38,31 @@ public class YourCommand implements BasicCommand {
 }
 ```
 
-If you have seen the `CommandContext<CommandSourceStack>` class before, you might recognize the first parameter of the execute method as the generic
-parameter `S` from our `CommandContext<S>`, which is also used in the `executes` method from the `ArgumentBuilder`.
+如果你之前见过 `CommandContext<CommandSourceStack>` 类，你可能会认出 execute 方法的第一个参数就是我们的 `CommandContext<S>` 中的泛型
+参数 `S`，它也在 `ArgumentBuilder` 的 `executes` 方法中使用。
 
-With a `CommandSourceStack`, we can retrieve basic information about the sender of the command, the location the command was send from, and the executing entity.
-For more information, check out [basics/command-executors](../basics/executors).
+通过 `CommandSourceStack`，我们可以获取关于命令发送者的基本信息、命令发送的位置以及执行实体。
+更多信息，请查看[basics/command-executors](../basics/executors)。
 
-## The optional methods
-You can freely choose whether to implement either of the at the top mentioned, optional methods. Here is a quick overview on what which one does:
+## 可选方法
+你可以自由选择是否实现上面提到的任何可选方法。以下是对每个方法功能的快速概述：
 
 ### `suggest(CommandSourceStack, String[])`
-This method returns some sort of `Collection<String>` and takes in a `CommandSourceStack` and a `String[] args` as parameters. This is similar to the
-`onTabComplete(CommandSender, Command, String, String[])` method of the `TabCompleter` interface, which is used for tab completion on Bukkit commands.
+这个方法返回某种 `Collection<String>` 并接收 `CommandSourceStack` 和 `String[] args` 作为参数。这类似于
+`TabCompleter` 接口的 `onTabComplete(CommandSender, Command, String, String[])` 方法，它用于 Bukkit 命令的 Tab 补全。
 
-Each entry in the collection that you return will be send to the client to be shown as suggestions the same way as with Bukkit commands.
+你返回的集合中的每个条目都会以与 Bukkit 命令相同的方式发送给客户端，显示为建议。
 
 ### `canUse(CommandSender)`
-With this method, you can set up a basic `requires` structure from Brigadier commands. [You can read more on that here](../basics/requirements).
-This method returns a `boolean`, which is required to return `true` in order for a command sender to be able to execute that command.
+通过这个方法，你可以设置来自 Brigadier 命令的基本 `requires` 结构。[你可以在这里阅读更多相关内容](../basics/requirements)。
+这个方法返回一个 `boolean`，需要返回 `true` 才能让命令发送者执行该命令。
 
 ### `permission()`
-With the permission method you can, similar to the `canUse` method, set the permission required to be able to execute and view this command.
+通过 permission 方法，你可以像 `canUse` 方法一样，设置执行和查看此命令所需的权限。
 
 
-## Example: Broadcast command
-As an example, we can create a simple broadcast command. We start by declaring creating a class which implements `BasicCommand` and overrides `execute` and `permission`:
+## 示例：广播命令
+作为示例，我们可以创建一个简单的广播命令。我们首先通过创建一个实现 `BasicCommand` 并重写 `execute` 和 `permission` 的类开始：
 
 ```java title="BroadcastCommand.java"
 package your.package.name;
@@ -87,10 +87,10 @@ public class BroadcastCommand implements BasicCommand {
 }
 ```
 
-Our permission is set to `example.broadcast.use`. In order to give yourself that permission, it is suggested that you use a plugin like [LuckPerms](https://luckperms.net) or just give yourself
-operator permissions. You can also set this permission to be `true` by default. For this, please check out the [plugin.yml documentation](../../../getting-started/plugin-yml.mdx).
+我们的权限设置为 `example.broadcast.use`。为了给自己这个权限，建议你使用像 [LuckPerms](https://luckperms.net) 这样的插件或者直接给自己
+操作员权限。你也可以将此权限默认设置为 `true`。关于这一点，请查看 [plugin.yml 文档](../../../getting-started/plugin-yml.mdx)。
 
-Now, in our `execute` method, we can retrieve the name of the executor of that command. If we do not find one, we can just get the name of the command sender, like this:
+现在，在我们的 `execute` 方法中，我们可以获取该命令执行者的名称。如果我们找不到执行者，我们可以直接获取命令发送者的名称，像这样：
 
 ```java
 final Component name = commandSourceStack.getExecutor() != null
@@ -98,24 +98,23 @@ final Component name = commandSourceStack.getExecutor() != null
     : commandSourceStack.getSender().name();
 ```
 
-This makes sure that we cover all cases and even allow the command to work correctly with `/execute as`.
+这确保我们涵盖了所有情况，甚至允许命令通过 `/execute as` 正确工作。
 
-Next, we retrieve all arguments and join them to a string or tell the sender that at least one argument is required in order to send a broadcast in case they defined no
-arguments (meaning that `args` has a length of 0):
+接下来，我们检索所有参数并将它们连接成一个字符串，如果他们没有定义参数（意味着 `args` 长度为 0），则告诉发送者需要至少一个参数才能发送广播：
 ```java
 if (args.length == 0) {
-    commandSourceStack.getSender().sendRichMessage("<red>You cannot send an empty broadcast!");
+    commandSourceStack.getSender().sendRichMessage("<red>你不能发送空的广播！");
     return;
 }
 
 final String message = String.join(" ", args);
 ```
 
-Finally, we can build our broadcast message and send it via `Bukkit.broadcast(Component)`:
+最后，我们可以构建我们的广播消息并通过 `Bukkit.broadcast(Component)` 发送：
 
 ```java
 final Component broadcastMessage = MiniMessage.miniMessage().deserialize(
-    "<red><bold>BROADCAST</red> <name> <dark_gray>»</dark_gray> <message>",
+    "<red><bold>广播</red> <name> <dark_gray>»</dark_gray> <message>",
     Placeholder.component("name", name),
     Placeholder.unparsed("message", message)
 );
@@ -123,7 +122,7 @@ final Component broadcastMessage = MiniMessage.miniMessage().deserialize(
 Bukkit.broadcast(broadcastMessage);
 ```
 
-And we are done! As you can see, this is a very simple way to define commands. Here is the final result of our class:
+大功告成！如你所见，这是一种非常简单的定义命令的方式。这是我们类的最终结果：
 
 ```java title="BroadcastCommand.java"
 package your.package.name;
@@ -147,13 +146,13 @@ public class BroadcastCommand implements BasicCommand {
             : commandSourceStack.getSender().name();
 
         if (args.length == 0) {
-            commandSourceStack.getSender().sendRichMessage("<red>You cannot send an empty broadcast!");
+            commandSourceStack.getSender().sendRichMessage("<red>你不能发送空的广播！");
             return;
         }
 
         final String message = String.join(" ", args);
         final Component broadcastMessage = MiniMessage.miniMessage().deserialize(
-            "<red><bold>BROADCAST</red> <name> <dark_gray>»</dark_gray> <message>",
+            "<red><bold>广播</red> <name> <dark_gray>»</dark_gray> <message>",
             Placeholder.component("name", name),
             Placeholder.unparsed("message", message)
         );
@@ -168,7 +167,7 @@ public class BroadcastCommand implements BasicCommand {
 }
 ```
 
-Registering our command looks like this:
+注册我们的命令看起来像这样：
 
 ```java title="PluginMainClass.java"
 @Override
@@ -179,13 +178,13 @@ public void onEnable() {
 }
 ```
 
-And this is how it looks like in-game:
+这就是它在游戏中的样子：
 <img src={BroadcastCommand}/>
 
 
-## Example: Adding suggestions
-Our broadcast command works pretty well, but it is lacking on suggestions. A very common kind of suggestion for text based commands are player names.
-In order to suggest player names, we can just map all online players to their name, like this:
+## 示例：添加建议
+我们的广播命令工作得很好，但它缺少建议功能。对于基于文本的命令，一种非常常见的建议是玩家名称。
+为了建议玩家名称，我们可以简单地将所有在线玩家映射到他们的名称，像这样：
 
 ```java
 @Override
@@ -194,12 +193,12 @@ public Collection<String> suggest(CommandSourceStack commandSourceStack, String[
 }
 ```
 
-This works great, but as you can see here, it will always suggest all players, regardless of user input, which can feel unnatural at times:
+这很好用，但如你所见，它总是会建议所有玩家，不管用户输入什么，这有时会感觉不自然：
 <img src={BroadcastSuggestionsUnfinished}/>
 
-In order to fix this, we have to do some changes:
+为了解决这个问题，我们需要做一些改变：
 
-First, we early return what we already have in case there is no arguments, as we cannot filter by input then:
+首先，如果没有参数，我们提前返回我们已经有的内容，因为这时我们无法按输入过滤：
 
 ```java
 if (args.length == 0) {
@@ -207,7 +206,7 @@ if (args.length == 0) {
 }
 ```
 
-After this, we can add a `filter` clause to our stream, where we filter all names by whether they start with our current input, which is `args[args.length - 1]`:
+之后，我们可以在我们的流中添加一个 `filter` 子句，在这里我们过滤所有以当前输入开头的名称，即 `args[args.length - 1]`：
 
 ```java
 return Bukkit.getOnlinePlayers().stream()
@@ -216,14 +215,14 @@ return Bukkit.getOnlinePlayers().stream()
     .toList();
 ```
 
-And we are done! As you can see, suggestions still work fine:
+大功告成！如你所见，建议仍然正常工作：
 <img src={BroadcastSuggestionsFinished}/>
 
-But when there is no player who starts with an input, it just suggests nothing:
+但当没有玩家的名字以输入开头时，它就不会提供任何建议：
 <img src={BroadcastSuggestionsNone}/>
 
-### Final code
-Here is the final code for our whole `BroadcastCommand` class, including the suggestions:
+### 最终代码
+这是我们整个 `BroadcastCommand` 类的最终代码，包括建议功能：
 
 ```java
 package your.package.name;
@@ -250,13 +249,13 @@ public class BroadcastCommand implements BasicCommand {
             : commandSourceStack.getSender().name();
 
         if (args.length == 0) {
-            commandSourceStack.getSender().sendRichMessage("<red>You cannot send an empty broadcast!");
+            commandSourceStack.getSender().sendRichMessage("<red>你不能发送空的广播！");
             return;
         }
 
         final String message = String.join(" ", args);
         final Component broadcastMessage = MiniMessage.miniMessage().deserialize(
-            "<red><bold>BROADCAST</red> <name> <dark_gray>»</dark_gray> <message>",
+            "<red><bold>广播</red> <name> <dark_gray>»</dark_gray> <message>",
             Placeholder.component("name", name),
             Placeholder.unparsed("message", message)
         );
@@ -281,4 +280,3 @@ public class BroadcastCommand implements BasicCommand {
             .toList();
     }
 }
-```

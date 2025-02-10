@@ -1,6 +1,6 @@
 ---
 slug: /dev/command-api/arguments/adventure
-description: Documentation for all arguments returning Adventure API objects.
+description: 所有返回 Adventure API 对象的参数的文档。
 ---
 
 import ComponentMp4 from "./assets/vanilla-arguments/component.mp4";
@@ -9,21 +9,19 @@ import NamedColorMp4 from "./assets/vanilla-arguments/namedcolor.mp4";
 import StyleMp4 from "./assets/vanilla-arguments/style.mp4";
 import SignedMessageMp4 from "./assets/vanilla-arguments/signedmessage.mp4";
 
-# Adventure Library Arguments
-These arguments return a class from the `net.kyori` package. They are technically not native to Minecraft or Bukkit, but as Paper includes the Adventure library, they are
-widely used in the Paper ecosystem.
+# Adventure 库参数
+这些参数返回来自 `net.kyori` 包的类。虽然它们在技术上不是 Minecraft 或 Bukkit 原生的，但由于 Paper 包含了 Adventure 库，它们在 Paper 生态系统中被广泛使用。
 
-## Component argument
+## Component 参数
 :::note
 
-This argument is very technical. Following the same format as the `/tellraw <player> <component>` command for its second argument, it expects the JSON
-representation of a text component, making it inappropriate for general user input.
+这个参数非常技术性。它遵循与 `/tellraw <player> <component>` 命令第二个参数相同的格式，需要文本组件的 JSON 表示形式，这使得它不适合一般用户输入。
 
 :::
 
-The result is returned as an Adventure component to work with.
+结果以 Adventure component 的形式返回以供使用。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> componentArgument() {
     return Commands.literal("componentargument")
@@ -32,7 +30,7 @@ public static LiteralCommandNode<CommandSourceStack> componentArgument() {
                 final Component component = ctx.getArgument("arg", Component.class);
 
                 ctx.getSource().getSender().sendRichMessage(
-                    "Your message: <input>",
+                    "你的消息: <input>",
                     Placeholder.component("input", component)
                 );
                 return Command.SINGLE_SUCCESS;
@@ -41,15 +39,15 @@ public static LiteralCommandNode<CommandSourceStack> componentArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={ComponentMp4}/>
 
 
-## Key argument
-The key argument allows a user to put in any artificial (namespaced) key, ensuring its validity. This returns a [`Key`](https://jd.advntr.dev/key/latest/net/kyori/adventure/key/Key.html),
-which can be used at various other places in the Paper API.
+## Key 参数
+Key 参数允许用户输入任何人工（命名空间）键，并确保其有效性。这将返回一个 [`Key`](https://jd.advntr.dev/key/latest/net/kyori/adventure/key/Key.html)，
+可以在 Paper API 的其他地方使用。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> keyArgument() {
     return Commands.literal("key")
@@ -57,7 +55,7 @@ public static LiteralCommandNode<CommandSourceStack> keyArgument() {
             .executes(ctx -> {
                 final Key key = ctx.getArgument("key_input", Key.class);
 
-                ctx.getSource().getSender().sendRichMessage("You put in <aqua><key></aqua>!",
+                ctx.getSource().getSender().sendRichMessage("你输入了 <aqua><key></aqua>！",
                     Placeholder.unparsed("key", key.asString())
                 );
 
@@ -67,16 +65,16 @@ public static LiteralCommandNode<CommandSourceStack> keyArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={KeyMp4}/>
 
 
-## Named color argument
-This argument provides the user with the ability to select between the 16 built-in "named" text colors. This argument returns a
-[`NamedTextColor`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/NamedTextColor.html),
-which you can use for applying a color to components.
+## Named color 参数
+此参数提供用户选择 16 种内置"命名"文本颜色的能力。此参数返回一个
+[`NamedTextColor`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/NamedTextColor.html)，
+你可以用它来为组件应用颜色。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> namedColorArgument() {
     return Commands.literal("namedcolor")
@@ -95,22 +93,22 @@ public static LiteralCommandNode<CommandSourceStack> namedColorArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={NamedColorMp4}/>
 
 
-## Adventure style argument
+## Adventure style 参数
 :::note
 
-Similar to the component argument, this argument is not really appropriate for general user input, as it also follows the JSON format for displaying components. Most users
-do not know how to use that format and thus its general usage is not advised.
+与 component 参数类似，此参数不太适合一般用户输入，因为它也遵循显示组件的 JSON 格式。大多数用户
+不知道如何使用该格式，因此不建议一般使用。
 
 :::
 
-The style argument returns its value in the form of a [`Style`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/Style.html) object.
-This can be applied to any component using `Component#style(Style)`. Whilst the JSON input allows for the `text` field, its content is completely ignored.
+style 参数以 [`Style`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/format/Style.html) 对象的形式返回其值。
+这可以使用 `Component#style(Style)` 应用于任何组件。虽然 JSON 输入允许 `text` 字段，但其内容会被完全忽略。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> styleArgument() {
     return Commands.literal("style")
@@ -120,7 +118,7 @@ public static LiteralCommandNode<CommandSourceStack> styleArgument() {
                     final Style style = ctx.getArgument("style", Style.class);
                     final String msg = StringArgumentType.getString(ctx, "message");
 
-                    ctx.getSource().getSender().sendRichMessage("Your input: <input>",
+                    ctx.getSource().getSender().sendRichMessage("你的输入: <input>",
                         Placeholder.component("input", Component.text(message).style(style))
                     );
                     return Command.SINGLE_SUCCESS;
@@ -129,40 +127,40 @@ public static LiteralCommandNode<CommandSourceStack> styleArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={StyleMp4}/>
 
 
-## Signed message argument
-The signed message argument allows a player to send an argument in the form of a **signed message** to the server. This signed message is a special type - it
-allows the server to send that message, without the ability to directly modify it, to any player. The visible difference is that unsigned messages have a white bar at the left,
-whilst signed messages don't.
+## Signed message 参数
+signed message 参数允许玩家以**已签名消息**的形式向服务器发送参数。这种已签名消息是一种特殊类型 - 它
+允许服务器在不能直接修改的情况下将该消息发送给任何玩家。可见的区别是未签名消息在左侧有白色条，
+而已签名消息没有。
 
-A signed message argument returns a `SignedMessageResolver`. In order to call its `#resolve` method, you have to pass in two parameters:
-* The argument name
-* The `CommandContext<CommandSourceStack>` object
+signed message 参数返回一个 `SignedMessageResolver`。为了调用其 `#resolve` 方法，你必须传入两个参数：
+* 参数名称
+* `CommandContext<CommandSourceStack>` 对象
 
-The resolved value is a `CompletableFuture<SignedMessage>`, whose [`SignedMessage`](https://jd.advntr.dev/api/latest/net/kyori/adventure/chat/SignedMessage.html)
-value you can handle using `thenAccept(Consumer<T>)`. Inside of the consumer, you can send the signed message to players or work with it in other ways.
+解析后的值是一个 `CompletableFuture<SignedMessage>`，你可以使用 `thenAccept(Consumer<T>)` 处理其 [`SignedMessage`](https://jd.advntr.dev/api/latest/net/kyori/adventure/chat/SignedMessage.html)
+值。在消费者内部，你可以将已签名消息发送给玩家或以其他方式使用它。
 
 :::warning
 
-By default, the consumer passed into `thenAccept` is not executed on the main thread, making it unsafe to use most of Paper API within it.
-If you need to use the API, you can schedule a task to be run on the next available tick. For this you can use the
-<Javadoc name="org.bukkit.scheduler.BukkitScheduler#getMainThreadExecutor(org.bukkit.plugin.Plugin)">main thread executor</Javadoc>.
-You can read up on that [here](../../scheduler.mdx).
+默认情况下，传入 `thenAccept` 的消费者不在主线程上执行，这使得在其中使用大多数 Paper API 是不安全的。
+如果你需要使用 API，你可以安排一个任务在下一个可用的 tick 上运行。为此，你可以使用
+<Javadoc name="org.bukkit.scheduler.BukkitScheduler#getMainThreadExecutor(org.bukkit.plugin.Plugin)">主线程执行器</Javadoc>。
+你可以在[这里](../../scheduler.mdx)了解更多信息。
 
 :::
 
 :::note
 
-A non-player sender is not capable of sending a signed message, which means that the resolved `CompletableFuture` will never be completed.
-You should make sure that only players can use your argument with `.requires(ctx -> ctx.getSender() instanceof Player)` on your `SignedArgument`. You may
-add a fallback greedy string argument for non-player senders if you want the argument to execute regardless of signing.
+非玩家发送者无法发送已签名消息，这意味着解析的 `CompletableFuture` 永远不会完成。
+你应该通过在 `SignedArgument` 上使用 `.requires(ctx -> ctx.getSender() instanceof Player)` 确保只有玩家可以使用你的参数。如果你希望
+无论是否签名都能执行参数，你可以为非玩家发送者添加一个后备的贪婪字符串参数。
 
 :::
 
-### Example usage
+### 使用示例
 ```java title="MinecraftArguments.java"
 public static LiteralCommandNode<CommandSourceStack> signedMessageArgument() {
     return Commands.literal("signedmessage")
@@ -185,5 +183,5 @@ private static int executeSignedMessageCommand(final CommandContext<CommandSourc
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={SignedMessageMp4}/>

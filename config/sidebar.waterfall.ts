@@ -4,7 +4,7 @@ const waterfall: SidebarsConfig = {
   primary: [
     {
       type: "category",
-      label: "Welcome to the Waterfall Docs",
+      label: "欢迎来到 Waterfall 文档",
       collapsed: false,
       collapsible: false,
       link: {

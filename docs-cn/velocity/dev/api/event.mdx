@@ -1,77 +1,71 @@
 ---
 slug: /dev/event-api
-description: How to listen for events in Velocity.
+description: 如何在 Velocity 中监听事件。
 ---
 
-# Working With Events
+# 使用事件
 
-Listening to events with Velocity's `@Subscribe`
-annotation is straightforward. You've already seen one such listener, using
-<Javadoc name={"com.velocitypowered.api.event.proxy.ProxyInitializeEvent"} project={"velocity"}>`ProxyInitializeEvent`</Javadoc>
-in your main class. Additional events can be found on the <Javadoc project={"velocity"}>Javadoc</Javadoc>.
+使用 Velocity 的 `@Subscribe` 注解监听事件很简单。你已经在主类中看到了一个这样的监听器，使用了
+<Javadoc name={"com.velocitypowered.api.event.proxy.ProxyInitializeEvent"} project={"velocity"}>`ProxyInitializeEvent`</Javadoc>。
+更多事件可以在 <Javadoc project={"velocity"}>Javadoc</Javadoc> 中找到。
 
-## Creating a listener method
+## 创建监听器方法
 
-To listen to an event, mark the method with <Javadoc name={"com.velocitypowered.api.event.Subscribe"} project={"velocity"}>`@Subscribe`</Javadoc>,
-like shown. This works similarly to annotation-driven event listening in other APIs you may be familiar with;
-it's the equivalent of Bukkit's/Bungee's `@EventHandler` and Sponge's `@Listener`.
+要监听事件，如下所示用 <Javadoc name={"com.velocitypowered.api.event.Subscribe"} project={"velocity"}>`@Subscribe`</Javadoc> 标记方法。
+这与你可能熟悉的其他 API 中的注解驱动事件监听类似；它相当于 Bukkit/Bungee 的 `@EventHandler` 和 Sponge 的 `@Listener`。
 
 ```java
 @Subscribe
 public void onPlayerChat(PlayerChatEvent event) {
-	// do stuff
+    // 在这里处理
 }
 ```
 
 :::tip
 
-Note that the import is
-<Javadoc name={"com.velocitypowered.api.event.Subscribe"} project={"velocity"}>`com.velocitypowered.api.event.Subscribe`</Javadoc>
-and _not_ in `com.google.common.eventbus`.
+注意导入的是 <Javadoc name={"com.velocitypowered.api.event.Subscribe"} project={"velocity"}>`com.velocitypowered.api.event.Subscribe`</Javadoc>
+而_不是_ `com.google.common.eventbus` 中的。
 
 :::
 
-## Orders
+## 顺序
 
-Every listener has a <Javadoc name={"com.velocitypowered.api.event.Subscribe#priority()"} project={"velocity"}>`priority`</Javadoc>.
-When an event is fired, the order in which listeners are invoked is defined by their `priority`.
-The higher the priority, the earlier the event handler will be called. 
+每个监听器都有一个 <Javadoc name={"com.velocitypowered.api.event.Subscribe#priority()"} project={"velocity"}>`priority`</Javadoc>。
+当事件被触发时，监听器的调用顺序由它们的 `priority` 定义。
+优先级越高，事件处理器被调用的时间越早。
 
-State the desired order in the `@Subscribe` annotation:
+在 `@Subscribe` 注解中声明所需的顺序：
 
 ```java
 @Subscribe(priority = 0, order = PostOrder.CUSTOM)
 public void onPlayerChat(PlayerChatEvent event) {
-	// do stuff
+    // 在这里处理
 }
 ```
 
-`-32768` is the default value if you do not specify an order.
+如果你不指定顺序，`-32768` 是默认值。
 :::note
 
-Due to compatibility constraints, you must specify <Javadoc name={"com.velocitypowered.api.event.PostOrder#CUSTOM"} project={"velocity"}>`PostOrder.CUSTOM`</Javadoc> in order to use this field.
+由于兼容性限制，你必须指定 <Javadoc name={"com.velocitypowered.api.event.PostOrder#CUSTOM"} project={"velocity"}>`PostOrder.CUSTOM`</Javadoc> 才能使用这个字段。
 
 :::
 
-## Registering listeners
+## 注册监听器
 
-Velocity automatically registers your main plugin class as an event listener. This is handy for
-initialization and for simple plugins, but for more complex plugins, you will want to separate your
-event handlers from the main plugin class. To do so, you will need to register with the
-<Javadoc name={"com.velocitypowered.api.event.EventManager"} project={"velocity"}>`EventManager`</Javadoc>
-any other listeners you have:
+Velocity 自动将你的主插件类注册为事件监听器。这对于初始化和简单的插件来说很方便，但对于更复杂的插件，
+你可能想要将事件处理器与主插件类分开。要这样做，你需要使用 <Javadoc name={"com.velocitypowered.api.event.EventManager"} project={"velocity"}>`EventManager`</Javadoc>
+注册你的其他监听器：
 
-The event system supports registering an object as a listener (allowing you to use `@Subscribe` to
-mark event handlers) or registering functional listeners.
+事件系统支持将对象注册为监听器（允许你使用 `@Subscribe` 标记事件处理器）或注册函数式监听器。
 
-### Registering an object as a listener
+### 将对象注册为监听器
 
 ```java
 server.getEventManager().register(plugin, listener);
 ```
 
-Both parameters are <Javadoc name={"java.lang.Object"} project={"java"}>`Object`</Javadoc>.
-The first argument is your plugin's object, and the second argument should be the listener to register. For example:
+两个参数都是 <Javadoc name={"java.lang.Object"} project={"java"}>`Object`</Javadoc>。
+第一个参数是你的插件对象，第二个参数应该是要注册的监听器。例如：
 
 ```java
 @Plugin(id = "myfirstplugin", name = "My Plugin", version = "0.1.0", dependencies = {@Dependency(id = "wonderplugin")})
@@ -96,34 +90,31 @@ public class MyListener {
 
   @Subscribe(order = PostOrder.EARLY)
   public void onPlayerChat(PlayerChatEvent event) {
-    // do something here
+    // 在这里处理
   }
 
 }
 ```
 
-### Registering a functional-style listener
+### 注册函数式监听器
 
-As an alternative to `@Subscribe`, you can also use the functional `EventHandler` interface and register yours with
-<Javadoc name={"com.velocitypowered.api.event.EventManager#register(java.lang.Object,java.lang.Class,com.velocitypowered.api.event.EventHandler)"} project={"velocity"}>`register(Object plugin, Class<E> eventClass, EventHandler<E> handler)`</Javadoc>:
+作为 `@Subscribe` 的替代方案，你也可以使用函数式 `EventHandler` 接口，并通过
+<Javadoc name={"com.velocitypowered.api.event.EventManager#register(java.lang.Object,java.lang.Class,com.velocitypowered.api.event.EventHandler)"} project={"velocity"}>`register(Object plugin, Class<E> eventClass, EventHandler<E> handler)`</Javadoc> 注册：
 
 ```java
   server.getEventManager().register(this, PlayerChatEvent.class, event -> {
-      // do something here
+      // 在这里处理
   });
 ```
 
-## Handling events asynchronously
+## 异步处理事件
 
-In Velocity 3.0.0, events can now be handled asynchronously. The event system allows a plugin to
-pause sending an event to every listener, perform some unit of computation or I/O asynchronously,
-and then resume processing the event. All Velocity events have the ability to be processed
-asynchronously, however only some will explicitly wait for events to finish being fired before
-continuing.
+在 Velocity 3.0.0 中，事件现在可以异步处理。事件系统允许插件暂停向每个监听器发送事件，
+异步执行一些计算或 I/O，然后恢复处理事件。所有 Velocity 事件都有异步处理的能力，
+但只有一些会在继续之前明确等待事件完成触发。
 
-For an annotation-based listener, all that is needed to process an event asynchronously is to either
-return an <Javadoc name={"com.velocitypowered.api.event.EventTask"} project={"velocity"}>`EventTask`</Javadoc>
-or add a second return an <Javadoc name={"com.velocitypowered.api.event.Continuation"} project={"velocity"}>`Continuation`</Javadoc> parameter:
+对于基于注解的监听器，要异步处理事件，只需要返回一个 <Javadoc name={"com.velocitypowered.api.event.EventTask"} project={"velocity"}>`EventTask`</Javadoc>
+或添加一个第二个返回 <Javadoc name={"com.velocitypowered.api.event.Continuation"} project={"velocity"}>`Continuation`</Javadoc> 参数：
 
 ```java
   @Subscribe(priority = 100, order = PostOrder.CUSTOM)
@@ -140,9 +131,8 @@ or add a second return an <Javadoc name={"com.velocitypowered.api.event.Continua
   }
 ```
 
-A functional listener simply needs to implement
-<Javadoc name={"com.velocitypowered.api.event.AwaitingEventExecutor"} project={"velocity"}>`AwaitingEventExecutor`</Javadoc>
-and return an <Javadoc name={"com.velocitypowered.api.event.EventTask"} project={"velocity"}>`EventTask`</Javadoc>:
+函数式监听器只需要实现 <Javadoc name={"com.velocitypowered.api.event.AwaitingEventExecutor"} project={"velocity"}>`AwaitingEventExecutor`</Javadoc>
+并返回一个 <Javadoc name={"com.velocitypowered.api.event.EventTask"} project={"velocity"}>`EventTask`</Javadoc>：
 
 ```java
   server.getEventManager().register(this, PlayerChatEvent.class, (AwaitingEventExecutor) event -> {
@@ -153,37 +143,31 @@ and return an <Javadoc name={"com.velocitypowered.api.event.EventTask"} project=
   });
 ```
 
-There are two types of event tasks:
+有两种类型的事件任务：
 
-- **Async tasks** simply run a unit of execution asynchronously. To get a basic event task, use
-  <Javadoc name={"com.velocitypowered.api.event.EventTask#async(java.lang.Runnable)"} project={"velocity"}>`EventTask.async(Runnable)`</Javadoc>.
-  Basic event tasks are the closest equivalent for Velocity 1.x.x event listeners and asynchronous
-  events in the Bukkit API.
-- **Continuation tasks** provide the listener with a callback (known as a `Continuation`) to resume
-  event processing when the (possibly asynchronous) work is completed. To get a continuation-based
-  event task, use <Javadoc name={"com.velocitypowered.api.event.EventTask#withContinuation(java.util.function.Consumer)"} project={"velocity"}>`EventTask.withContinuation(Consumer<Continuation>)`</Javadoc>.
-  Continuation-based tasks are the closest equivalent for listeners that use BungeeCord `AsyncEvent`
-  intents, but have a slightly different programming model in that each listener still runs sequentially,
-  just that an individual listener can defer passing control onto the next listener until it is done.
+- **异步任务**只是异步运行一个执行单元。要获取基本事件任务，使用
+  <Javadoc name={"com.velocitypowered.api.event.EventTask#async(java.lang.Runnable)"} project={"velocity"}>`EventTask.async(Runnable)`</Javadoc>。
+  基本事件任务是 Velocity 1.x.x 事件监听器和 Bukkit API 中异步事件的最接近等价物。
+- **延续任务**为监听器提供一个回调（称为 `Continuation`），以在（可能异步的）工作完成时恢复事件处理。要获取基于延续的
+  事件任务，使用 <Javadoc name={"com.velocitypowered.api.event.EventTask#withContinuation(java.util.function.Consumer)"} project={"velocity"}>`EventTask.withContinuation(Consumer<Continuation>)`</Javadoc>。
+  基于延续的任务是使用 BungeeCord `AsyncEvent` 意图的监听器的最接近等价物，但有一个稍微不同的编程模型，
+  即每个监听器仍然按顺序运行，只是单个监听器可以推迟将控制权传递给下一个监听器，直到它完成。
 
 :::caution
 
-To retain compatibility with older versions of Velocity, Velocity 3.0.0 runs all event listeners
-asynchronously. This behavior will change in Polymer and will require you to explicitly provide an
-event task (or to use continuations) if you need to perform some work asynchronously. All developers
-are urged to make the transition now.
+为了保持与旧版本 Velocity 的兼容性，Velocity 3.0.0 异步运行所有事件监听器。这种行为将在 Polymer 中改变，
+并且如果你需要异步执行某些工作，将需要你明确提供一个事件任务（或使用延续）。敦促所有开发者现在就进行过渡。
 
 :::
 
-## Creating events
+## 创建事件
 
-Creating events on Velocity is somewhat different than on other platforms. However, it is very
-similar for the most part.
+在 Velocity 上创建事件与其他平台有些不同。但是，大部分内容都非常相似。
 
-### Creating the event class
+### 创建事件类
 
-First we need to create a class for our event. In this tutorial we'll assume you're making a private
-messaging plugin, and thus use a `PrivateMessageEvent`. Most of this part is boilerplate.
+首先我们需要为我们的事件创建一个类。在本教程中，我们假设你正在制作一个私聊插件，
+因此使用 `PrivateMessageEvent`。这部分大多是样板代码。
 
 ```java
 public class PrivateMessageEvent {
@@ -210,41 +194,37 @@ public class PrivateMessageEvent {
     return message;
   }
 
-  // toString, equals, and hashCode may be added as needed
+  // toString, equals, 和 hashCode 可以根据需要添加
 
 }
 ```
 
-You'll notice that your events don't need to extend or implement anything. They just work.
+你会注意到你的事件不需要扩展或实现任何东西。它们就是能工作。
 
-### Firing the Event
+### 触发事件
 
-To fire the event, you'll need to get the server's event manager and use the
-<Javadoc name={"com.velocitypowered.api.event.EventManager#fire(E)"} project={"velocity"}>`fire`</Javadoc>
-method. Note that this returns a <Javadoc name={"java.util.concurrent.CompletableFuture"} project={"java"}>`CompletableFuture`</Javadoc>,
-so if you want to continue logic after the event is handled by all listeners, use a callback:
+要触发事件，你需要获取服务器的事件管理器并使用 <Javadoc name={"com.velocitypowered.api.event.EventManager#fire(E)"} project={"velocity"}>`fire`</Javadoc>
+方法。注意这返回一个 <Javadoc name={"java.util.concurrent.CompletableFuture"} project={"java"}>`CompletableFuture`</Javadoc>，
+所以如果你想在所有监听器处理完事件后继续逻辑，使用回调：
 
 ```java
 server.getEventManager().fire(new PrivateMessageEvent(sender, recipient, message)).thenAccept((event) -> {
-  // event has finished firing
-  // do some logic dependent on the result
+  // 事件已完成触发
+  // 执行一些依赖于结果的逻辑
 });
 ```
 
-### Using `ResultedEvent`
+### 使用 `ResultedEvent`
 
-Velocity uses the generalized <Javadoc name={"com.velocitypowered.api.event.ResultedEvent"} project={"velocity"}>`ResultedEvent`</Javadoc>
-for events which have some sort of 'result'. The result type of the event is defined by its generic type; for example
-`PrivateMessageEvent implements ResultedEvent<ResultType>`.
+Velocity 使用泛型化的 <Javadoc name={"com.velocitypowered.api.event.ResultedEvent"} project={"velocity"}>`ResultedEvent`</Javadoc>
+用于有某种"结果"的事件。事件的结果类型由其泛型类型定义；例如 `PrivateMessageEvent implements ResultedEvent<ResultType>`。
 
-Some common result types are <Javadoc name={"com.velocitypowered.api.event.ResultedEvent$GenericResult"} project={"velocity"}>`GenericResult`</Javadoc>,
-for simple allowed/denied results, and component results, used for events where the result may be denied with an accompanying reason
-(such as in a login event).
+一些常见的结果类型是 <Javadoc name={"com.velocitypowered.api.event.ResultedEvent$GenericResult"} project={"velocity"}>`GenericResult`</Javadoc>，
+用于简单的允许/拒绝结果，以及组件结果，用于结果可能被拒绝并附带原因的事件（如登录事件）。
 
-Using a general result is far more encompassing than `isCancelled/setCancelled` methods you may be
-used to on other platforms, whose meaning is vague and limited to a simple boolean. In this example,
-we'll use `GenericResult`, so listeners will be able to mark our `PrivateMessageEvent` as either
-allowed or denied.
+使用通用结果比你在其他平台上可能习惯的 `isCancelled/setCancelled` 方法更全面，
+后者的含义模糊且仅限于简单的布尔值。在这个例子中，我们将使用 `GenericResult`，
+这样监听器就可以将我们的 `PrivateMessageEvent` 标记为允许或拒绝。
 
 ```java
 public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
@@ -253,7 +233,7 @@ public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
   private final Player recipient;
   private final String message;
 
-  private GenericResult result = GenericResult.allowed(); // Allowed by default
+  private GenericResult result = GenericResult.allowed(); // 默认允许
 
   public PrivateMessageEvent(Player sender, Player recipient, String message) {
     this.sender = sender;
@@ -286,8 +266,7 @@ public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
 }
 ```
 
-Per convention, the result of a `ResultedEvent` should never be null. Here, we assure that using
-<Javadoc name={"java.util.Objects#requireNonNull(T)"} project={"java"}>`Objects#requireNonNull(Object)`</Javadoc>.
+按照惯例，`ResultedEvent` 的结果永远不应该为 null。在这里，我们使用
+<Javadoc name={"java.util.Objects#requireNonNull(T)"} project={"java"}>`Objects#requireNonNull(Object)`</Javadoc> 来确保这一点。
 
-Listeners may 'deny' the event by using `event.setResult(GenericResult.denied())`, and you may check
-the result with `event.getResult()`.
+监听器可以通过使用 `event.setResult(GenericResult.denied())` 来"拒绝"事件，你可以通过 `event.getResult()` 检查结果。

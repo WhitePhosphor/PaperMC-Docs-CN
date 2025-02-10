@@ -5,7 +5,7 @@ const velocity: SidebarsConfig = {
     "README",
     {
       type: "category",
-      label: "Administration",
+      label: "管理",
       collapsed: true,
       link: {
         type: "doc",
@@ -14,7 +14,7 @@ const velocity: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Getting Started",
+          label: "入门",
           link: {
             type: "doc",
             id: "admin/getting-started/README",
@@ -31,7 +31,7 @@ const velocity: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "How-to Guides",
+          label: "操作指南",
           link: {
             type: "generated-index",
             slug: "/cat/admin/how-to-guides",
@@ -40,7 +40,7 @@ const velocity: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "Reference",
+          label: "参考",
           link: {
             type: "generated-index",
             slug: "/cat/admin/reference",
@@ -58,7 +58,7 @@ const velocity: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Development",
+      label: "开发",
       collapsed: true,
       link: {
         type: "doc",
@@ -67,7 +67,7 @@ const velocity: SidebarsConfig = {
       items: [
         {
           type: "category",
-          label: "Getting Started",
+          label: "入门",
           link: {
             type: "generated-index",
             slug: "/cat/dev/getting-started",
@@ -80,7 +80,7 @@ const velocity: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "How-to Guides",
+          label: "操作指南",
           link: {
             type: "generated-index",
             slug: "/cat/dev/how-to-guides",
@@ -97,7 +97,7 @@ const velocity: SidebarsConfig = {
           items: [
             {
               type: "category",
-              label: "Component API (Adventure)",
+              label: "组件 API (Adventure)",
               collapsed: true,
               items: [
                 "dev/api/component-api/intro",

@@ -1,113 +1,78 @@
 ---
 slug: /comparisons-to-other-proxies
-description: A comparison of Velocity to other proxies.
+description: Velocity与其他代理的比较。
 ---
 
-# Comparing With Other Proxies
+# 与其他代理的比较
 
-Presumably, you have learned about what Velocity can do for you. But how does it stack up against
-other solutions out there? We're trying to convince you to use Velocity, after all, so this document
-may be somewhat biased in our favor.
+你可能已经了解了Velocity能为你做什么。但它与其他现有的解决方案相比如何呢?毕竟,我们是在试图说服你使用Velocity,所以这份文档可能会有些偏向于我们。
 
-## Overview
+## 概述
 
 :::danger
 
-**The Paper team strongly recommends using Velocity over Waterfall and BungeeCord**. Waterfall has reached end of life. All future
-development by PaperMC is done on Velocity. For more information, see the [announcement](https://forums.papermc.io/threads/1088/).
+**Paper团队强烈建议使用Velocity而不是Waterfall和BungeeCord**。Waterfall已经到达生命周期终点。PaperMC的所有未来开发都在Velocity上进行。更多信息,请参见[公告](https://forums.papermc.io/threads/1088/)。
 
 :::
 
-This is a quick overview of the differences between Velocity and other popular proxy software. Read below for more details.
-| Feature                                  | BungeeCord | Waterfall | Velocity |
+这是Velocity与其他流行代理软件之间差异的快速概述。详细信息请参见下文。
+| 功能                                  | BungeeCord | Waterfall | Velocity |
 |------------------------------------------|------------|-----------|----------|
-| Resource efficient                       | ❌         | ✅        | ✅✅     |
-| Velocity plugins                         | ❌         | ❌        | ✅       |
-| BungeeCord plugins                       | ✅         | ✅        | 🟨*      |
-| Secure player information forwarding     | ❌         | ❌        | ✅       |
-| API supporting modern Minecraft features | ❌         | ❌        | ✅       |
-| Actively developed                       | ❓         | ❌        | ✅       |
-| Improved mod support                     | ❌         | ❌        | ✅*\*    |
+| 资源高效                                 | ❌         | ✅        | ✅✅     |
+| Velocity插件                             | ❌         | ❌        | ✅       |
+| BungeeCord插件                           | ✅         | ✅        | 🟨*      |
+| 安全的玩家信息转发                       | ❌         | ❌        | ✅       |
+| 支持现代Minecraft功能的API               | ❌         | ❌        | ✅       |
+| 积极开发                                 | ❓         | ❌        | ✅       |
+| 改进的模组支持                           | ❌         | ❌        | ✅*\*    |
 
-\* _The Velocity API does not support plugins made for BungeeCord/Waterfall, but [Snap](https://hangar.papermc.io/Phoenix616/Snap) can be installed for experimental support.
- Snap is not maintained by, or affiliated with, the Velocity project._
+\* _Velocity API不支持为BungeeCord/Waterfall制作的插件,但可以安装[Snap](https://hangar.papermc.io/Phoenix616/Snap)来获得实验性支持。
+Snap不由Velocity项目维护或关联。_
 
-\** _Full Forge support for 1.7 through 1.12.2 and 1.20.2 or higher._
+\** _完整支持1.7到1.12.2和1.20.2或更高版本的Forge。_
 
-## BungeeCord and derivatives
+## BungeeCord及其衍生品
 
-We can't discuss the full history of Minecraft proxy software deeply – we recommend
-[Me4502's excellent article](https://madelinemiller.dev/blog/decade-of-minecraft-multiplayer/) that
-covers the multiplayer Minecraft world in great detail.
+我们不能深入讨论Minecraft代理软件的完整历史 - 我们推荐[Me4502的精彩文章](https://madelinemiller.dev/blog/decade-of-minecraft-multiplayer/),它详细介绍了Minecraft多人游戏世界。
 
 ### BungeeCord
 
-The original author of Velocity, at the time of starting the project, had over 5 years of experience
-using BungeeCord, and knew its various quirks inside and out.
+Velocity的原作者在开始这个项目时,已经有超过5年使用BungeeCord的经验,并且深入了解其各种特性。
 
-There are several reasons why improving BungeeCord was a fool's game:
+有几个原因说明为什么改进BungeeCord是一个愚蠢的游戏:
 
-- BungeeCord is very conservative with regard to API changes. If it breaks some plugin developed 5
-  years ago from an inactive developer, you can forget about it.
-- The changes that _do_ change the API are often quite particular and niche use cases and changing
-  the API in substantial ways is frowned upon (witness the support for RGB colors in `ChatColor`).
-- The project is essentially run like a cathedral. In BungeeCord (and its sister project, Spigot),
-  the word of md_5 is king. Contributing a simple security fix to BungeeCord earned the primary
-  developer of Velocity at least two beratings from md_5.
-- BungeeCord is actively hostile to continued support for Minecraft modding.
-- We have seen new modding APIs for _Minecraft_ since the first version of BungeeCord released
-  in 2012. It's time for a new and improved API that does not make the mistakes the BungeeCord API
-  makes, and to draw influence from the new modding APIs that Minecraft now boasts.
+- BungeeCord对API更改非常保守。如果它破坏了5年前某个不活跃开发者开发的插件,你就可以忘记它了。
+- 确实改变API的更改通常都是相当特殊和小众的用例,而且大幅度改变API是不受欢迎的(见对`ChatColor`中RGB颜色支持的态度)。
+- 该项目基本上像大教堂一样运作。在BungeeCord(及其姐妹项目Spigot)中,md_5的话就是王道。为BungeeCord贡献一个简单的安全修复为Velocity的主要开发者至少赢得了md_5的两次斥责。
+- BungeeCord对继续支持Minecraft模组持敌对态度。
+- 自2012年第一个版本的BungeeCord发布以来,我们已经看到了_Minecraft_的新模组API。是时候有一个新的和改进的API,它不会犯BungeeCord API所犯的错误,并从Minecraft现在拥有的新模组API中汲取灵感。
 
 ### Waterfall
 
-Partly due to experience obtained by the author's own experience with BungeeCord, he founded the
-Waterfall project in 2016 as a fork of BungeeCord, modeled after Paper, with the explicit aim of
-improving BungeeCord. _We tried the obvious next step_.
+部分由于作者自己使用BungeeCord获得的经验,他在2016年创立了Waterfall项目,作为BungeeCord的一个分支,仿照Paper的模式,明确目标是改进BungeeCord。_我们尝试了显而易见的下一步_。
 
-Meet [Hyrum's Law](https://www.hyrumslaw.com/):
+遇到了[海勒姆定律](https://www.hyrumslaw.com/):
 
-> With a sufficient number of users of an API, it does not matter what you promise in the contract:
-> all observable behaviors of your system will be depended on by somebody.
+> 当一个API有足够多的用户时,你在合约中承诺什么并不重要:你的系统的所有可观察行为都会被某人依赖。
 
-Here's Hyrum's law in comic format, in case that eases getting the point across:
+这里是海勒姆定律的漫画格式,以防这样更容易理解:
 
 > [![xkcd #1172](https://imgs.xkcd.com/comics/workflow.png)](https://xkcd.com/1172/)  
-> ["Workflow"](https://xkcd.com/1172/) from [xkcd](https://xkcd.com/) by Randal Munroe,
-> [licensed](https://xkcd.com/license.html) under
+> ["工作流程"](https://xkcd.com/1172/)来自[xkcd](https://xkcd.com/)作者Randal Munroe,
+> [许可](https://xkcd.com/license.html)根据
 > [CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/)
 
-Most BungeeCord plugins are deeply dependent on the specific behaviors and quirks BungeeCord
-exposes, which Velocity cannot perfectly emulate. As a result, the number of changes one can make
-to BungeeCord and have plugins retain the same behavior is minimal.
+大多数BungeeCord插件深深依赖于BungeeCord暴露的特定行为和怪癖,这些Velocity无法完美模拟。因此,一个人可以对BungeeCord做出的更改并保持插件保持相同行为的数量是最小的。
 
-Suppose you have played a video game published by Company A. It runs on an operating system made by Company B.
-One day, Company B releases a new version of their operating system, and you upgrade to it, only to recoil
-in horror as that video game no longer works. (Worse, Studio A might be out of business at that point, so
-no patch is forthcoming.) Who do you blame, Company A for producing a defective product, or Company B for
-breaking the game? [This isn't a hypothetical](https://devblogs.microsoft.com/oldnewthing/20110131-00/?p=11633).
+假设你玩过公司A发布的一个视频游戏。它运行在公司B制作的操作系统上。有一天,公司B发布了他们操作系统的新版本,你升级到了它,结果却惊恐地发现那个游戏不再工作了。(更糟的是,工作室A可能已经倒闭了,所以不会有补丁了。)你会责怪谁,是制作有缺陷产品的公司A,还是破坏游戏的公司B?[这不是假设](https://devblogs.microsoft.com/oldnewthing/20110131-00/?p=11633)。
 
-We can point to one example where
-[an attempt](https://github.com/PaperMC/Waterfall/commit/c8eb6aec7bac82fd309fa6d6113b8a0418317b01)
-to improve scoreboard handling on 1.13 and above
-[was reversed](https://github.com/PaperMC/Waterfall/issues/255) thanks to plugins expecting
-BungeeCord's broken behavior. At this point, it is fairly obvious why making a clean break was
-better. Given that this happened near the start of the Velocity project's lifetime, it was probably
-a quite powerful motivator, although it certainly wasn't the only motivator.
+我们可以举一个例子,其中[一个尝试](https://github.com/PaperMC/Waterfall/commit/c8eb6aec7bac82fd309fa6d6113b8a0418317b01)
+改进1.13及以上版本的记分板处理[被撤销了](https://github.com/PaperMC/Waterfall/issues/255),因为插件期望BungeeCord的错误行为。在这一点上,很明显为什么做一个干净的分离更好。考虑到这发生在Velocity项目生命周期的开始,它可能是一个相当强大的动力,尽管它当然不是唯一的动力。
 
-### Hypothetical BungeeCord API-based Velocity
+### 假设的基于BungeeCord API的Velocity
 
-We are compelled to mention this briefly as this was a topic brought up in the early days of the
-project. We could have based Velocity on the BungeeCord API (or a derivative thereof, such as the
-Waterfall API) instead.
+我们不得不简要提到这一点,因为这是项目早期提出的一个话题。我们本可以基于BungeeCord API(或其衍生品,如Waterfall API)来构建Velocity。
 
-This has the same problems as Waterfall, perhaps more as we would need to emulate _all_ the behavior
-of the BungeeCord API independently. The Wine project has been trying for over 3 decades to provide
-a shim layer that allows Windows programs to run on Linux and other operating systems. Their efforts
-remain ongoing to this day. It is hard to emulate the behavior of another operating system's environment.
-The authors of ReactOS have it even worse, trying to emulate all the quirks of Windows, including its
-kernel, and they have set their baseline to a version of Windows that was released 2 decades ago. Their
-work is even further from completed than Wine's is.
+这与Waterfall有相同的问题,可能更多,因为我们需要独立地模拟BungeeCord API的_所有_行为。Wine项目已经尝试了30多年来提供一个垫片层,允许Windows程序在Linux和其他操作系统上运行。他们的努力至今仍在继续。模拟另一个操作系统的环境的行为很难。ReactOS的作者情况更糟,试图模拟Windows的所有怪癖,包括其内核,他们已经将基线设置为20年前发布的Windows版本。他们的工作完成度甚至比Wine的还要远。
 
-We would have to spend a lot of time pretending that Velocity looked and quacked just like BungeeCord.
-We intentionally rejected this approach. It's not worth doing.
+我们将不得不花费大量时间假装Velocity看起来和叫起来就像BungeeCord。我们有意拒绝了这种方法。这不值得去做。

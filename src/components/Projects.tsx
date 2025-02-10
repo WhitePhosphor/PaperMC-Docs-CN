@@ -8,32 +8,32 @@ const projects: Project[] = [
   {
     title: "Paper",
     description:
-      "High performance Minecraft server that aims to fix gameplay and mechanics inconsistencies.",
+      "高性能的 Minecraft 服务端，旨在修复游戏玩法和机制上的不一致。",
     repo: "PaperMC/Paper",
     link: "/paper",
   },
   {
     title: "Folia",
-    description: "A fork of Paper which adds regionized multithreading to the dedicated server.",
+    description: "Paper 的一个分支，为专用服务器添加了区域化的多线程支持。",
     repo: "PaperMC/Folia",
     link: "/folia",
   },
   {
     title: "Velocity",
-    description: "The modern, next-generation Minecraft server proxy.",
+    description: "现代化的下一代 Minecraft 服务器代理。",
     repo: "PaperMC/Velocity",
     link: "/velocity",
   },
   {
-    title: "Miscellaneous",
-    description: "Documentation that does not apply to any specific project.",
+    title: "杂项",
+    description: "不适用于任何特定项目的通用文档。",
     repo: "PaperMC",
     link: "/misc",
   },
   {
     title: "Waterfall",
     description:
-      "A Discontinued BungeeCord proxy fork that aimed to improve performance and stability.",
+      "一个已停止维护的 BungeeCord 代理分支，曾致力于提高性能和稳定性。",
     repo: "PaperMC/Waterfall",
     link: "/waterfall",
     eol: true,
@@ -58,7 +58,7 @@ function Project(project: Project) {
           className={clsx("button button--primary", project.eol && "archivedProjectButton")}
           to={project.link}
         >
-          Go
+          前往
         </Link>
       </div>
     </div>

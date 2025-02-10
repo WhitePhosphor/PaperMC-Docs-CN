@@ -1,20 +1,20 @@
 ---
 slug: /dev/command-api/arguments/predicate
-description: Documentation for arguments that allow value validation.
+description: 允许值验证的参数的文档。
 ---
 
 import DoubleRangeMp4 from "./assets/vanilla-arguments/doublerange.mp4";
 import IntegerRangeMp4 from "./assets/vanilla-arguments/integerrange.mp4";
 import ItemPredicateMp4 from "./assets/vanilla-arguments/itempredicate.mp4";
 
-# Predicate Arguments
-A predicate allows for checking for valid values. These arguments are dedicated to checking whether some sort of value is valid according to user input.
+# 谓词参数
+谓词允许检查有效值。这些参数专门用于检查某种值是否根据用户输入有效。
 
 
-## Double range argument
-This argument can be used as a predicate for numbers, which require precise input.
+## Double range 参数
+此参数可用作需要精确输入的数字的谓词。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> doubleRangeArgument() {
     return Commands.literal("doublerange")
@@ -24,7 +24,7 @@ public static LiteralCommandNode<CommandSourceStack> doubleRangeArgument() {
                 final CommandSender sender = ctx.getSource().getSender();
 
                 for (int i = 0; i < 5; i++) {
-                    sender.sendRichMessage("Is <index> in bounds? <result>",
+                    sender.sendRichMessage("<index> 是否在范围内？<result>",
                         Placeholder.unparsed("index", Integer.toString(i)),
                         Placeholder.unparsed("result", Boolean.toString(doubleRangeProvider.range().test((double) i)))
                     );
@@ -35,14 +35,14 @@ public static LiteralCommandNode<CommandSourceStack> doubleRangeArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={DoubleRangeMp4}/>
 
 
-## Integer range argument
-This argument works very similarly to the double range argument, with the only difference being that this argument only accepts integers.
+## Integer range 参数
+此参数的工作方式与 double range 参数非常相似，唯一的区别是此参数只接受整数。
 
-### Example usage
+### 使用示例
 ```java title="MinecraftArguments.java"
 public static LiteralCommandNode<CommandSourceStack> integerRangeArgument() {
     return Commands.literal("integerrange")
@@ -57,13 +57,13 @@ private static int runIntegerRangeCommand(final CommandContext<CommandSourceStac
     final int integerToTest = IntegerArgumentType.getInteger(ctx, "tested_integer");
 
     if (integerRangeProvider.range().contains(integerToTest)) {
-        ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <green>is</green> inside the specified range!",
+        ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <green>在</green>指定范围内！",
             Placeholder.unparsed("input", Integer.toString(integerToTest))
         );
         return Command.SINGLE_SUCCESS;
     }
 
-    ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <red>is not</red> inside the specified range!",
+    ctx.getSource().getSender().sendRichMessage("<aqua><input></aqua> <red>不在</red>指定范围内！",
         Placeholder.unparsed("input", Integer.toString(integerToTest))
     );
 
@@ -71,14 +71,14 @@ private static int runIntegerRangeCommand(final CommandContext<CommandSourceStac
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={IntegerRangeMp4}/>
 
 
-## Item predicate argument
-This argument allows for checking whether an item fits some predicate. It is useful for filtering out certain items based on some criteria.
+## Item predicate 参数
+此参数允许检查物品是否符合某些谓词。它对于根据某些条件过滤出特定物品很有用。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> itemPredicateArgument() {
     return Commands.literal("itempredicate")
@@ -87,8 +87,8 @@ public static LiteralCommandNode<CommandSourceStack> itemPredicateArgument() {
                 final ItemStackPredicate predicate = ctx.getArgument("predicate", ItemStackPredicate.class);
                 final ItemStack defaultWoodenSword = ItemType.WOODEN_SWORD.createItemStack();
 
-                ctx.getSource().getSender().sendRichMessage("Does predicate include a default wooden sword? <result>",
-                    Placeholder.parsed("result", predicate.test(defaultWoodenSword) ? "<green>true</green>" : "<red>false</red>")
+                ctx.getSource().getSender().sendRichMessage("谓词是否包含默认木剑？<result>",
+                    Placeholder.parsed("result", predicate.test(defaultWoodenSword) ? "<green>是</green>" : "<red>否</red>")
                 );
                 return Command.SINGLE_SUCCESS;
             }))
@@ -96,5 +96,5 @@ public static LiteralCommandNode<CommandSourceStack> itemPredicateArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={ItemPredicateMp4}/>

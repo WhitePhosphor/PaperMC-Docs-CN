@@ -1,12 +1,12 @@
 ---
 slug: /tools/minimessage-web-editor
-title: MiniMessage Web Editor
-description: A web-based editor for creating and previewing MiniMessage-formatted text.
+title: MiniMessage 网页编辑器
+description: 一个用于创建和预览 MiniMessage 格式文本的网页编辑器。
 ---
 
-# MiniMessage Web Editor (adventure-webui)
+# MiniMessage 网页编辑器 (adventure-webui)
 
-The MiniMessage Web Editor is a web-based editor for creating and previewing MiniMessage-formatted text.<br />
-It is hosted here: [MiniMessage Web Editor](https://webui.advntr.dev/).
+MiniMessage 网页编辑器是一个用于创建和预览 MiniMessage 格式文本的网页编辑器。<br />
+您可以在这里访问：[MiniMessage 网页编辑器](https://webui.advntr.dev/)。
 
-![Image of adventure webui](./assets/adventure-webui.png)
+![adventure webui 的图片](./assets/adventure-webui.png)

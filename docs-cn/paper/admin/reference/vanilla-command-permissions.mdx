@@ -1,44 +1,44 @@
 ---
 slug: /reference/permissions
-description: All permissions available in the default Paper server.
+description: 默认 Paper 服务器中可用的所有权限。
 ---
 
-# Permissions
+# 权限
 
 import React from "react";
 import { CommandsPermissionsTable, PermissionsTable } from "@site/src/components/permission/Permissions";
 import {vanillaCommands, bukkitCommands, paperCommands, vanillaPermissions, bukkitPermissions, paperPermissions} from "@site/src/components/permission/PermissionSpec";
 
-This page lists all permissions that are included in the default Paper server.
+本页列出了默认 Paper 服务器中包含的所有权限。
 
-## Vanilla command permissions
+## 原版命令权限
 
-The following is a list of permissions for Vanilla commands.
+以下是原版命令的权限列表。
 <CommandsPermissionsTable data={vanillaCommands} />
 
 
-## Bukkit command permissions
+## Bukkit 命令权限
 
-The following is a list of permissions for Bukkit commands.
+以下是 Bukkit 命令的权限列表。
 <CommandsPermissionsTable data={bukkitCommands} />
 
-## Paper command permissions
+## Paper 命令权限
 
-The following is a list of permissions for Paper commands.
+以下是 Paper 命令的权限列表。
 <CommandsPermissionsTable data={paperCommands} />
 
-## Vanilla permissions
+## 原版权限
 
-The following is a list of all additional Vanilla Permissions.
+以下是所有额外的原版权限列表。
 <PermissionsTable data={vanillaPermissions}/>
 
-## Bukkit permissions
+## Bukkit 权限
 
-The following is a list of all additional Bukkit Permissions.
+以下是所有额外的 Bukkit 权限列表。
 <PermissionsTable data={bukkitPermissions}/>
 
-## Paper permissions
+## Paper 权限
 
-The following is a list of all additional Paper Permissions.
+以下是所有额外的 Paper 权限列表。
 <PermissionsTable data={paperPermissions}/>
 

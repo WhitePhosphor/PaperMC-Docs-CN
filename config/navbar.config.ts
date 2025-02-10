@@ -7,7 +7,7 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
     srcDark: "img/logo-marker-dark.svg",
     height: 42, // when changing here, also change css
     width: 121,
-    alt: "PaperMC Docs",
+    alt: "PaperMC 文档",
   },
   items: [
     {
@@ -18,17 +18,17 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
       activeBaseRegex: "\\/paper.*",
       items: [
         {
-          label: "Administration",
+          label: "管理",
           to: "/paper/admin",
           activeBaseRegex: "\\/paper/(?!(dev|contributing)).*",
         },
         {
-          label: "Development",
+          label: "开发",
           to: "/paper/dev",
           activeBaseRegex: "\\/paper\\/dev.*",
         },
         {
-          label: "Contributing",
+          label: "贡献",
           to: "/paper/contributing",
           activeBaseRegex: "\\/paper\\/contributing.*",
         },
@@ -42,12 +42,12 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
       activeBaseRegex: "(\\/folia)(.+)?",
       items: [
         {
-          label: "Administration",
+          label: "管理",
           to: "/folia/admin",
           activeBaseRegex: "(\\/folia/)(?!dev)(.+)?",
         },
         {
-          label: "Development",
+          label: "开发",
           to: "/folia/dev",
           activeBaseRegex: "\\/folia\\/dev.*",
         },
@@ -61,12 +61,12 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
       activeBaseRegex: "\\/velocity.*",
       items: [
         {
-          label: "Administration",
+          label: "管理",
           to: "/velocity/admin",
           activeBaseRegex: "\\/velocity/(?!dev).*",
         },
         {
-          label: "Development",
+          label: "开发",
           to: "/velocity/dev",
           activeBaseRegex: "\\/velocity\\/dev.*",
         },
@@ -79,7 +79,7 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
     },
     {
       to: "misc",
-      label: "Misc",
+      label: "其他",
       position: "left",
     },
     {
@@ -89,7 +89,7 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
     },
     {
       to: "https://papermc.io/downloads",
-      label: "Downloads",
+      label: "下载",
       position: "right",
     },
     {

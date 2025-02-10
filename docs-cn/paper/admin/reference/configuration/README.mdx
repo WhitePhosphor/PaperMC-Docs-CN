@@ -2,41 +2,34 @@
 slug: /reference/configuration
 ---
 
-# Paper Configuration
+# Paper 配置
 
 import ConfigurationStructureDiagram from "@site/src/components/config/ConfigurationStructureDiagram";
 
 ---
 
-## Paper configuration files
+## Paper 配置文件
 
 :::info
 
-Many of our files have been comprehensively documented. If this is the case, they will offer a link to their page.
-If this is not the case, they offer a brief explanation to what they are.
+我们的许多文件都有全面的文档说明。如果是这种情况，它们会提供指向其页面的链接。
+如果不是这种情况，它们会提供简短的说明来解释它们是什么。
 
 :::
 
 <ConfigurationStructureDiagram/>
 
-## Per-world configuration
+## 每个世界的配置
 
-One of the most powerful yet least understood features of the Paper configuration is setting
-configuration options per world. While you can not override every config option per world,
-everything stored within `paper-world-defaults.yml` can be.
+Paper 配置中最强大但最不被理解的功能之一是为每个世界设置配置选项。虽然您不能为每个世界覆盖所有配置选项，但存储在 `paper-world-defaults.yml` 中的所有内容都可以。
 
-### Default values
+### 默认值
 
-Paper sets no per-world overrides out of the box, storing all default values in
-`config/paper-world-defaults.yml`. Everything in this file can be overridden per world but isn't by
-default. Changing something in `paper-world-defaults.yml` will change the value for all worlds where
-you have not manually overridden it.
+Paper 默认不设置任何每个世界的覆盖，所有默认值都存储在 `config/paper-world-defaults.yml` 中。这个文件中的所有内容都可以按世界覆盖，但默认情况下不会。更改 `paper-world-defaults.yml` 中的内容将更改所有您没有手动覆盖的世界的值。
 
-### Per-world values
+### 每个世界的值
 
-To set a value for a specific world, edit `paper-world.yml` within the world folder. For example, if
-you wanted to enable `lootables.auto-replenish` for a world named `resource`, you would edit
-`paper-world.yml` within the `resource` folder like so:
+要为特定世界设置值，请编辑世界文件夹中的 `paper-world.yml`。例如，如果您想为名为 `resource` 的世界启用 `lootables.auto-replenish`，您需要像这样编辑 `resource` 文件夹中的 `paper-world.yml`：
 
 ```yaml title=resource/paper-world.yml
 _version: 28
@@ -47,20 +40,13 @@ lootables:
 # highlight-end
 ```
 
-Nothing but `_version` is set in `paper-world.yml` configuration files by default. In order to
-override the default for an option, you must manually add it by copying from
-`paper-world-defaults.yml`.
+默认情况下，`paper-world.yml` 配置文件中除了 `_version` 外没有设置任何内容。要覆盖某个选项的默认值，您必须通过从 `paper-world-defaults.yml` 复制来手动添加它。
 
-### Inheritance
+### 继承
 
-All configuration not explicitly defined for a world is inherited from `paper-world-defaults.yml`.
-This means that there is no need to repeat yourself between the `paper-world-defaults.yml` and each
-individual `paper-world.yml`. You **do not need to and should not** copy the entire
-`paper-world-default.yml` file into each `paper-world.yml` file you want to modify. Only copy the
-exact value you want to change.
+所有未在世界中明确定义的配置都从 `paper-world-defaults.yml` 继承。这意味着您不需要在 `paper-world-defaults.yml` 和每个单独的 `paper-world.yml` 之间重复自己。您**不需要也不应该**将整个 `paper-world-default.yml` 文件复制到每个您想要修改的 `paper-world.yml` 文件中。只需复制您想要更改的确切值。
 
-For a more complex real-world example: setting both different `spawn-limits` and `auto-replenish`
-in two worlds.
+这里有一个更复杂的实际例子：在两个世界中设置不同的 `spawn-limits` 和 `auto-replenish`。
 
 ```yaml title="paper-world-defaults.yml"
 lootables:
@@ -95,10 +81,9 @@ entities:
       monster: 2
 ```
 
-This example demonstrates the concept of inheritance. For each world, this is the effective
-configuration which will be applied:
+这个例子展示了继承的概念。对于每个世界，这是将要应用的有效配置：
 
-| Configuration Key                                           | world  | world_nether | world_the_end | resource_world |
+| 配置键                                                      | world  | world_nether | world_the_end | resource_world |
 |-------------------------------------------------------------|--------|--------------|---------------|----------------|
 | `lootables.auto-replenish`                                  | `true` | `true`       | `true`        | `false`        |
 | `entities.spawning.spawn-limits.ambient`                    | `15`   | `15`         | `15`          | `15`           |
@@ -109,7 +94,4 @@ configuration which will be applied:
 | `entities.spawning.spawn-limits.water_ambient`              | `20`   | `20`         | `20`          | `20`           |
 | `entities.spawning.spawn-limits.water_creature`             | `5`    | `5`          | `5`           | `5`            |
 
-Notice that `world_the_end/paper-world.yml` was never modified. Because of this, it inherits all the
-configuration options from `config/paper-world-defaults.yml`. Additionally, `auto-replenish` was
-only disabled in `resource_world/paper-world.yml` because in `config/paper-world-defaults.yml`,
-`auto-replenish` is set to `true`.
+注意 `world_the_end/paper-world.yml` 从未被修改。因此，它从 `config/paper-world-defaults.yml` 继承所有配置选项。此外，`auto-replenish` 只在 `resource_world/paper-world.yml` 中被禁用，因为在 `config/paper-world-defaults.yml` 中，`auto-replenish` 被设置为 `true`。

@@ -1,19 +1,19 @@
 ---
 slug: /dev/folia-support
-description: How to support both Folia and Paper within your plugin.
+description: 如何在你的插件中同时支持Folia和Paper。
 ---
 
-# Supporting Paper and Folia
+# 支持Paper和Folia
 
 ![](/img/folia.png)
 
-[Folia](https://github.com/PaperMC/Folia) is a fork of Paper, which is currently maintained by the PaperMC team.
-It adds the ability to split the world into regions as outlined [here](/folia/reference/overview) in more depth.
+[Folia](https://github.com/PaperMC/Folia)是Paper的一个分支,目前由PaperMC团队维护。
+它增加了将世界分割成区域的能力,如[这里](/folia/reference/overview)更详细地概述。
 
-# Checking for Folia
+# 检查Folia
 
-Depending on what platform your plugin is running on, you may need to implement features differently. For this, you can
-use this utility method to check if the current server is running Folia:
+根据你的插件运行的平台,你可能需要以不同的方式实现功能。为此,你可以
+使用这个实用方法来检查当前服务器是否运行Folia:
 
 ```java
 private static boolean isFolia() {
@@ -26,30 +26,30 @@ private static boolean isFolia() {
 }
 ```
 
-## Schedulers
+## 调度器
 
-In order to support Paper and Folia, you must use the correct scheduler. Folia has different types of schedulers
-that can be used for different things. They are:
+为了支持Paper和Folia,你必须使用正确的调度器。Folia有不同类型的调度器
+可用于不同的用途。它们是:
 
-- [Global](#global-scheduler)
-- [Region](#region-scheduler)
-- [Async](#async-scheduler)
-- [Entity](#entity-scheduler)
+- [全局](#global-scheduler)
+- [区域](#region-scheduler)
+- [异步](#async-scheduler)
+- [实体](#entity-scheduler)
 
-If you use these schedulers when running Paper, they will be internally handled to provide the same functionality as if you were
-running Folia.
+如果你在运行Paper时使用这些调度器,它们将被内部处理,提供与运行
+Folia时相同的功能。
 
-### Global scheduler
-The tasks that you run on the global scheduler will be executed on the global region, see [here](/folia/reference/overview#global-region) for
-more information. You should use this scheduler for any tasks that do not belong to any particular region. These can be fetched with:
+### 全局调度器
+在全局调度器上运行的任务将在全局区域上执行,有关更多信息请参见[这里](/folia/reference/overview#global-region)。
+你应该将此调度器用于任何不属于特定区域的任务。可以通过以下方式获取:
 ```java
 GlobalRegionScheduler globalScheduler = server.getGlobalRegionScheduler();
 ```
 
-### Region scheduler
-The region scheduler will be in charge of running tasks for the region that owns a certain location. Do not use this scheduler for
-operations on entities, as this scheduler is tied to the region. Each entity has its [own scheduler](#entity-scheduler)
-which will follow it across regions. As an example, let's say I want to set a block to a beehive:
+### 区域调度器
+区域调度器负责为拥有某个位置的区域运行任务。不要将此调度器用于
+实体上的操作,因为此调度器与区域绑定。每个实体都有自己的[调度器](#entity-scheduler),
+它将跟随实体跨区域移动。例如,假设我想将一个方块设置为蜂箱:
 ```java
 Location locationToChange = ...;
 RegionScheduler scheduler = server.getRegionScheduler();
@@ -59,18 +59,18 @@ scheduler.execute(plugin, locationToChange, () -> {
 });
 ```
 
-We pass the location as a parameter to the <Javadoc name={"io.papermc.paper.threadedregions.scheduler.RegionScheduler"}>`RegionScheduler`</Javadoc>
-as it needs to work out which region to execute on.
+我们将位置作为参数传递给<Javadoc name={"io.papermc.paper.threadedregions.scheduler.RegionScheduler"}>`RegionScheduler`</Javadoc>,
+因为它需要确定在哪个区域执行。
 
-### Async scheduler
-The async scheduler can be used for running tasks independent of the server tick process. This can be fetched with:
+### 异步调度器
+异步调度器可用于运行独立于服务器tick进程的任务。可以通过以下方式获取:
 ```java
 AsyncScheduler asyncScheduler = server.getAsyncScheduler();
 ```
 
-### Entity scheduler
-Entity schedulers are used for executing tasks on an entity. These will follow the entity wherever it goes, so you must use
-these instead of the region schedulers.
+### 实体调度器
+实体调度器用于在实体上执行任务。这些将跟随实体无论它去哪里,所以你必须使用
+这些而不是区域调度器。
 ```java
 EntityScheduler scheduler = entity.getScheduler();
 ```

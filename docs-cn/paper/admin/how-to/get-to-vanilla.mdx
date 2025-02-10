@@ -1,9 +1,9 @@
 ---
 slug: /vanilla
-description: This page lists all changes that result in a different experience than Vanilla.
+description: 本页列出了所有导致与原版体验不同的更改。
 ---
 
-# Vanilla-like Experience
+# 接近原版的体验
 
 import React from 'react';
 import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
@@ -12,24 +12,26 @@ import VanillaGlobalDefaults from '!!raw-loader!@site/config-specs/paper/vanilla
 import SpigotChanges from '!!raw-loader!@site/config-specs/paper/vanilla/spigot.yml'
 import ServerProperties from '!!raw-loader!@site/config-specs/paper/vanilla/server-properties.yml'
 
-Due to the way the Bukkit API is implemented in Paper, the gameplay experience between Vanilla and Paper can have inconsistencies.
-This can be furthered by efforts to fix bugs present in Vanilla Minecraft.
-Whilst many people may not notice the inconsistencies, there are situations where they become problematic.
-One example is that technical players may struggle getting their machines to work like they should.
-This page aims to provide a starting point for players who want to get as close to Vanilla as possible.
+由于 Bukkit API 在 Paper 中的实现方式，原版和 Paper 之间的游戏体验可能存在不一致。
+这可能会因为修复原版 Minecraft 中存在的错误的努力而进一步加剧。
+虽然许多人可能不会注意到这些不一致，但在某些情况下它们会成为问题。
+一个例子是技术玩家可能难以让他们的机器按预期工作。
+本页旨在为想要尽可能接近原版的玩家提供一个起点。
 
 :::info
 
-This page is inspired by [Earthcomputer's collection](https://gist.github.com/Earthcomputer/2296da33b8cc91dba81b48103c0e1fe3) of Vanilla breaking changes.
+本页的灵感来自 [Earthcomputer 的收集](https://gist.github.com/Earthcomputer/2296da33b8cc91dba81b48103c0e1fe3)，
+其中列出了破坏原版体验的更改。
 
 :::
 
 :::warning
 
-This guide will only help you to get as close to Vanilla as possible.
-Unfortunately, it currently is not possible to get a 100% Vanilla experience in Paper.
+本指南只能帮助您尽可能接近原版。
+不幸的是，目前在 Paper 中无法获得 100% 的原版体验。
 
 :::
+
 ## server.properties
 <ConfigDocBlock data={ServerProperties}/>
 
@@ -42,7 +44,7 @@ Unfortunately, it currently is not possible to get a 100% Vanilla experience in 
 ## spigot.yml
 <ConfigDocBlock data={SpigotChanges}/>
 
-## Further considerations
+## 其他考虑因素
 
-* `settings.timeout-time` in `spigot.yml` mirrors the watchdog setting in the `server.properties` file. Keep in mind that the `spigot.yml` setting is in seconds while the default setting is in milliseconds.
-* `watchdog` in `paper-global.yml` controls the watchdog early warning. While this is only a warning, you might want to disable it as it can get annoying.
+* `spigot.yml` 中的 `settings.timeout-time` 反映了 `server.properties` 文件中的看门狗设置。请记住，`spigot.yml` 中的设置以秒为单位，而默认设置以毫秒为单位。
+* `paper-global.yml` 中的 `watchdog` 控制看门狗早期警告。虽然这只是一个警告，但您可能想要禁用它，因为它可能会变得烦人。

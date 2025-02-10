@@ -1,143 +1,125 @@
 ---
 slug: /security
-description: An explanation of how to secure your servers.
+description: 关于如何保护你的服务器的说明。
 ---
 
-# Securing Your Servers
+# 保护你的服务器
 
-It is vital that you secure your backend servers. As part of setting up Velocity, you will put your
-server into offline mode, which means in theory, someone could impersonate any player on your
-server. This is extremely dangerous, so it is important to make sure only the proxy can connect to
-your servers.
+保护你的后端服务器至关重要。作为设置 Velocity 的一部分，你需要将你的服务器设置为离线模式，这意味着理论上，
+任何人都可以在你的服务器上冒充任何玩家。这非常危险，所以确保只有代理服务器可以连接到你的服务器很重要。
 
-This guide will explore the various options for securing your backend servers so only your proxy can
-connect to them. Note that this is an _exploration_ of options, aiming to review the various options
-and give you advantages and disadvantages to them, so you can make an informed decision.
+本指南将探讨各种保护后端服务器的选项，确保只有你的代理服务器可以连接到它们。请注意，这是对各种选项的_探讨_，
+旨在回顾各种选项并为你提供它们的优缺点，以便你能做出明智的决定。
 
-This list is not in any particular order, and almost all of these methods can be combined as needed.
+这个列表没有特定的顺序，几乎所有这些方法都可以根据需要组合使用。
 
-## Operating system firewalls
+## 操作系统防火墙
 
-When properly configured, using the firewall facilities provided by your server's operating system
-is a highly effective way to protect your servers. The Velocity project **strongly recommends the
-use of a firewall**.
+当正确配置时，使用服务器操作系统提供的防火墙功能是保护服务器的一种非常有效的方式。Velocity 项目**强烈建议使用防火墙**。
 
-Instructions for your operating system may vary. Solutions for major server OSes include:
+不同操作系统的具体说明可能有所不同。主要服务器操作系统的解决方案包括：
 
-- Windows: Windows Firewall
-- Linux: iptables, nftables
+- Windows：Windows 防火墙
+- Linux：iptables、nftables
 
-**Advantages**:
+**优点**：
 
-- Fool-proof if you do not give untrusted servers access to your servers
-- Does not require any extra Minecraft server configuration
-- Part of good system hardening advice for any operating system
+- 如果你不给不受信任的服务器访问权限，这是万无一失的
+- 不需要任何额外的 Minecraft 服务器配置
+- 是任何操作系统良好系统加固建议的一部分
 
-**Disadvantages**:
+**缺点**：
 
-- Tricky first-time setup
-- May be difficult to use with multiple proxies
-- Firewall configuration must be kept in sync with new servers and proxies
-- Not viable on a shared host
+- 首次设置比较棘手
+- 可能难以用于多个代理服务器
+- 防火墙配置必须与新服务器和代理保持同步
+- 在共享主机上不可行
 
-## Velocity modern forwarding
+## Velocity 现代转发
 
-If your server only supports Minecraft 1.13 and above, Velocity's modern forwarding can forward
-player information to your servers and provide a second layer of protection against someone trying
-to impersonate as your proxy.
+如果你的服务器只支持 Minecraft 1.13 及以上版本，Velocity 的现代转发可以将玩家信息转发到你的服务器，
+并提供第二层保护，防止有人试图冒充你的代理服务器。
 
 :::caution
 
-Velocity modern forwarding is not a replacement for a firewall. We strongly recommend using a
-firewall with any Minecraft proxy setup.
+Velocity 现代转发不能替代防火墙。我们强烈建议在任何 Minecraft 代理设置中使用防火墙。
 
 :::
 
-**Advantages**:
+**优点**：
 
-- Get player info forwarding for free
-- Secure on a shared host, provided the host has implemented proper protections
-- Works if you host your server on multiple physical servers
+- 免费获得玩家信息转发功能
+- 在共享主机上安全，前提是主机已实施适当的保护
+- 如果你在多个物理服务器上托管服务器也可以工作
 
-**Disadvantages**:
+**缺点**：
 
-- Only works for Minecraft 1.13 and above
-- Requires Paper 1.13 or above, or FabricProxy-Lite if you use Fabric
-- Relies on the forwarding secret being kept secret
+- 仅适用于 Minecraft 1.13 及以上版本
+- 需要 Paper 1.13 或以上版本，或者如果你使用 Fabric 则需要 FabricProxy-Lite
+- 依赖于转发密钥的保密性
 
-## Binding to `localhost`
+## 绑定到 `localhost`
 
-If you are hosting your proxy on the same physical computer as your other servers (and nobody else
-is hosting servers on them), binding your servers to `localhost` is a very simple way of protecting
-them from getting connected to by anything other than the proxy.
+如果你在同一台物理计算机上托管代理服务器和其他服务器（并且没有其他人在上面托管服务器），
+将服务器绑定到 `localhost` 是一种非常简单的方式，可以防止除代理服务器之外的任何东西连接到它们。
 
-For each server, open the `server.properties` file. Find the line that starts with `server-ip` and
-change the line to `server-ip=127.0.0.1`. Save the file and restart the server.
+对于每个服务器，打开 `server.properties` 文件。找到以 `server-ip` 开头的行，
+将该行更改为 `server-ip=127.0.0.1`。保存文件并重启服务器。
 
-Afterwards, open your `velocity.toml` file and ensure all the servers are pointing to
-`127.0.0.1:<port>`.
+之后，打开你的 `velocity.toml` 文件，确保所有服务器都指向 `127.0.0.1:<端口>`。
 
-**Advantages**:
+**优点**：
 
-- Trivial setup compared to other methods discussed
-- Fool-proof if you do not give untrusted users access to your server
+- 与其他讨论的方法相比，设置非常简单
+- 如果你不给不受信任的用户访问服务器的权限，这是万无一失的
 
-**Disadvantages**:
+**缺点**：
 
-- Setup must be reversed (and an alternate method used) if you move any of the servers to a
-  different physical server ( such that the proxy and the server are not on the same physical
-  server)
-- Not viable on a shared host
+- 如果你将任何服务器移动到不同的物理服务器（使得代理服务器和服务器不在同一物理服务器上），
+  必须撤销设置（并使用替代方法）
+- 在共享主机上不可行
 
-## Using an encrypted tunnel
+## 使用加密隧道
 
-This is a variation of binding to `localhost`, but instead of hosting all your servers on a single
-physical server, you will set up an encrypted tunnel between each of your servers, and make sure the
-server only listens for incoming connections from the tunnel. There are many different solutions,
-ranging from VPN solutions such as [WireGuard](https://www.wireguard.com),
-[OpenVPN](https://openvpn.net/), and [tinc](https://www.tinc-vpn.org/) to encrypted tunnels such as
-[spiped](https://www.tarsnap.com/spiped.html). This guide will not go into details of how to set up
-each of these solutions.
+这是绑定到 `localhost` 的一个变体，但不是将所有服务器托管在单个物理服务器上，
+而是在每个服务器之间设置加密隧道，并确保服务器只监听来自隧道的传入连接。有许多不同的解决方案，
+从 VPN 解决方案如 [WireGuard](https://www.wireguard.com)、[OpenVPN](https://openvpn.net/) 和 [tinc](https://www.tinc-vpn.org/)
+到加密隧道如 [spiped](https://www.tarsnap.com/spiped.html)。本指南不会详细介绍如何设置这些解决方案。
 
-**Advantages**:
+**优点**：
 
-- Encrypts traffic between your proxy and your servers while ensuring only authorized clients can
-  connect to your servers
+- 加密代理服务器和服务器之间的流量，同时确保只有授权客户端可以连接到你的服务器
 
-**Disadvantages**:
+**缺点**：
 
-- Very complex setup
-- Impossible to use on a shared host
+- 设置非常复杂
+- 在共享主机上不可能使用
 
-## IP whitelisting plugins
+## IP 白名单插件
 
-As a last line of defense, you can choose to restrict logins to users on an IP whitelist using a
-plugin like [IPWhitelist](https://www.spigotmc.org/resources/ipwhitelist.61/).
+作为最后一道防线，你可以选择使用像 [IPWhitelist](https://www.spigotmc.org/resources/ipwhitelist.61/) 这样的插件，
+限制只有在 IP 白名单上的用户才能登录。
 
-**Advantages**:
+**优点**：
 
-- May be your only solution if none of the other solutions will work (especially on a shared host)
+- 如果其他解决方案都不可行（尤其是在共享主机上），这可能是你唯一的解决方案
 
-**Disadvantages**:
+**缺点**：
 
-- Vulnerable to attack if the attacker can get a server on the same node as your proxy is on
+- 如果攻击者能在与你的代理服务器相同的节点上获得一个服务器，就容易受到攻击
 
-## Other important security advice
+## 其他重要的安全建议
 
-This common-sense general advice goes without saying:
+这些常识性的一般建议不言而喻：
 
-- Keep frequent backups of your server
-- Set up a firewall on your server
-- Run your servers as an unprivileged user (this means no `sudo` access or running as `root` for
-  Linux users!)
-- Update Velocity, your Minecraft server and server plugins, and your server's operating system
-  frequently
-- Use strong passwords
-- Carefully think about the potential impacts of installing any plugins or software before actually
-  doing so
-- Secure any and all other services you may be running on your server
-- Follow all system hardening advice for your operating system
+- 经常备份你的服务器
+- 在服务器上设置防火墙
+- 以非特权用户身份运行服务器（对于 Linux 用户来说，这意味着没有 `sudo` 访问权限或不以 `root` 身份运行！）
+- 经常更新 Velocity、你的 Minecraft 服务器和服务器插件以及服务器的操作系统
+- 使用强密码
+- 在实际安装任何插件或软件之前，仔细考虑其潜在影响
+- 保护你可能在服务器上运行的任何其他服务
+- 遵循你的操作系统的所有系统加固建议
 
-We will not provide a full treatment to the advice given above, so please do some research of your
-own. Your setup will vary - there is no "one size fits all" advice we can give other than these
-general guidelines.
+我们不会对上述建议进行完整的阐述，所以请自行进行一些研究。你的设置会有所不同 - 除了这些一般准则外，
+我们无法给出"一刀切"的建议。

@@ -1,36 +1,24 @@
 ---
 slug: /dev/porting-plugins-from-velocity-1
-description: How to port your plugin from Velocity 1.x.x to modern API.
+description: 如何将你的插件从Velocity 1.x.x移植到现代API。
 ---
 
-# Porting Your Plugin from Velocity 1.x.x
+# 从Velocity 1.x.x移植你的插件
 
-Velocity 3.0.0 includes important API changes from the Velocity 1.x.x series. **Please read this
-document very carefully**.
+Velocity 3.0.0包含了与Velocity 1.x.x系列相比的重要API更改。**请非常仔细地阅读本文档**。
 
-## Minimum supported Java version bump
+## 最低支持的Java版本提升
 
-Velocity 3.3.x now requires Java <Property name="VELOCITY_JAVA_MIN" /> and above.
+Velocity 3.3.x现在需要Java <Property name="VELOCITY_JAVA_MIN" />及以上版本。
 
-## Removal of legacy dependencies
+## 移除旧的依赖
 
-We removed all support for the old `text` 3 library. For `text` 3.x.x (and all the APIs that depend
-on it), direct equivalents are available in [Adventure](https://docs.advntr.dev/), which was
-introduced in Velocity 1.1.0.
+我们移除了对旧的`text` 3库的所有支持。对于`text` 3.x.x(以及所有依赖它的API),在[Adventure](https://docs.advntr.dev/)中都有直接的等效替代,Adventure是在Velocity 1.1.0中引入的。
 
-`toml4j`, deprecated in Velocity 1.1.0 (as it is no longer maintained), has not been removed to
-provide more time for plugins to migrate to Configurate. However, you should prepare to either
-switch to Configurate or shade `toml4j` into your plugin directly.
+`toml4j`在Velocity 1.1.0中被弃用(因为它不再维护),但尚未被移除,以便为插件提供更多时间迁移到Configurate。但是,你应该准备切换到Configurate或者直接将`toml4j`打包到你的插件中。
 
-## New asynchronous event system
+## 新的异步事件系统
 
-Velocity 3.0.0 contains a backport of Velocity Polymer's event system, which differs from Velocity
-1.x.x's event system in a number of ways. Velocity 1.x.x's event model forced all events to be
-executed asynchronously on a fixed-size thread pool, which has proven over time to be a flawed
-model.
+Velocity 3.0.0包含了Velocity Polymer事件系统的移植版本,它在许多方面与Velocity 1.x.x的事件系统不同。Velocity 1.x.x的事件模型强制所有事件在固定大小的线程池上异步执行,这随着时间的推移被证明是一个有缺陷的模型。
 
-Existing event handlers will continue to work unmodified on Velocity 3.0.0, as all event handlers
-are assumed to be asynchronous blocking handlers by default. However, there are some new APIs
-introduced for handling continuations - see the [event API page](../api/event.mdx) for more
-information. However, you are encouraged to migrate your event listeners to the new event API
-paradigms.
+现有的事件处理器将在Velocity 3.0.0上继续不变地工作,因为默认情况下所有事件处理器都被假定为异步阻塞处理器。但是,为了处理延续(continuations),引入了一些新的API - 有关更多信息,请参见[事件API页面](../api/event.mdx)。不过,我们鼓励你将你的事件监听器迁移到新的事件API范式。

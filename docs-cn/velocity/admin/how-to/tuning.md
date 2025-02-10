@@ -1,150 +1,123 @@
 ---
 slug: /tuning
-description: How to tune Velocity to allow for even better performance.
+description: 如何调优 Velocity 以获得更好的性能。
 ---
 
-# Tuning Velocity
+# 调优 Velocity
 
-Velocity comes with good performance out of the box. We go in deep, starting from smart algorithmic
-choices, making strategic usage of native libraries, all the way to the JVM level, optimizing the
-proxy so that the JVM will make better decisions when optimizing the code.
+Velocity 开箱即用就具有良好的性能。我们深入研究，从智能算法选择开始，战略性地使用原生库，
+一直到 JVM 级别，优化代理服务器，使 JVM 在优化代码时能做出更好的决策。
 
-## Host the proxy on Linux
+## 在 Linux 上托管代理服务器
 
-Velocity comes with high-performance, specially tuned native libraries for compression and
-encryption, along with including native transports from Netty. However, due to support constraints,
-the compiled natives are only verified to work on Linux x86_64 and aarch64. While Velocity does not
-require the natives to work, you will suffer from degraded performance. For this reason, we strongly
-recommend that all production deployments of Velocity run on x86_64 Linux.
+Velocity 带有高性能、专门调优的压缩和加密原生库，以及来自 Netty 的原生传输。
+但是，由于支持限制，编译的原生库仅在 Linux x86_64 和 aarch64 上经过验证可以工作。
+虽然 Velocity 不需要原生库也能工作，但你的性能会受到影响。因此，我们强烈建议
+所有生产环境的 Velocity 部署都在 x86_64 Linux 上运行。
 
-## Allocate server resources appropriately
+## 适当分配服务器资源
 
-You should always make sure to allocate the correct amount of heap, network bandwidth, and get the
-right CPU for the amount of players you want to have on your proxy at a given time. For instance, it
-is unlikely you'll be able to get 1,000 players on a Raspberry Pi Zero, but you'll have a much
-better chance if you have a recent high-end server CPU from Intel or AMD.
+你应该始终确保为你想要在代理服务器上同时容纳的玩家数量分配正确的堆内存、网络带宽和获取正确的 CPU。
+例如，你不太可能在树莓派 Zero 上容纳 1,000 名玩家，但如果你有来自 Intel 或 AMD 的最新高端服务器 CPU，
+你就有更好的机会。
 
-There is no "one-size-fits-all" hardware recommendation, only general guidelines for the amount of
-players you can expect:
+没有"一刀切"的硬件推荐，只有针对你可以预期的玩家数量的一般准则：
 
-- Prefer lots of cores but lower clock speeds. Unlike the Minecraft server, Velocity can actually
-  benefit from the extra cores and single-threaded performance is not as important.
-- You should always have enough memory to run Velocity, including room for JVM overhead and for your
-  operating system. For a rough minimum recommended memory amount, double the size of the proxy heap
-  and then add 2GB. For instance, for a proxy with a 2GB heap, plan on getting at least 6GB of
-  memory.
-- Disk speed is unimportant. A solid-state drive is nice to have but not strictly required.
-  Likewise, disk capacity is unimportant as well.
+- 倾向于选择核心数量多但时钟速度较低的 CPU。与 Minecraft 服务器不同，Velocity 实际上可以
+  从额外的核心中受益，而单线程性能不那么重要。
+- 你应该始终有足够的内存来运行 Velocity，包括 JVM 开销和操作系统的空间。对于粗略的最小推荐内存量，
+  将代理服务器堆的大小翻倍，然后再加 2GB。例如，对于一个 2GB 堆的代理服务器，计划至少获取 6GB 内存。
+- 磁盘速度不重要。固态硬盘很好但不是严格必需的。同样，磁盘容量也不重要。
 
-### Special notes regarding speculative execution security vulnerabilities
+### 关于推测执行安全漏洞的特别说明
 
-Starting in 2018, a number of security vulnerabilities with regard to
-[speculative execution](https://en.wikipedia.org/wiki/Speculative_execution) used by modern CPUs
-have been discovered.
+从 2018 年开始，发现了一些关于现代 CPU 使用的[推测执行](https://en.wikipedia.org/wiki/Speculative_execution)
+的安全漏洞。
 
-The mitigations to these vulnerabilities can have painful performance implications, especially on
-processors vulnerable to Meltdown and further compounded if running in a virtual machine. Velocity,
-as a network application, is particularly sensitive to the performance hits that the mitigations
-introduce.
+这些漏洞的缓解措施可能会带来痛苦的性能影响，特别是在容易受到 Meltdown 攻击的处理器上，
+如果在虚拟机中运行则会进一步加剧。Velocity 作为一个网络应用程序，对这些缓解措施引入的性能影响特别敏感。
 
-To minimize these hits, we recommend hosting your proxy on a machine with a CPU that has mitigations
-against Spectre and Meltdown. Processors released in 2019 and onwards typically contain mitigations
-to protect against Spectre and Meltdown.
+为了最小化这些影响，我们建议在具有针对 Spectre 和 Meltdown 的缓解措施的 CPU 的机器上托管你的代理服务器。
+2019 年及以后发布的处理器通常包含针对 Spectre 和 Meltdown 的缓解措施。
 
-If you are using a CPU vulnerable to Spectre and/or Meltdown and are willing to risk security for
-performance, it is also possible to disable Spectre/Meltdown mitigations depending on the operating
-system you use. Note however that you disable these security mitigations _at your own risk_. The
-Velocity project does not recommend that you disable these mitigations.
+如果你使用的是容易受到 Spectre 和/或 Meltdown 攻击的 CPU，并且愿意为了性能而冒安全风险，
+也可以根据你使用的操作系统禁用 Spectre/Meltdown 缓解措施。但请注意，你禁用这些安全缓解措施_需要自担风险_。
+Velocity 项目不建议你禁用这些缓解措施。
 
-## Allocate enough heap
+## 分配足够的堆内存
 
-Alongside having enough CPU, memory, and network bandwidth, you must also allocate enough Java heap
-to the proxy. Not doing this can induce lag and in severe cases may result in the proxy being
-terminated by the Java Virtual Machine because it ran out of memory.
+除了有足够的 CPU、内存和网络带宽外，你还必须为代理服务器分配足够的 Java 堆内存。
+不这样做可能会导致延迟，在严重的情况下可能会导致代理服务器因为内存不足而被 Java 虚拟机终止。
 
-The general rule of thumb is that you allocate 512MB per 500 players, plus some extra to allow for
-some room for error (typically 1GB extra). For instance, if you want to handle 1,000 on a single
-proxy, plan to allocate 2GB of heap.
+一般经验法则是每 500 名玩家分配 512MB，再加上一些额外的空间以留出错误余地（通常额外 1GB）。
+例如，如果你想在单个代理服务器上处理 1,000 名玩家，计划分配 2GB 的堆内存。
 
-### Special notes for containers
+### 关于容器的特别说明
 
-**If you use a containerized setup (such as using Kubernetes, Pterodactyl, or Docker directly), you
-should not allocate the entirety of your memory allocation to the heap!** Doing so _will_ likely
-cause the proxy to be killed by the kernel's out-of-memory killer, which will result in your proxy
-going down, likely at the worst possible time.
+**如果你使用容器化设置（如使用 Kubernetes、Pterodactyl 或直接使用 Docker），
+你不应该将全部内存分配给堆！**这样做_很可能_会导致代理服务器被内核的内存不足杀手杀死，
+这将导致你的代理服务器在最糟糕的时候宕机。
 
-A safe (albeit conservative) setting for the heap would be to allocate half of the memory you
-allocate to the proxy container in total. For instance, if you know the proxy will need to hold
-1,000 players, then allocate 4GB to the container and give the proxy 2GB of heap.
+对堆的安全（尽管保守）设置是将分配给代理服务器容器的总内存的一半分配给堆。
+例如，如果你知道代理服务器需要容纳 1,000 名玩家，那么给容器分配 4GB，给代理服务器分配 2GB 的堆。
 
-## Tune your startup flags
+## 调优你的启动标志
 
-We also recommend tuning your startup flags. The current recommendation is:
+我们还建议调优你的启动标志。当前的建议是：
 
 ```
 -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15
 ```
 
-You will add these flags after the `java` command but before the `-jar` parameter.
+你将在 `java` 命令之后但在 `-jar` 参数之前添加这些标志。
 
-### Explanation of the flags
+### 标志说明
 
-Most of these flags focus on tuning the G1 garbage collector to be more friendly to Velocity's
-workload. One of these flags (`-XX:MaxInlineLevel=15`) tends to improve performance in general.
+这些标志大多集中在调优 G1 垃圾收集器以更适合 Velocity 的工作负载。其中一个标志（`-XX:MaxInlineLevel=15`）
+通常可以提高整体性能。
 
-Before the release of Java 9, the default Java garbage collector was the Parallel GC. This is a
-stop-the-world collector that does its work in parallel. The problem is that its pause times tend to
-be long, and are not suitable for Minecraft (often showing up as seemingly unexplainable lag
-spikes).
+在 Java 9 发布之前，默认的 Java 垃圾收集器是并行 GC。这是一个停止世界的收集器，它并行执行其工作。
+问题是它的暂停时间往往很长，不适合 Minecraft（经常表现为看似无法解释的延迟峰值）。
 
-The recommended garbage collector for Velocity is the G1 region-based collector. There are several
-reasons for us to recommend G1:
+Velocity 推荐的垃圾收集器是基于区域的 G1 收集器。我们推荐 G1 有几个原因：
 
-- It strikes the right balance between throughput and pause times. Throughput is roughly how much
-  work the proxy can achieve.
-- It is compatible with most setups (it is available in Java 8, the earliest Java version we
-  support).
+- 它在吞吐量和暂停时间之间取得了正确的平衡。吞吐量大致是代理服务器可以完成的工作量。
+- 它与大多数设置兼容（它在 Java 8 中可用，这是我们支持的最早的 Java 版本）。
 
-Setups using these flags tend have very low (less than 10 millisecond) GC pauses every few minutes,
-which is very good for Minecraft.
+使用这些标志的设置通常每隔几分钟就会有很低（少于 10 毫秒）的 GC 暂停，这对 Minecraft 来说非常好。
 
-### Other configurations
+### 其他配置
 
 :::caution
 
-Deviating from the configuration we recommend is done solely at your own risk.
+偏离我们推荐的配置完全由你自己承担风险。
 
 :::
 
-Velocity is an application that tends to follow the generational hypothesis quite closely. It has
-also been tuned to reduce load on the garbage collector as much as possible.
+Velocity 是一个倾向于紧密遵循代际假说的应用程序。它也经过调优以尽可能减少垃圾收集器的负载。
 
 #### ZGC
 
-ZGC (the Z Garbage Collector), introduced with Java 11 and stabilized with Java 15, has proven to be
-successful for one large-scale deployment of Velocity.
+ZGC（Z 垃圾收集器）在 Java 11 中引入并在 Java 15 中稳定，已被证明在一个大规模的 Velocity 部署中成功。
 
-At its core, ZGC is a concurrent, generation-less garbage collector emphasizing low latency at the
-expense of throughput. Given the nature of Velocity as a network proxy where low throughput and high
-throughput are important, we recommend using ZGC with caution, and only if you use Java 15 or above.
+从本质上讲，ZGC 是一个并发的、无代际的垃圾收集器，强调以牺牲吞吐量为代价的低延迟。
+考虑到 Velocity 作为网络代理的性质，低吞吐量和高吞吐量都很重要，我们建议谨慎使用 ZGC，
+并且仅在使用 Java 15 或更高版本时使用。
 
-The primary tuning flag for ZGC is heap size - if ZGC cannot collect garbage faster than the proxy
-can allocate it, the threads generating garbage will be temporarily paused, causing the proxy to
-appear to be laggy. Our heap size recommendations still apply, but prepare to give the proxy more
-memory if necessary.
+ZGC 的主要调优标志是堆大小 - 如果 ZGC 无法以比代理服务器分配垃圾更快的速度收集垃圾，
+生成垃圾的线程将暂时暂停，导致代理服务器看起来有延迟。我们的堆大小建议仍然适用，
+但要准备在必要时给代理服务器更多内存。
 
 #### Shenandoah
 
-Introduced in Java 11 and declared stable in Java 15, Shenandoah is similar to G1 in being a
-concurrent, generational garbage collector, but it does more work in parallel.
+在 Java 11 中引入并在 Java 15 中声明稳定，Shenandoah 类似于 G1，是一个并发的、代际的垃圾收集器，
+但它并行执行更多工作。
 
-The Velocity team is not aware of any successful deployments of Shenandoah with Velocity in the
-wild.
+Velocity 团队不知道在野外有任何成功的 Shenandoah 与 Velocity 的部署。
 
 #### OpenJ9
 
-OpenJ9 is an alternative to the HotSpot JVM derived from IBM's J9 JVM, focused primarily on cloud
-workloads. As a result, it behaves very differently from HotSpot. Correspondingly, it has a
-completely different set of garbage collectors.
+OpenJ9 是 HotSpot JVM 的一个替代品，源自 IBM 的 J9 JVM，主要关注云工作负载。因此，它的行为与 HotSpot
+有很大不同。相应地，它有一套完全不同的垃圾收集器。
 
-The default `gencon` garbage collector should work fine with Velocity.
+默认的 `gencon` 垃圾收集器应该可以与 Velocity 很好地配合使用。

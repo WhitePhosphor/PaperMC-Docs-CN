@@ -1,36 +1,36 @@
 ---
 slug: /basic-troubleshooting
-description: This guide will help you diagnose your server's problem before reporting it to PaperMC or the plugin's author.
+description: 本指南将帮助您在向 PaperMC 或插件作者报告问题之前诊断服务器的问题。
 ---
 
-# Basic Troubleshooting
+# 基本故障排除
 
-This guide will help you diagnose your server's problem before reporting it to PaperMC or the plugin's author.
+本指南将帮助您在向 PaperMC 或插件作者报告问题之前诊断服务器的问题。
 
-:::caution[Stop Your Server And Take A Backup]
+:::caution[停止服务器并进行备份]
 
-Before following this guide, stop your server first. Modifying server files while it is still running will corrupt them.
-Only a full server shutdown can prevent this.
+在按照本指南操作之前，请先停止服务器。在服务器仍在运行时修改服务器文件会导致文件损坏。
+只有完全关闭服务器才能防止这种情况。
 
-Also, if you don't follow this guide carefully or make a mistake while following this guide, you might corrupt your server. It is highly advised to back up your server before following this guide.
-It would be ideal to create a test server by copying your production server's file, but that's not always possible.
+此外，如果您没有仔细按照本指南操作或在按照本指南操作时出错，可能会损坏您的服务器。强烈建议在按照本指南操作之前备份您的服务器。
+理想情况下，应该通过复制生产服务器的文件来创建测试服务器，但这并不总是可能的。
 
 :::
 
-## Read the error message
+## 阅读错误消息
 
-If your server encounters a problem, it will either print an error message on the server console, create a crash report and close itself, or do both.
+如果您的服务器遇到问题，它要么会在服务器控制台上打印错误消息，要么会创建崩溃报告并自行关闭，或者两者都会发生。
 
-If your server crashes, the crash report will be saved in the `crash-report` directory.
-If your server didn't crash, those error messages will be stored in the `log` directory along with other messages.
+如果您的服务器崩溃，崩溃报告将保存在 `crash-report` 目录中。
+如果您的服务器没有崩溃，这些错误消息将与其他消息一起存储在 `log` 目录中。
 
-Note that the logs older than the latest will be compressed and not stored as plain text files.
+请注意，早于最新日志的日志将被压缩，而不是以纯文本文件形式存储。
 
-The first thing you have to do is diagnose those messages.
+您要做的第一件事是诊断这些消息。
 
-### Case 01: Paper watchdog thread dump
+### 情况 01：Paper 看门狗线程转储
 
-If your error message looks like this, **do not blindly report it to PaperMC** as it says:
+如果您的错误消息看起来像这样，**不要盲目地向 PaperMC 报告**，尽管它这么说：
 
 ```
 [00:00:00] [Paper Watchdog Thread/ERROR]: --- DO NOT REPORT THIS TO PAPER - THIS IS NOT A BUG OR A CRASH - git-Paper-366 (MC: 1.19.3) ---
@@ -38,107 +38,107 @@ If your error message looks like this, **do not blindly report it to PaperMC** a
 [00:00:00] [Paper Watchdog Thread/ERROR]: ------------------------------
 ```
 
-This can be caused by various things. Maybe your server's hardware is not capable of running Minecraft server. Maybe one of the plugins you use is causing lag on your server.
+这可能由各种原因造成。也许您的服务器硬件不足以运行 Minecraft 服务器。也许您使用的某个插件导致服务器卡顿。
 
-The thread dump from Paper Watchdog can be found below that line. If you find any plugin's name in there, talk to the plugin's author about that, not PaperMC.
+Paper 看门狗的线程转储可以在该行下面找到。如果您在其中发现任何插件的名称，请与插件的作者讨论，而不是 PaperMC。
 
-### Case 02: Stack trace
+### 情况 02：堆栈跟踪
 
-Almost every problem you encounter will print error message lines, which are called "stack trace", on the server console. Examining the stack trace will help you find out what is causing problems on your server.
+您遇到的几乎每个问题都会在服务器控制台上打印错误消息行，这些行被称为"堆栈跟踪"。检查堆栈跟踪将帮助您找出导致服务器问题的原因。
 
-The stack trace starts with the error message, exception type, and exception message.
+堆栈跟踪以错误消息、异常类型和异常消息开始。
 
-Both error messages and exception messages were put there by the developer of either your plugin or Paper. These messages tell you what problem your server experienced.
-An exception type like `java.lang.RuntimeException` tells you the type of the exception. This will help the developer (and you) understand the type of problem.
+错误消息和异常消息都是由插件或 Paper 的开发者放置的。这些消息告诉您服务器遇到了什么问题。
+像 `java.lang.RuntimeException` 这样的异常类型告诉您异常的类型。这将帮助开发者（和您）理解问题的类型。
 
-Many lines beginning with `at` may appear beneath the exception message. These are the body of the stack trace. These lines tell you where the problem starts. The top line of the body of the stack trace will tell you exactly where the problem occurred and, if possible, display where it came from.
+异常消息下面可能会出现许多以 `at` 开头的行。这些是堆栈跟踪的主体。这些行告诉您问题从哪里开始。堆栈跟踪主体的顶行将准确告诉您问题发生在哪里，如果可能的话，还会显示它来自哪里。
 
-If you find any plugin's name in the stack trace, head to [Check Plugin Updates](#check-plugin-updates) and read from there. In most cases, the plugin, whose name is found on the stack trace, is causing the problem. If not, continue reading.
+如果您在堆栈跟踪中发现任何插件的名称，请转到[检查插件更新](#检查插件更新)并从那里开始阅读。在大多数情况下，在堆栈跟踪中找到名称的插件就是导致问题的原因。如果不是，请继续阅读。
 
-Here are some examples of stack traces.
+以下是一些堆栈跟踪的示例。
 
 <details>
-  <summary>Example 01: Server attempted to load chunk saved with newer version of minecraft!</summary>
+  <summary>示例 01：服务器试图加载使用较新版本 Minecraft 保存的区块！</summary>
 
 ```
 [00:00:00 WARN]: java.lang.RuntimeException: Server attempted to load chunk saved with newer version of minecraft! 3218 > 3120
 ```
 
-You tried to load the world generated with a higher version of Minecraft. You cannot do this.
-If you don't have any backup of your world before the chunk version update, you must use your updated world with a higher version of Minecraft.
+您试图加载使用更高版本的 Minecraft 生成的世界。您不能这样做。
+如果您没有在区块版本更新之前的世界备份，您必须使用更高版本的 Minecraft 来使用您更新的世界。
 
 </details>
 
-## Finding the culprit
+## 找出罪魁祸首
 
-If you can't find the name of any plugin in the thread dump or stack trace, try these steps.
+如果您在线程转储或堆栈跟踪中找不到任何插件的名称，请尝试以下步骤。
 
-### Disable all plugins
+### 禁用所有插件
 
-To determine if it is a plugin or Paper itself that is causing problems, disable all of your plugins first.
+要确定是插件还是 Paper 本身导致问题，首先禁用所有插件。
 
-You can disable all of your plugins by renaming the `plugins` directory to something else, such as `plugins-disabled`, or by archiving the `plugins` directory and deleting it.
+您可以通过将 `plugins` 目录重命名为其他名称（如 `plugins-disabled`），或者通过归档 `plugins` 目录并删除它来禁用所有插件。
 
-After that, try to run your server.
+之后，尝试运行您的服务器。
 
-If the problem is resolved after removing the plugins, you know that it was a plugin that caused the issue.
-If you still experience problems, head to [Paper Documentation](#paper-documentation). Maybe your server is misconfigured, and that is creating issues.
+如果在移除插件后问题得到解决，您就知道是插件导致了问题。
+如果您仍然遇到问题，请转到 [Paper 文档](#paper-文档)。也许您的服务器配置错误，这正在造成问题。
 
-### Binary search
+### 二分查找
 
-To efficiently search for the plugin that is causing the issue, you can do the following:
+要有效地搜索导致问题的插件，您可以执行以下操作：
 
-1. **Split your plugins into two groups**
-   The size of the two groups can be different, but it is ideal if the difference is minimal. Make sure that plugins that depend on each other are grouped together.
-2. **Disable one of the two groups of plugins**
-   You can disable them by changing their extension from `.jar` to something else, such as `.jar-disabled`, or move them outside the `plugins` directory and into a temporary directory.
-3. **Run your server and check if the problem still exists**
-   If the problem is resolved, the plugin that caused the issue is one of the disabled plugins.
-   If the problem is not resolved, the plugin that is causing the issue is one of the active plugins.
-4. **Repeat from the start with the suspect plugin group**
-   Repeat the steps above with groups that have the plugin that is causing the issue.
+1. **将插件分成两组**
+   两组的大小可以不同，但最好差异最小。确保相互依赖的插件被分在一起。
+2. **禁用两组插件中的一组**
+   您可以通过将它们的扩展名从 `.jar` 更改为其他名称（如 `.jar-disabled`），或将它们移出 `plugins` 目录到临时目录来禁用它们。
+3. **运行服务器并检查问题是否仍然存在**
+   如果问题得到解决，导致问题的插件是被禁用的插件之一。
+   如果问题没有解决，导致问题的插件是活动插件之一。
+4. **从头开始重复可疑插件组**
+   对包含导致问题的插件的组重复上述步骤。
 
 :::danger
 
-Some plugins that you install are not a typical plugin, but a library. These are installed like plugins,
-however tend to offer few user-facing features and are relied upon by other plugins for their
-functionality. If you disable a library, plugins that depend on it will not work properly. Common
-examples of these libraries are ProtocolLib, Vault providers, permission plugins, etc.
+您安装的某些插件不是典型的插件，而是库。这些库像插件一样安装，
+但往往提供很少的面向用户的功能，而是被其他插件依赖以提供功能。
+如果您禁用库，依赖它的插件将无法正常工作。这些库的常见
+示例包括 ProtocolLib、Vault 提供者、权限插件等。
 
 :::
 
-## Check plugin updates
+## 检查插件更新
 
-There is a chance that your problem is already fixed in the latest release or latest build of the plugin.
+您的问题可能已经在插件的最新发布版本或最新构建版本中修复。
 
-Head to your plugin's official download page and check if you are using the latest build or the latest release of the plugin. If not, update it to the latest version and try to run your server again to see if the problem is resolved.
+前往插件的官方下载页面，检查您是否使用的是插件的最新构建版本或最新发布版本。如果不是，请更新到最新版本，然后再次尝试运行服务器，看看问题是否得到解决。
 
-### Update library plugins
+### 更新库插件
 
-Many plugins use library plugins like ProtocolLib, and you have to download them and put them in `plugins` directory.
+许多插件使用像 ProtocolLib 这样的库插件，您必须下载它们并将它们放在 `plugins` 目录中。
 
-If you don't update them to the latest version or latest build, you might experience problems related to plugins that use the library plugin.
+如果您没有将它们更新到最新版本或最新构建版本，您可能会遇到与使用该库插件的插件相关的问题。
 
-Some library plugins tell their users to use their latest development build for support of the latest Minecraft version. You should look carefully at the requirements of your plugin.
+一些库插件告诉用户使用他们的最新开发构建版本以支持最新的 Minecraft 版本。您应该仔细查看插件的要求。
 
-## Check documentation
+## 检查文档
 
-If you misconfigured your plugin or your server, it can also cause problems on your server.
+如果您错误配置了插件或服务器，也可能导致服务器出现问题。
 
-### Plugin documentation
+### 插件文档
 
-Many plugins provide their own documentation about how to set them up properly. Read those documents carefully and check if there is something wrong with the plugin's configuration.
+许多插件提供了自己的文档，说明如何正确设置它们。仔细阅读这些文档，检查插件的配置是否有问题。
 
-### Paper documentation
+### Paper 文档
 
-Paper can also be configured in a variety of ways. Check these documents for detailed explanations about each configuration.
+Paper 也可以通过多种方式进行配置。查看这些文档以了解每个配置的详细说明。
 
-* [Paper Global Config](../reference/configuration/global-configuration.mdx)
-* [Paper Per World Configuration](../reference/configuration/world-configuration.mdx)
+* [Paper 全局配置](../reference/configuration/global-configuration.mdx)
+* [Paper 每个世界配置](../reference/configuration/world-configuration.mdx)
 
-## Consult with a developer
+## 咨询开发者
 
-If your problem is related to a plugin you use, and you still don't know how to solve it, you can try to reach out to the plugin's author.
-Many plugins have a way to contact their author, like a GitHub issue tracker, Discord support guild, Gitter, IRC, etc.
+如果您的问题与您使用的插件有关，而您仍然不知道如何解决，您可以尝试联系插件的作者。
+许多插件都有联系作者的方式，比如 GitHub 问题跟踪器、Discord 支持服务器、Gitter、IRC 等。
 
-If your problem isn't related to any plugin, you can come to PaperMC's Discord server and ask for help, or create a new issue on our GitHub issue tracker.
+如果您的问题与任何插件无关，您可以来到 PaperMC 的 Discord 服务器寻求帮助，或在我们的 GitHub 问题跟踪器上创建新问题。

@@ -1,53 +1,43 @@
 ---
 slug: /dev/component-api/audiences
-description: How to use Adventure's Audiences.
-title: Audiences
+description: 如何使用Adventure的受众系统。
+title: 受众
 ---
 
-Audiences wrap a collection of recipients that can receive messages. They can be used to send messages to individual
-players, groups of players, or even the entire server (including the console).
+受众(Audiences)包装了一组可以接收消息的接收者。它们可以用于向单个玩家、玩家组或甚至整个服务器(包括控制台)发送消息。
 
-## Who is an `Audience`?
+## 谁是`Audience`?
 
-All `CommandSender`s are single audiences. This includes players, the console, and command blocks. `Server`, `Team` and
-`World` are all forwarding audiences. This means that they are made up of multiple audiences. For example, the server is
-made up of all online players and the console.
+所有的`CommandSender`都是单个受众。这包括玩家、控制台和命令方块。`Server`、`Team`和`World`都是转发受众。这意味着它们由多个受众组成。例如,服务器由所有在线玩家和控制台组成。
 
-This means that all the [`Audience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html)
-methods are available on <Javadoc name={"org.bukkit.command.CommandSender"}>`CommandSender`</Javadoc>,
-<Javadoc name={"org.bukkit.Server"}>`Server`</Javadoc>, <Javadoc name={"org.bukkit.scoreboard.Team"}>`Team`</Javadoc>
-and <Javadoc name={"org.bukkit.World"}>`World`</Javadoc>.
+这意味着所有[`Audience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html)方法都可以在<Javadoc name={"org.bukkit.command.CommandSender"}>`CommandSender`</Javadoc>、<Javadoc name={"org.bukkit.Server"}>`Server`</Javadoc>、<Javadoc name={"org.bukkit.scoreboard.Team"}>`Team`</Javadoc>和<Javadoc name={"org.bukkit.World"}>`World`</Javadoc>上使用。
 
 ## `ForwardingAudience`
 
-The [`ForwardingAudience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/ForwardingAudience.html)
-wraps a collection of [`Audience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html)
-instances and forwards messages to all of them. This is useful for sending messages to multiple audiences (players) at once.
+[`ForwardingAudience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/ForwardingAudience.html)包装了一组[`Audience`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html)实例,并将消息转发给所有这些实例。这对于一次向多个受众(玩家)发送消息很有用。
 
 ```java
-// Server is a ForwardingAudience which includes all online players and the console
+// Server是一个ForwardingAudience,包括所有在线玩家和控制台
 ForwardingAudience audience = Bukkit.getServer();
 
-// To construct an audience from a collection of players, use:
+// 要从玩家集合构建受众,使用:
 Audience audience = Audience.audience(Audience...);
-// If you pass in a single Audience, it will be returned as-is. If you pass in a collection of Audiences, they will be
-// wrapped in a ForwardingAudience.
+// 如果你传入单个Audience,它将按原样返回。如果你传入一组Audience,它们将被
+// 包装在一个ForwardingAudience中。
 ```
 
-## What do `Audience`s do?
+## `Audience`可以做什么?
 
-Audiences are used for interacting with players. They can be used to send messages, play sounds, show bossbars, and more.
-They are mostly used for sending other parts of the API to players. For example, you can send a [`Component`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/Component.html)
-to a player using [`Audience#sendMessage(Component)`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html#sendMessage(net.kyori.adventure.text.Component)).
+受众用于与玩家交互。它们可以用来发送消息、播放声音、显示Boss栏等。它们主要用于向玩家发送API的其他部分。例如,你可以使用[`Audience#sendMessage(Component)`](https://jd.advntr.dev/api/latest/net/kyori/adventure/audience/Audience.html#sendMessage(net.kyori.adventure.text.Component))向玩家发送[`Component`](https://jd.advntr.dev/api/latest/net/kyori/adventure/text/Component.html)。
 
-## Pointers
+## 指针
 
-Audiences can also provide arbitrary information, such as display name or UUID. This is done using the pointer system.
+受众还可以提供任意信息,如显示名称或UUID。这是通过指针系统完成的。
 
 ```java
-// Get the uuid from an audience member, returning an Optional<UUID>
+// 从受众成员获取uuid,返回Optional<UUID>
 Optional<UUID> uuid = audience.get(Identity.UUID);
 
-// Get the display name, returning a default
-Component name = audience.getOrDefault(Identity.DISPLAY_NAME, Component.text("no display name!"));
+// 获取显示名称,返回默认值
+Component name = audience.getOrDefault(Identity.DISPLAY_NAME, Component.text("没有显示名称!"));
 ```

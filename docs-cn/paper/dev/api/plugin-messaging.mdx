@@ -1,28 +1,28 @@
 ---
 slug: /dev/plugin-messaging
-description: How to communicate with clients or proxies.
+description: 如何与客户端或代理服务器通信。
 ---
 
-# Plugin Messaging
+# 插件消息
 
-First introduced in [2012](https://web.archive.org/web/20220711204310/https://dinnerbone.com/blog/2012/01/13/minecraft-plugin-channels-messaging/),
-Plugin messaging is a way for plugins to communicate with clients. When your servers are behind a proxy,
-it will allow your plugins to communicate with the proxy server.
+插件消息最早在 [2012 年](https://web.archive.org/web/20220711204310/https://dinnerbone.com/blog/2012/01/13/minecraft-plugin-channels-messaging/)引入，
+是插件与客户端通信的一种方式。当你的服务器在代理服务器后面时，
+它将允许你的插件与代理服务器通信。
 
-## BungeeCord channel
+## BungeeCord 通道
 
-The BungeeCord channel is used for communication between your Paper server and a BungeeCord (or a BungeeCord-compatible) proxy.
+BungeeCord 通道用于你的 Paper 服务器和 BungeeCord（或兼容 BungeeCord 的）代理服务器之间的通信。
 
-Originally, the channel supported by the BungeeCord proxy was called `BungeeCord`. In versions 1.13 and above,
-the channel was renamed to `bungeecord:main` to create a key structure for plugin messaging channels.
+最初，BungeeCord 代理支持的通道叫做 `BungeeCord`。在 1.13 及以上版本中，
+通道被重命名为 `bungeecord:main`，以创建插件消息通道的键结构。
 
-Paper handles this change internally and automatically changes any messages sent on the `BungeeCord` channel
-to the `bungeecord:main` channel. This means that your plugins should continue to use the `BungeeCord` channel.
+Paper 在内部处理这个变化，并自动将在 `BungeeCord` 通道上发送的任何消息
+改为 `bungeecord:main` 通道。这意味着你的插件应该继续使用 `BungeeCord` 通道。
 
-## Sending plugin messages
+## 发送插件消息
 
-First, we're going to take a look at your Paper server. Your plugin will need to register that it
-will be sending on any given plugin channel. You should to do this alongside your other event listener registrations.
+首先，我们来看看你的 Paper 服务器。你的插件需要注册它
+将在任何给定的插件通道上发送消息。你应该在注册其他事件监听器的同时做这个。
 
 ```java title="PluginMessagingSample.java"
 public final class PluginMessagingSample extends JavaPlugin {
@@ -30,17 +30,17 @@ public final class PluginMessagingSample extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        // Blah blah blah...
+        // 其他代码...
     }
 
 }
 ```
 
-Now that we're registered, we can send messages on the `BungeeCord` channel.
+现在我们已经注册了，我们可以在 `BungeeCord` 通道上发送消息了。
 
-Plugin messages are formatted as byte arrays and can be sent using the <Javadoc name={"org.bukkit.plugin.messaging.PluginMessageRecipient#sendPluginMessage(org.bukkit.plugin.Plugin,java.lang.String,byte[])"}>`sendPluginMessage`</Javadoc>
-method on a <Javadoc name={"org.bukkit.entity.Player"}>`Player`</Javadoc> object.
-Let's take a look at an example of sending a plugin message to the `BungeeCord` channel to send our player to another server.
+插件消息被格式化为字节数组，可以使用 <Javadoc name={"org.bukkit.plugin.messaging.PluginMessageRecipient#sendPluginMessage(org.bukkit.plugin.Plugin,java.lang.String,byte[])"}>`sendPluginMessage`</Javadoc>
+方法在 <Javadoc name={"org.bukkit.entity.Player"}>`Player`</Javadoc> 对象上发送。
+让我们看一个在 `BungeeCord` 通道上发送插件消息以将我们的玩家发送到另一个服务器的示例。
 
 ```java title="PluginMessagingSample.java"
 public final class PluginMessagingSample extends JavaPlugin implements Listener {
@@ -66,48 +66,48 @@ public final class PluginMessagingSample extends JavaPlugin implements Listener 
 
 :::tip
 
-These channels rely on the Minecraft protocol, and are sent as a special type of packet called a
-[Plugin Message](https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Plugin_channels). They piggyback on player connections, so if there is no
-player connected to the server, it will not be able to send or receive plugin messages.
+这些通道依赖于 Minecraft 协议，作为一种特殊类型的数据包（称为
+[插件消息](https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Plugin_channels)）发送。它们依附于玩家连接，所以如果
+服务器上没有玩家连接，它将无法发送或接收插件消息。
 
 :::
 
-### What did we just do?
+### 我们刚才做了什么？
 
-We sent a plugin message on the `BungeeCord` channel! The message we sent was a byte array that contained two strings converted to bytes: `Connect` and `hub2`.
+我们在 `BungeeCord` 通道上发送了一个插件消息！我们发送的消息是一个包含两个转换为字节的字符串的字节数组：`Connect` 和 `hub2`。
 
-Our proxy server received the message through the player who triggered the <Javadoc name={"com.destroystokyo.paper.event.player.PlayerJumpEvent"}>`PlayerJumpEvent`</Javadoc> on our Java server.
-Then, it recognized the channel as its own and, in alignment with BungeeCord's protocol, sent our player to the `hub2` server.
+我们的代理服务器通过触发 <Javadoc name={"com.destroystokyo.paper.event.player.PlayerJumpEvent"}>`PlayerJumpEvent`</Javadoc> 的玩家接收到了消息。
+然后，它识别出这个通道是它自己的，并按照 BungeeCord 的协议，将我们的玩家发送到 `hub2` 服务器。
 
-For BungeeCord, we can think of this message as a case-sensitive command with arguments.
-Here, our command is `Connect` and our only argument is `hub2`, but some "commands" may have multiple arguments.
-For other channels introduced by client side mods, refer to their documentation to best understand how to format your messages.
+对于 BungeeCord，我们可以将这个消息看作是一个区分大小写的命令及其参数。
+这里，我们的命令是 `Connect`，我们唯一的参数是 `hub2`，但有些"命令"可能有多个参数。
+对于由客户端模组引入的其他通道，请参考它们的文档以最好地理解如何格式化你的消息。
 
-### Plugin message types
+### 插件消息类型
 
-Although we sent a `Connect` message to the proxy, there are a few other cases that BungeeCord-compatible proxies will act on.
-These are the following:
+虽然我们向代理发送了一个 `Connect` 消息，但还有一些其他情况下兼容 BungeeCord 的代理会采取行动。
+这些包括：
 
-| Message Type      | Description                                            | Arguments                                                        | Response                                          |
-|:------------------|:-------------------------------------------------------|:-----------------------------------------------------------------|:--------------------------------------------------|
-| `Connect`         | Connects the player to the specified server.           | `server name`                                                    | N/A                                               |
-| `ConnectOther`    | Connects another player to the specified server.       | `player name`, `server name`                                     | N/A                                               |
-| `IP`              | Returns the IP of the player.                          | N/A                                                              | `IP`, `port`                                      |
-| `IPOther`         | Returns the IP of the specified player.                | `player name`                                                    | `player name`, `IP`, `port`                       |
-| `PlayerCount`     | Returns the number of players on the specified server. | `server name`                                                    | `server name`, `player count`                     |
-| `PlayerList`      | Returns a list of players on the specified server.     | `server name`                                                    | `server name`, `CSV player names`                 |
-| `GetServers`      | Returns a list of all servers.                         | N/A                                                              | `CSV server names`                                |
-| `Message`         | Sends a message to the specified player.               | `player name`, `message`                                         | N/A                                               |
-| `MessageRaw`      | Sends a raw chat component to the specified player.    | `player name`, `JSON chat component`                             | N/A                                               |
-| `GetServer`       | Returns the server the player is connected to.         | N/A                                                              | `server name`                                     |
-| `GetPlayerServer` | Returns the server name of the specified player.       | `player name`                                                    | `player name`, `server name`                      |
-| `UUID`            | Returns the UUID of the player.                        | N/A                                                              | `UUID`                                            |
-| `UUIDOther`       | Returns the UUID of the specified player.              | `player name`                                                    | `player name`, `UUID`                             |
-| `ServerIp`        | Returns the IP of the specified server.                | `server name`                                                    | `server name`, `IP`, `port`                       |
-| `KickPlayer`      | Kicks the specified player.                            | `player name`, `reason`                                          | N/A                                               |
-| `KickPlayerRaw`   | Kicks the specified player.                            | `player name`, `JSON chat component`                             | N/A                                               |
-| `Forward`         | Forwards a plugin message to another server.           | `server`, `subchannel`, `size of plugin message`, `message`      | `subchannel`, `size of plugin message`, `message` |
-| `ForwardToPlayer` | Forwards a plugin message to another player.           | `player name`, `subchannel`, `size of plugin message`, `message` | `subchannel`, `size of plugin message`, `message` |
+| 消息类型          | 描述                                                | 参数                                                            | 响应                                              |
+|:-----------------|:---------------------------------------------------|:---------------------------------------------------------------|:--------------------------------------------------|
+| `Connect`        | 将玩家连接到指定的服务器。                           | `server name`                                                    | N/A                                               |
+| `ConnectOther`   | 将另一个玩家连接到指定的服务器。                     | `player name`, `server name`                                     | N/A                                               |
+| `IP`             | 返回玩家的 IP。                                     | N/A                                                              | `IP`, `port`                                      |
+| `IPOther`        | 返回指定玩家的 IP。                                 | `player name`                                                    | `player name`, `IP`, `port`                       |
+| `PlayerCount`    | 返回指定服务器上的玩家数量。                         | `server name`                                                    | `server name`, `player count`                     |
+| `PlayerList`     | 返回指定服务器上的玩家列表。                         | `server name`                                                    | `server name`, `CSV player names`                 |
+| `GetServers`     | 返回所有服务器的列表。                              | N/A                                                              | `CSV server names`                                |
+| `Message`        | 向指定玩家发送消息。                                | `player name`, `message`                                         | N/A                                               |
+| `MessageRaw`     | 向指定玩家发送原始聊天组件。                         | `player name`, `JSON chat component`                             | N/A                                               |
+| `GetServer`      | 返回玩家当前连接的服务器。                           | N/A                                                              | `server name`                                     |
+| `GetPlayerServer`| 返回指定玩家的服务器名称。                           | `player name`                                                    | `player name`, `server name`                      |
+| `UUID`           | 返回玩家的 UUID。                                   | N/A                                                              | `UUID`                                            |
+| `UUIDOther`      | 返回指定玩家的 UUID。                               | `player name`                                                    | `player name`, `UUID`                             |
+| `ServerIp`       | 返回指定服务器的 IP。                               | `server name`                                                    | `server name`, `IP`, `port`                       |
+| `KickPlayer`     | 踢出指定玩家。                                      | `player name`, `reason`                                          | N/A                                               |
+| `KickPlayerRaw`  | 踢出指定玩家。                                      | `player name`, `JSON chat component`                             | N/A                                               |
+| `Forward`        | 将插件消息转发到另一个服务器。                       | `server`, `subchannel`, `size of plugin message`, `message`      | `subchannel`, `size of plugin message`, `message` |
+| `ForwardToPlayer`| 将插件消息转发到另一个玩家。                         | `player name`, `subchannel`, `size of plugin message`, `message` | `subchannel`, `size of plugin message`, `message` |
 
 #### `PlayerCount`
 
@@ -124,7 +124,7 @@ public class MyPlugin extends JavaPlugin implements PluginMessageListener {
         out.writeUTF("PlayerCount");
         out.writeUTF("lobby");
         player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
-        // The response will be handled in onPluginMessageReceived
+        // 响应将在 onPluginMessageReceived 中处理
     }
 
     @Override
@@ -135,7 +135,7 @@ public class MyPlugin extends JavaPlugin implements PluginMessageListener {
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
         if (subchannel.equals("PlayerCount")) {
-            // This is our response to the PlayerCount request
+            // 这是我们对 PlayerCount 请求的响应
             String server = in.readUTF();
             int playerCount = in.readInt();
         }
@@ -156,19 +156,19 @@ public class MyPlugin extends JavaPlugin implements PluginMessageListener {
         Player player = ...;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward");
-        out.writeUTF("ALL"); // This is the target server. "ALL" will message all servers apart from the one sending the message
-        out.writeUTF("SecretInternalChannel"); // This is the channel.
+        out.writeUTF("ALL"); // 这是目标服务器。"ALL" 将向除发送消息的服务器外的所有服务器发送消息
+        out.writeUTF("SecretInternalChannel"); // 这是通道。
 
         ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
         DataOutputStream msgout = new DataOutputStream(msgbytes);
-        msgout.writeUTF("Paper is the meaning of life"); // You can do anything you want with msgout
-        msgout.writeShort(42); // Writing a random short
+        msgout.writeUTF("Paper 是生命的意义"); // 你可以用 msgout 做任何你想做的事
+        msgout.writeShort(42); // 写入一个随机的短整数
 
-        out.writeShort(msgbytes.toByteArray().length); // This is the length.
-        out.write(msgbytes.toByteArray()); // This is the message.
+        out.writeShort(msgbytes.toByteArray().length); // 这是长度。
+        out.write(msgbytes.toByteArray()); // 这是消息。
 
         player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
-        // The response will be handled in onPluginMessageReceived
+        // 响应将在 onPluginMessageReceived 中处理
     }
 
     @Override
@@ -184,28 +184,27 @@ public class MyPlugin extends JavaPlugin implements PluginMessageListener {
             in.readFully(msgbytes);
 
             DataInputStream msgIn = new DataInputStream(new ByteArrayInputStream(msgbytes));
-            String secretMessage = msgIn.readUTF(); // Read the data in the same way you wrote it
+            String secretMessage = msgIn.readUTF(); // 以与写入相同的方式读取数据
             short meaningofLife = msgIn.readShort();
         }
     }
 }
 ```
 
-This message is used to forward a plugin message to another server. This is useful for server-to-server communication within a proxy network.
-For example, if a certain player is banned on one server, you can forward a message to all other servers to ban them there too.
+这个消息用于将插件消息转发到另一个服务器。这对于代理网络内的服务器间通信很有用。
+例如，如果某个玩家在一个服务器上被封禁，你可以转发一个消息到所有其他服务器，在那里也封禁他们。
 
-:::caution[Example of banning a player on all servers]
+:::caution[在所有服务器上封禁玩家的示例]
 
-This is not a recommended way to ban players, due to the fact that there may not be anyone online on the target servers,
-but it is an example of how this can be used.
+由于目标服务器上可能没有人在线，这不是封禁玩家的推荐方式，
+但这是一个如何使用它的示例。
 
 :::
 
 #### `MessageRaw`
 
-The `MessageRaw` message type is used to send a raw chat component to a player. The target player is specified
-by the second parameter - Player name or "ALL" for all players. This is also useful for sending messages to
-players who are on a different server within the proxied network.
+`MessageRaw` 消息类型用于向玩家发送原始聊天组件。目标玩家由第二个参数指定 - 
+玩家名称或 "ALL" 表示所有玩家。这对于向代理网络中不同服务器上的玩家发送消息也很有用。
 
 ```java title="MyPlugin.java"
 public class MyPlugin extends JavaPlugin {
@@ -219,11 +218,11 @@ public class MyPlugin extends JavaPlugin {
         out.writeUTF("MessageRaw");
         out.writeUTF("ALL");
         out.writeUTF(GsonComponentSerializer.gson().serialize(
-                Component.text("Click Me!").clickEvent(ClickEvent.openUrl("https://papermc.io"))
+                Component.text("点击我！").clickEvent(ClickEvent.openUrl("https://papermc.io"))
         ));
         player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
     }
 }
 ```
 
-This will send the player a clickable message saying "Click Me!" that opens `https://papermc.io` upon clicking.
+这将向玩家发送一个可点击的消息，显示"点击我！"，点击时会打开 `https://papermc.io`。

@@ -1,22 +1,22 @@
 ---
 slug: /reference/system-properties
-description: Documentation for the system properties and environment variables Paper may check.
+description: Paper 可能会检查的系统属性和环境变量的文档。
 ---
 
-# Paper System Properties
+# Paper 系统属性
 
-These system properties and environment variables can be set when you start your server allowing for the configuration of various settings.
+这些系统属性和环境变量可以在启动服务器时设置，允许配置各种设置。
 
-:::danger[Danger Ahead]
+:::danger[前方危险]
 
-Setting flags for the JVM can alter how it operates and the same goes for the Paper server.
-If you are unsure about what a flag does, it is recommended that you **do not use it**.
+为 JVM 设置标志可以改变其运行方式，Paper 服务器也是如此。
+如果您不确定某个标志的作用，建议您**不要使用它**。
 
 :::
 
-## How they work
+## 它们如何工作
 
-System properties are set when you start your server. For example, if you are using a `.bat` or a `.sh` file to start your server, you can add the system properties to the file. For example:
+系统属性在启动服务器时设置。例如，如果您使用 `.bat` 或 `.sh` 文件启动服务器，您可以将系统属性添加到文件中。例如：
 
 ```bash
 java -Dpaper.log-level=FINE -jar paper.jar
@@ -24,220 +24,220 @@ java -Dpaper.log-level=FINE -jar paper.jar
 
 :::info
 
-Some of Paper's system properties contain a `.` character in their name. When using PowerShell, these will require wrapping in quotes.
-i.e. `"-Dpaper.log-level=FINE"`
+Paper 的一些系统属性名称中包含 `.` 字符。在使用 PowerShell 时，这些属性需要用引号括起来。
+例如：`"-Dpaper.log-level=FINE"`
 
 :::
 
-Where a `-D` is used to set a system property, and the system property is `paper.log-level` with a value of `FINE`. Otherwise, just add them to the start command.
+其中 `-D` 用于设置系统属性，系统属性是 `paper.log-level`，值为 `FINE`。否则，只需将它们添加到启动命令中即可。
 
 :::note
 
-Where a system property is stated as `unset`, setting it as `true` will work to enable it.
+当系统属性被标记为 `unset` 时，将其设置为 `true` 即可启用它。
 
 :::
 
-[Environment variables](https://en.wikipedia.org/wiki/Environment_variable) are another way to pass values to Paper.
-They can be set in various ways, depending on your operating system and how you start Paper.
+[环境变量](https://en.wikipedia.org/wiki/Environment_variable)是另一种向 Paper 传递值的方式。
+根据您的操作系统和启动 Paper 的方式，可以通过各种方式设置它们。
 
-In most cases, you will not need to use these, unless you are running Paper in a (Docker) container or such.
+在大多数情况下，您不需要使用这些，除非您在（Docker）容器或类似环境中运行 Paper。
 
-## List of system properties
+## 系统属性列表
 
 #### paper.playerconnection.keepalive
 
-- **default**: `30`
-- **description**: Controls how long the player connection will wait before closing when not receiving any keepalives, in seconds.
+- **默认值**: `30`
+- **描述**: 控制在未收到任何保活包时玩家连接等待关闭的时间（以秒为单位）。
 
 #### timings.bypassMax
 
-- **default**: `unset`
-- **description**: Allows for bypassing the max amount of data to send to the Aikar's Timings API. Setting this will not permit bypassing the limit unless the API is configured to allow it.
+- **默认值**: `unset`
+- **描述**: 允许绕过发送到 Aikar 的 Timings API 的数据量上限。除非 API 配置为允许，否则设置此项不会允许绕过限制。
 
 #### LetMeReload
 
-- **default**: `unset`
-- **description**: This disables the reload confirmation message when using the `/reload` command.
+- **默认值**: `unset`
+- **描述**: 使用 `/reload` 命令时禁用重载确认消息。
 
 #### paper.disableChannelLimit
 
-- **default**: `unset`
-- **description**: Disables the plugin channel limit for the server. This will disable the limit of 128 plugin channels per player.
+- **默认值**: `unset`
+- **描述**: 禁用服务器的插件通道限制。这将禁用每个玩家 128 个插件通道的限制。
 
 #### net.kyori.adventure.text.warnWhenLegacyFormattingDetected
 
-- **default**: `false`
-- **description**: Enables or disables the warning when legacy formatting is detected in a chat component.
+- **默认值**: `false`
+- **描述**: 启用或禁用在聊天组件中检测到旧版格式时的警告。
 
 #### Paper.DisableClassPrioritization
 
-- **default**: `unset`
-- **description**: Disables the class prioritization system - mostly an issue when failing to relocate or shade properly.
+- **默认值**: `unset`
+- **描述**: 禁用类优先级系统 - 主要在无法正确重定位或遮蔽时出现问题。
 
 #### Paper.disableFlushConsolidate
 
-- **default**: `unset`
-- **description**: Disables the netty flush consolidation system.
+- **默认值**: `unset`
+- **描述**: 禁用 netty 刷新合并系统。
 
 #### Paper.debugDynamicMissingKeys
 
-- **default**: `unset`
-- **description**: Enables debug logging for missing keys in NBT objects.
+- **默认值**: `unset`
+- **描述**: 启用 NBT 对象中缺失键的调试日志记录。
 
 #### disable.watchdog
 
-- **default**: `unset`
-- **description**: Disables the watchdog warning system.
+- **默认值**: `unset`
+- **描述**: 禁用看门狗警告系统。
 
 #### paper.explicit-flush
 
-- **default**: `unset`
-- **description**: Enables explicit flushing of the network channel.
+- **默认值**: `unset`
+- **描述**: 启用网络通道的显式刷新。
 
 #### Paper.enable-sync-chunk-writes
 
-- **default**: `unset`
-- **description**: Syncs writes on each write call. This has a performance impact, particularly on hard drives.
+- **默认值**: `unset`
+- **描述**: 在每次写入调用时同步写入。这会影响性能，特别是在硬盘驱动器上。
 
 #### paper.debug-sync-loads
 
-- **default**: `unset`
-- **description**: Enables debug logging for sync chunk loads.
+- **默认值**: `unset`
+- **描述**: 启用同步区块加载的调试日志记录。
 
 #### Paper.ignoreWorldDataVersion
 
-- **default**: `unset`
-- **description**: Ignores the world data version when loading a world. This is not recommended and will likely cause issues.
+- **默认值**: `unset`
+- **描述**: 加载世界时忽略世界数据版本。不建议这样做，可能会导致问题。
 
 #### Paper.bypassHostCheck
 
-- **default**: `unset`
-- **description**: Bypasses the host pattern matching attempt for the client when connecting to the server.
+- **默认值**: `unset`
+- **描述**: 在客户端连接到服务器时绕过主机模式匹配尝试。
 
 #### paper.ticklist-warn-on-excessive-delay
 
-- **default**: `unset`
-- **description**: Enables the warning when a tick list is scheduled with an excessive delay.
+- **默认值**: `unset`
+- **描述**: 当计划的刻度列表延迟过长时启用警告。
 
 #### debug.rewriteForIde
 
-- **default**: `unset`
-- **description**: Removes the NMS revision from the stack trace to allow for easier debugging in IDEs.
-It also remaps plugin CB calls to remove the version information.
+- **默认值**: `unset`
+- **描述**: 从堆栈跟踪中删除 NMS 修订版，以便在 IDE 中更容易调试。
+它还会重新映射插件的 CB 调用以删除版本信息。
 
 #### convertLegacySigns
 
-- **default**: `unset`
-- **description**: Converts legacy signs to the new format.
+- **默认值**: `unset`
+- **描述**: 将旧版告示牌转换为新格式。
 
 #### paper.maxCustomChannelName
 
-- **default**: `64`
-- **description**: Sets the largest size that a plugin channel name can take.
+- **默认值**: `64`
+- **描述**: 设置插件通道名称可以使用的最大大小。
 
 #### Paper.maxSignLength
 
-- **default**: `80`
-- **description**: Sets the maximum line length for signs.
+- **默认值**: `80`
+- **描述**: 设置告示牌的最大行长度。
 
 #### Paper.minPrecachedDatafixVersion
 
-- **default**: `Minecraft world version + 1`
-- **description**: If you are expecting to convert a large number of chunks you might consider setting this to only convert from a point onwards.
+- **默认值**: `Minecraft 世界版本 + 1`
+- **描述**: 如果您预计要转换大量区块，您可能会考虑将其设置为仅从某个点开始转换。
 
 #### Paper.WorkerThreadCount
 
-- **default**: half of available physical (**not logical**) cores or `1` if 3 or fewer cores are available
-- **description**: Sets the number of worker threads to use for chunk loading. See [here](./configuration/global-configuration.mdx#chunk_system_worker_threads) for more info.
+- **默认值**: 可用物理（**不是逻辑**）核心数的一半，如果有 3 个或更少的核心则为 `1`
+- **描述**: 设置用于区块加载的工作线程数。更多信息请参见[这里](./configuration/global-configuration.mdx#chunk_system_worker_threads)。
 
 #### Paper.excessiveTELimit
 
-- **default**: `750`
-- **description**: Splits tile entities into multiple packets if there are more than this many.
+- **默认值**: `750`
+- **描述**: 如果实体数量超过此数量，则将实体分成多个数据包。
 
 #### io.papermc.paper.suppress.sout.nags
 
-- **default**: `unset`
-- **description**: Suppresses the nag message about using `System.out`/`System.err` in a plugin.
+- **默认值**: `unset`
+- **描述**: 禁止插件使用 `System.out`/`System.err` 时的提示消息。
 
 #### paper.strict-thread-checks
 
-- **default**: `unset`
-- **description**: This sets the status of the AsyncCatcher so that it will always log an error if code is not run on the main thread.
+- **默认值**: `unset`
+- **描述**: 设置 AsyncCatcher 的状态，使其在代码不在主线程上运行时始终记录错误。
 
 #### Paper.skipServerPropertiesComments
 
-- **default**: `unset`
-- **description**: Skips the comments in the `server.properties` file.
+- **默认值**: `unset`
+- **描述**: 跳过 `server.properties` 文件中的注释。
 
 #### Paper.debugInvalidSkullProfiles
 
-- **default**: `unset`
-- **description**: Enables debug logging for invalid skull profiles. This logs any invalid skulls in the world with the appropriate location information.
+- **默认值**: `unset`
+- **描述**: 启用无效头颅配置文件的调试日志记录。这会记录世界中任何无效头颅的位置信息。
 
 #### paper.alwaysPrintWarningState
 
-- **default**: `unset`
-- **description**: Always prints the warning state for the particular level.
+- **默认值**: `unset`
+- **描述**: 始终打印特定级别的警告状态。
 
 #### Paper.parseYamlCommentsByDefault
 
-- **default**: `true`
-- **description**: Sets whether to parse comments in YAML files by default.
+- **默认值**: `true`
+- **描述**: 设置是否默认解析 YAML 文件中的注释。
 
-#### paperclip.patchonly:
+#### paperclip.patchonly
 
-- **default**: `false`
-- **description**: If the server is started via the Paperclip patch utility (the default distribution on the downloads page) then this sets whether it should only patch the Vanilla server and download libraries without starting the server.
+- **默认值**: `false`
+- **描述**: 如果服务器通过 Paperclip 补丁工具（下载页面上的默认分发版本）启动，则此设置决定是否仅修补原版服务器并下载库而不启动服务器。
 
 #### Paper.IgnoreJavaVersion
 
-- **default**: `false`
-- **description**: Allows you to bypass the Java version check. See [here](/paper/faq#unsupported-java-detected-what-do-i-do) for more info.
+- **默认值**: `false`
+- **描述**: 允许您绕过 Java 版本检查。更多信息请参见[这里](/paper/faq#unsupported-java-detected-what-do-i-do)。
 
 #### paper.useLegacyPluginLoading
 
-- **default**: `false`
-- **description**: Allows cyclic plugin loading. See [here](paper-plugins.md#cyclic-plugin-loading) for more info.
+- **默认值**: `false`
+- **描述**: 允许循环插件加载。更多信息请参见[这里](paper-plugins.md#cyclic-plugin-loading)。
 
 #### Paper.DisableCommandConverter
 
-- **default**: `false`
-- **description**: Disables Paper's automatic upgrading of commands, including items with custom data defined in command blocks and other places that may contain commands, to the new component format introduced in version 1.20.5.
+- **默认值**: `false`
+- **描述**: 禁用 Paper 自动将命令升级到 1.20.5 版本中引入的新组件格式，包括命令方块和其他可能包含命令的地方中定义的带有自定义数据的物品。
 
 #### paper.disableOldApiSupport
 
-- **default**: `false`
-- **description**: Disables plugin compatibility measures that can otherwise result in a considerable delay of class loading (also known as "Commodore" plugin rewriting). This generally requires all of your plugins to be compiled against a recent API version.
+- **默认值**: `false`
+- **描述**: 禁用可能导致类加载显著延迟的插件兼容性措施（也称为 "Commodore" 插件重写）。这通常需要您的所有插件都针对最新的 API 版本进行编译。
 
 #### paper.disablePluginRemapping
 
-- **default**: `false`
-- **description**: Disables plugin remapping introduced in 1.20.5. For more information see the [userdev](../../dev/getting-started/userdev.mdx#1205-and-beyond) documentation and the official [announcement](https://discord.com/channels/289587909051416579/976631292747735080/1232740079097876570).
+- **默认值**: `false`
+- **描述**: 禁用在 1.20.5 中引入的插件重映射。更多信息请参见[用户开发](../../dev/getting-started/userdev.mdx#1205-and-beyond)文档和官方[公告](https://discord.com/channels/289587909051416579/976631292747735080/1232740079097876570)。
 
 #### paper.preferSparkPlugin
 
-- **default**: `false`
-- **description**: Whether the bundled spark profiler should be disabled in favor of a standalone plugin. If the spark plugin is not found, the bundled version will be loaded regardless of the setting, unless it is [explicitly disabled](/paper/reference/global-configuration#spark_enabled).
+- **默认值**: `false`
+- **描述**: 是否应该禁用捆绑的 spark 分析器以支持独立插件。如果找不到 spark 插件，则无论设置如何，都会加载捆绑版本，除非它被[显式禁用](/paper/reference/global-configuration#spark_enabled)。
 
 #### paper.disableWorldSymlinkValidation
 
-- **default**: `false`
-- **description**: Disables the folder walk and symlink validation when loading a world. Significantly improves world loading speed on massive worlds (>1TB). This does not disable symlink verification of datapacks.
+- **默认值**: `false`
+- **描述**: 在加载世界时禁用文件夹遍历和符号链接验证。显著提高大型世界（>1TB）的加载速度。这不会禁用数据包的符号链接验证。
 
 #### minecraft.api.session.host
 
-- **default**: `https://sessionserver.mojang.com`
-- **description**: Allows specifying of a custom session server URL e.g. for caching. [`minecraft.api.services.host`](#minecraftapiserviceshost) needs to be set too for this to apply.
+- **默认值**: `https://sessionserver.mojang.com`
+- **描述**: 允许指定自定义会话服务器 URL，例如用于缓存。需要同时设置 [`minecraft.api.services.host`](#minecraftapiserviceshost) 才能生效。
 
 #### minecraft.api.services.host
 
-- **default**: `https://api.minecraftservices.com`
-- **description**: Allows specifying of a custom services API URL e.g. for caching. [`minecraft.api.session.host`](#minecraftapisessionhost) needs to be set too for this to apply.
+- **默认值**: `https://api.minecraftservices.com`
+- **描述**: 允许指定自定义服务 API URL，例如用于缓存。需要同时设置 [`minecraft.api.session.host`](#minecraftapisessionhost) 才能生效。
 
-## List of environment variables
+## 环境变量列表
 
 #### PAPER_VELOCITY_SECRET
 
-- **default**: `unset`
-- **description**: Overrides the [`proxies.velocity.secret`](./configuration/global-configuration.mdx#proxies_velocity_secret) global configuration option.
+- **默认值**: `unset`
+- **描述**: 覆盖 [`proxies.velocity.secret`](./configuration/global-configuration.mdx#proxies_velocity_secret) 全局配置选项。

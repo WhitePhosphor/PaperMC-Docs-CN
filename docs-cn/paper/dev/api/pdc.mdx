@@ -1,126 +1,180 @@
 ---
 slug: /dev/pdc
-description: A guide to the PDC API for storing data.
+description: 持久性数据容器API指南
 ---
 
-# Persistent Data Container (PDC)
+# 持久性数据容器
 
-The Persistent Data Container (PDC) is a way to store custom data on a whole range of objects; such as items, entities, and block entities.
-The full list of classes that support the PDC are:
+持久性数据容器(PDC)是一个用于存储和检索数据的API。它允许插件将数据附加到游戏对象上,
+这些数据会在服务器重启后保持不变。
 
-- [`Chunk`](#chunk)
-- [`World`](#world)
-- [`Entity`](#entity)
-- [`TileState`](#tilestate)
-- [`Structure`](#structure)
-- [`ItemMeta`](#itemmeta)
-- [`GeneratedStructure`](#generatedstructure)
-- [`Raid`](#raid)
+## 数据持有者
 
-## What is it used for?
-In the past, developers resorted to a variety of methods to store custom data on objects:
+PDC可以附加到实现<Javadoc name={"org.bukkit.persistence.PersistentDataHolder"}>PersistentDataHolder</Javadoc>接口的任何对象上。
+这包括:
 
-- NBT tags: Requires reflection to access internals and was generally unreliable in the long term.
-- Lore and display names: Prone to collisions as well as slow to access.
+- 实体
+- 物品栈
+- 方块状态
+- 世界
+- 区块
+- 结构
 
-The benefit of the PDC is that it allows for a more reliable and performant way to store arbitrary data on objects.
-It also doesn't rely on accessing server internals, so it's less likely to break on future versions. It also removes the need to
-manually track the data lifecycle, as, for example with an entity, the PDC will be saved when the entity unloads.
+## 使用PDC
 
-## Adding data
-To store data in the PDC, there are a few things you need first. The first is a <Javadoc name={"org.bukkit.NamespacedKey"}>`NamespacedKey`</Javadoc>,
-which is used to identify the data. The second is a <Javadoc name={"org.bukkit.persistence.PersistentDataContainer"}>`PersistentDataContainer`</Javadoc>,
-which is the object you want to store the data on. The third is the data itself.
+要使用PDC,你需要:
 
-```java
-// Create a NamespacedKey
-NamespacedKey key = new NamespacedKey(pluginInstance, "example-key");
+1. 获取一个<Javadoc name={"org.bukkit.persistence.PersistentDataContainer"}>PersistentDataContainer</Javadoc>
+2. 创建一个<Javadoc name={"org.bukkit.NamespacedKey"}>NamespacedKey</Javadoc>
+3. 使用<Javadoc name={"org.bukkit.persistence.PersistentDataType"}>PersistentDataType</Javadoc>存储或检索数据
 
-ItemStack item = ItemStack.of(Material.DIAMOND);
-// ItemMeta implements PersistentDataHolder, so we can get the PDC from it
-item.editMeta(meta -> {
-    meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "I love Tacos!");
-});
-```
+### 获取容器
 
-:::info
+要获取PDC,调用`PersistentDataHolder#getPersistentDataContainer()`。
 
-It is considered good practice to reuse `NamespacedKey` objects. They can be constructed with either:
-- A <Javadoc name={"org.bukkit.plugin.Plugin"}>`Plugin`</Javadoc> instance and a <Javadoc name={"java.lang.String"} project={"java"}>`String`</Javadoc> identifier
-- A <Javadoc name={"java.lang.String"} project={"java"}>`String`</Javadoc> namespace and a <Javadoc name={"java.lang.String"} project={"java"}>`String`</Javadoc> identifier
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    // 获取一个实体的PDC
+    Entity entity = ...;
+    PersistentDataContainer entityContainer = entity.getPersistentDataContainer();
 
-The first option is often preferred as it will automatically use the plugin's namespace; however, the second option can be used if you
-want to use a different namespace or access the data from another plugin.
-
-:::
-
-## Getting data
-To get data from the PDC, you need to know the `NamespacedKey` and the `PersistentDataType` of the data.
-
-```java
-// Create a NamespacedKey
-NamespacedKey key = new NamespacedKey(pluginInstance, "example-key");
-
-ItemStack item = ...; // Retrieve the item from before
-// Get the data from the PDC
-PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-if (container.has(key, PersistentDataType.STRING)) {
-    String value = container.get(key, PersistentDataType.STRING);
-    // Do something with the value
-    player.sendMessage(Component.text(value));
+    // 获取一个物品栈的PDC
+    ItemStack item = ...;
+    ItemMeta meta = item.getItemMeta();
+    PersistentDataContainer itemContainer = meta.getPersistentDataContainer();
+    // 记得在修改后保存meta!
+    item.setItemMeta(meta);
 }
 ```
 
-## Data types
+### 创建键
 
-The PDC supports a wide range of data types, such as:
-- `Byte`, `Byte Array`
-- `Double`
-- `Float`
-- `Integer`, `Integer Array`
-- `Long`, `Long Array`
-- `Short`
-- `String`
-- `Boolean`
-- `Tag Containers` - a way to nest PDCs within each other. To create a new `PersistentDataContainer`, you can use:
-  ```java
-  // Get the existing container
-  PersistentDataContainer container = ...;
-  // Create a new container
-  PersistentDataContainer newContainer = container.getAdapterContext().newPersistentDataContainer();
-  ```
-- `Lists` - a way to represent lists of data that can be stored via another persistent data type. You may create them via:
-  ```java
-  // Storing a list of strings in a container by verbosely creating
-  // a list data type wrapping the string data type.
-  container.set(
-      key,
-      PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING),
-      List.of("a", "list", "of", "strings")
-  );
+要创建一个`NamespacedKey`,你需要一个命名空间和一个键。命名空间通常是你的插件ID(小写)。
 
-  // Storing a list of strings in a container by using the api
-  // provided pre-definitions of commonly used list types.
-  container.set(key, PersistentDataType.LIST.strings(), List.of("a", "list", "of", "strings"));
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    // 使用插件实例创建键
+    NamespacedKey key = new NamespacedKey(this, "my-key");
 
-  // Retrieving a list of strings from the container.
-  List<String> strings = container.get(key, PersistentDataType.LIST.strings());
-  ```
+    // 或者使用字符串创建键
+    NamespacedKey key2 = new NamespacedKey("my-plugin", "my-key");
+}
+```
 
-:::info[Boolean `PersistentDataType`]
+### 存储数据
 
-The <Javadoc name={"org.bukkit.persistence.PersistentDataType#BOOLEAN"}>`Boolean`</Javadoc> PDC type exists for convenience
-- you cannot make more complex types distill to a `Boolean`.
+要存储数据,使用`PersistentDataContainer#set()`。你需要提供:
 
-:::
+1. 一个`NamespacedKey`
+2. 一个`PersistentDataType`
+3. 要存储的值
 
-### Custom data types
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    Entity entity = ...;
+    PersistentDataContainer container = entity.getPersistentDataContainer();
+    NamespacedKey key = new NamespacedKey(this, "my-key");
 
-You can store a wide range of data in the PDC with the native adapters; however, if you need a more complex data type, you can
-implement your own <Javadoc name={"org.bukkit.persistence.PersistentDataType"}>`PersistentDataType`</Javadoc> and use that instead.
-The `PersistentDataType`'s job is to "deconstruct" a complex data type into something that is natively supported (see above) and then vice-versa.
+    // 存储一个整数
+    container.set(key, PersistentDataType.INTEGER, 123);
 
-Here is an example of how to do that for a UUID:
+    // 存储一个字符串
+    container.set(key, PersistentDataType.STRING, "hello world");
+
+    // 存储一个布尔值
+    container.set(key, PersistentDataType.BOOLEAN, true);
+}
+```
+
+### 检索数据
+
+要检索数据,使用`PersistentDataContainer#get()`。你需要提供:
+
+1. 一个`NamespacedKey`
+2. 一个`PersistentDataType`
+
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    Entity entity = ...;
+    PersistentDataContainer container = entity.getPersistentDataContainer();
+    NamespacedKey key = new NamespacedKey(this, "my-key");
+
+    // 获取一个整数
+    Integer value = container.get(key, PersistentDataType.INTEGER);
+    if (value != null) {
+        // 使用值...
+    }
+
+    // 获取一个字符串
+    String string = container.get(key, PersistentDataType.STRING);
+    if (string != null) {
+        // 使用字符串...
+    }
+
+    // 获取一个布尔值
+    Boolean bool = container.get(key, PersistentDataType.BOOLEAN);
+    if (bool != null) {
+        // 使用布尔值...
+    }
+}
+```
+
+### 检查数据
+
+要检查容器中是否存在某个键,使用`PersistentDataContainer#has()`。
+
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    Entity entity = ...;
+    PersistentDataContainer container = entity.getPersistentDataContainer();
+    NamespacedKey key = new NamespacedKey(this, "my-key");
+
+    if (container.has(key, PersistentDataType.INTEGER)) {
+        // 容器中存在一个整数值
+    }
+}
+```
+
+### 删除数据
+
+要删除数据,使用`PersistentDataContainer#remove()`。
+
+```java title="TestPlugin.java"
+@Override
+public void onEnable() {
+    Entity entity = ...;
+    PersistentDataContainer container = entity.getPersistentDataContainer();
+    NamespacedKey key = new NamespacedKey(this, "my-key");
+
+    container.remove(key);
+}
+```
+
+## 数据类型
+
+PDC支持以下数据类型:
+
+- `BYTE` - 一个字节
+- `SHORT` - 一个短整数
+- `INTEGER` - 一个整数
+- `LONG` - 一个长整数
+- `FLOAT` - 一个浮点数
+- `DOUBLE` - 一个双精度浮点数
+- `STRING` - 一个字符串
+- `BYTE_ARRAY` - 一个字节数组
+- `INTEGER_ARRAY` - 一个整数数组
+- `LONG_ARRAY` - 一个长整数数组
+- `TAG_CONTAINER` - 一个嵌套的PDC
+- `TAG_CONTAINER_ARRAY` - 一个PDC数组
+
+### 自定义数据类型
+
+你可以通过实现<Javadoc name={"org.bukkit.persistence.PersistentDataType"}>PersistentDataType</Javadoc>接口来创建自定义数据类型。
 
 ```java title="UUIDDataType.java"
 public class UUIDDataType implements PersistentDataType<byte[], UUID> {
@@ -136,7 +190,7 @@ public class UUIDDataType implements PersistentDataType<byte[], UUID> {
 
     @Override
     public byte[] toPrimitive(UUID complex, PersistentDataAdapterContext context) {
-        ByteBuffer bb = ByteBuffer.allocate(Long.BYTES * 2);
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
         bb.putLong(complex.getMostSignificantBits());
         bb.putLong(complex.getLeastSignificantBits());
         return bb.array();
@@ -152,52 +206,24 @@ public class UUIDDataType implements PersistentDataType<byte[], UUID> {
 }
 ```
 
-:::note
+然后你可以这样使用它:
 
-In order to use your own `PersistentDataType`, you must pass an instance of it to the
-<Javadoc name={"org.bukkit.persistence.PersistentDataContainer#get(org.bukkit.NamespacedKey,org.bukkit.persistence.PersistentDataType)"}>`get`</Javadoc>/
-<Javadoc name={"org.bukkit.persistence.PersistentDataContainer#set(org.bukkit.NamespacedKey,org.bukkit.persistence.PersistentDataType,C)"}>`set`</Javadoc>/
-<Javadoc name={"org.bukkit.persistence.PersistentDataContainer#has(org.bukkit.NamespacedKey,org.bukkit.persistence.PersistentDataType)"}>`has`</Javadoc> methods.
-```java
-container.set(key, new UUIDDataType(), uuid);
+```java title="TestPlugin.java"
+public static final PersistentDataType<byte[], UUID> UUID = new UUIDDataType();
+
+@Override
+public void onEnable() {
+    Entity entity = ...;
+    PersistentDataContainer container = entity.getPersistentDataContainer();
+    NamespacedKey key = new NamespacedKey(this, "my-uuid");
+
+    // 存储一个UUID
+    container.set(key, UUID, java.util.UUID.randomUUID());
+
+    // 获取一个UUID
+    java.util.UUID value = container.get(key, UUID);
+    if (value != null) {
+        // 使用UUID...
+    }
+}
 ```
-
-:::
-
-## Storing on different objects
-
-:::caution
-
-Data is **not** copied across holders for you, and needs to be **manually** copied if 'moving' between PersistentDataHolders.
-
-E.g. Placing an ItemStack as a Block (with a TileState) ***does not*** copy over PDC data.
-
-:::
-
-Objects that can have a PDC implement the <Javadoc name={"org.bukkit.persistence.PersistentDataHolder"}>`PersistentDataHolder`</Javadoc> interface
-and their PDC can be fetched with <Javadoc name={"org.bukkit.persistence.PersistentDataHolder#getPersistentDataContainer()"}>`PersistentDataHolder#getPersistentDataContainer()`</Javadoc>.
-
-- ##### <Javadoc name={"org.bukkit.Chunk"}>`Chunk`</Javadoc>
-    - `Chunk#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.World"}>`World`</Javadoc>
-    - `World#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.entity.Entity"}>`Entity`</Javadoc>
-    - `Entity#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.block.TileState"}>`TileState`</Javadoc>
-    - This is slightly more complicated, as you need to cast the block's state to something that extends `TileState`.
-      This does not work for all blocks, only those that have a block entity.
-      ```java
-      Block block = ...;
-      if (block.getState() instanceof Chest chest) {
-          chest.getPersistentDataContainer().set(key, PersistentDataType.STRING, "I love Tacos!");
-          chest.update();
-      }
-      ```
-- ##### <Javadoc name={"org.bukkit.structure.Structure"}>`Structure`</Javadoc>
-    - `Structure#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.inventory.meta.ItemMeta"}>`ItemMeta`</Javadoc>
-    - `ItemMeta#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.generator.structure.GeneratedStructure"}>`GeneratedStructure`</Javadoc>
-    - `GeneratedStructure#getPersistentDataContainer()`
-- ##### <Javadoc name={"org.bukkit.Raid"}>`Raid`</Javadoc>
-    - `Raid#getPersistentDataContainer()`

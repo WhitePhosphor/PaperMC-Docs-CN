@@ -1,76 +1,72 @@
 ---
 slug: /dev/scheduler-api
-description: A guide to the Scheduler API within Velocity allowing tasks to be run.
+description: Velocity 中调度器 API 的指南，允许运行任务。
 ---
 
-# Using the Scheduler
+# 使用调度器
 
-The Velocity scheduler lets you decide when and how your plugin tasks run, allowing fine control
-over execution. On Velocity, there is no main thread. All tasks run using the Velocity scheduler are
-thus run asynchronously.
+Velocity 调度器让你可以决定插件任务何时以及如何运行，允许对执行进行精细控制。
+在 Velocity 中，没有主线程。所有使用 Velocity 调度器运行的任务都是异步运行的。
 
-## Running a delayed task
+## 运行延迟任务
 
-All scheduling works by using a <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder"} project={"velocity"}>`TaskBuilder`</Javadoc>
-returned from the <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler"} project={"velocity"}>`Scheduler`</Javadoc>.
-This fluent builder may be chained to configure the details of the scheduling.
+所有调度工作都通过使用从 <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler"} project={"velocity"}>`Scheduler`</Javadoc>
+返回的 <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder"} project={"velocity"}>`TaskBuilder`</Javadoc> 来完成。
+这个流畅的构建器可以链式调用来配置调度的细节。
 
 ```java
 server.getScheduler()
   .buildTask(plugin, () -> {
-    // do stuff here
+    // 在这里处理
   })
   .delay(2L, TimeUnit.SECONDS)
   .schedule();
 ```
 
-Here, we are scheduling a task to run 2 seconds later. Velocity requires the instance of your
-plugin, `plugin` above. If you are scheduling a task from your main plugin class you may simply use
-`this`.
+在这里，我们正在调度一个 2 秒后运行的任务。Velocity 需要你的插件的实例，上面的 `plugin`。
+如果你从主插件类调度任务，你可以简单地使用 `this`。
 
-Time arguments are specified as a `long` with a <Javadoc name={"java.util.concurrent.TimeUnit"} project={"java"}>`TimeUnit`</Javadoc>.
-Using time units makes scheduling delayed tasks more readable and allows for greater precision.
-`2L, TimeUnit.SECONDS` is far easier to understand than the ambiguous `2000L`.
+时间参数被指定为一个 `long` 和一个 <Javadoc name={"java.util.concurrent.TimeUnit"} project={"java"}>`TimeUnit`</Javadoc>。
+使用时间单位使延迟任务的调度更易读并允许更高的精度。
+`2L, TimeUnit.SECONDS` 比模糊的 `2000L` 更容易理解。
 
-You can also use a <Javadoc name={"java.time.Duration"} project={"java"}>`Duration`</Javadoc> to specify the time arguments,
-e.g.: `Duration.ofSeconds(5L)`.
+你也可以使用 <Javadoc name={"java.time.Duration"} project={"java"}>`Duration`</Javadoc> 来指定时间参数，
+例如：`Duration.ofSeconds(5L)`。
 
-## Running a repeating task
+## 运行重复任务
 
-Creating a repeating task is similar to a delayed task, but you must also specify
-<Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder#repeat(long,java.util.concurrent.TimeUnit)"} project={"velocity"}>`repeat(long, TimeUnit)`</Javadoc>.
-This example will repeat every 5 minutes.
+创建重复任务与延迟任务类似，但你还必须指定
+<Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder#repeat(long,java.util.concurrent.TimeUnit)"} project={"velocity"}>`repeat(long, TimeUnit)`</Javadoc>。
+这个例子将每 5 分钟重复一次。
 
 ```java
 server.getScheduler()
   .buildTask(plugin, () -> {
-    // do stuff here
+    // 在这里处理
   })
   .repeat(5L, TimeUnit.MINUTES)
   .schedule();
 ```
 
-## Running a task now
+## 立即运行任务
 
-Tasks use the scheduler's cached thread pool for all execution, which reuses threads. To take
-advantage of this thread pool for running async tasks which run now, simply omit calling the _delay_
-and _repeat_ methods of the `TaskBuilder`.
+任务使用调度器的缓存线程池进行所有执行，该线程池重用线程。要利用这个线程池来运行立即执行的异步任务，
+只需省略调用 `TaskBuilder` 的 _delay_ 和 _repeat_ 方法。
 
-## Cancellation
+## 取消
 
-The <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder#schedule()"} project={"velocity"}>`schedule()`</Javadoc>
-method returns a <Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask"} project={"velocity"}>`ScheduledTask`</Javadoc>,
-which may then be used to cancel the task involved via the
-<Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask#cancel()"} project={"velocity"}>`cancel()`</Javadoc> method.
-Tasks cannot be uncancelled.
+<Javadoc name={"com.velocitypowered.api.scheduler.Scheduler$TaskBuilder#schedule()"} project={"velocity"}>`schedule()`</Javadoc>
+方法返回一个 <Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask"} project={"velocity"}>`ScheduledTask`</Javadoc>，
+然后可以通过 <Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask#cancel()"} project={"velocity"}>`cancel()`</Javadoc>
+方法取消相关的任务。任务不能被取消取消。
 
-Additionally, <Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask#status()"} project={"velocity"}>`task.status()`</Javadoc>
-returns the current status of the task.
+此外，<Javadoc name={"com.velocitypowered.api.scheduler.ScheduledTask#status()"} project={"velocity"}>`task.status()`</Javadoc>
+返回任务的当前状态。
 
 ```java
 ScheduledTask task = server.getScheduler()
   .buildTask(plugin, () -> {
-    // do stuff here
+    // 在这里处理
   })
   .repeat(5L, TimeUnit.MINUTES)
   .schedule();
@@ -80,14 +76,14 @@ task.cancel();
 System.out.println(task.status());
 ```
 
-You can also schedule _self-cancelling_ tasks using a `Consumer<ScheduledTask>`.
+你也可以使用 `Consumer<ScheduledTask>` 调度_自取消_任务。
 
 ```java
 AtomicInteger integer = new AtomicInteger(0);
 
 ScheduledTask task = server.getScheduler()
   .buildTask(plugin, (selfTask) -> {
-    // do stuff here, for example...
+    // 在这里处理，例如...
     if (integer.addAndGet(1) > 10) {
       selfTask.cancel();
     }
@@ -96,14 +92,14 @@ ScheduledTask task = server.getScheduler()
   .schedule();
 ```
 
-## Obtaining tasks from a plugin
+## 获取插件的任务
 
-You can get all tasks scheduled by a plugin with
-<Javadoc name={"com.velocitypowered.api.scheduler.Scheduler#tasksByPlugin(java.lang.Object)"} project={"velocity"}>`tasksByPlugin(Object)`</Javadoc>.
+你可以使用 <Javadoc name={"com.velocitypowered.api.scheduler.Scheduler#tasksByPlugin(java.lang.Object)"} project={"velocity"}>`tasksByPlugin(Object)`</Javadoc>
+获取插件调度的所有任务。
 
 ```java
 Collection<ScheduledTask> tasks = server.getScheduler().tasksByPlugin(plugin);
-// then you can control them, for example, cancel all task scheduled by a plugin
+// 然后你可以控制它们，例如，取消插件调度的所有任务
 for (ScheduledTask task : tasks) {
   task.cancel();
 }

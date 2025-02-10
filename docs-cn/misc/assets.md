@@ -1,50 +1,45 @@
 ---
 slug: /assets
-description: The official PaperMC and Velocity logomarks and the terms under which you may use them.
+description: PaperMC 和 Velocity 的官方标志以及您可以使用它们的条款。
 ---
 
-# Art Assets
+# 艺术资源
 
-This page provides the official PaperMC and Velocity logomarks and the terms under which you may use them.
+本页面提供了 PaperMC 和 Velocity 的官方标志以及您可以使用它们的条款。
 
 :::warning
 
-The logomarks are subject to their own separate licensing terms and do not inherit any from the
-projects they represent.
+这些标志受其自身独立的许可条款约束，不继承它们所代表项目的任何许可。
 
 :::
 
 ## PaperMC
 
-You may:
+您可以：
 
-- Use the PaperMC logomark to represent the project in blogposts and other places in order to bring
-  attention to the project.
-- Use the PaperMC logomark to represent Paper-Server in downloads, server selectors, and similar
-  places.
-- Crop out extra transparent canvas space behind the PaperMC logomark, so it fits better next to
-  other content.
+- 在博客文章和其他地方使用 PaperMC 标志来代表该项目，以引起对项目的关注。
+- 在下载、服务器选择器和类似场所使用 PaperMC 标志来代表 Paper-Server。
+- 裁剪 PaperMC 标志背后多余的透明画布空间，使其能更好地与其他内容并排放置。
 
-You may not:
+您不可以：
 
-- Alter any of the colors used in the PaperMC logomark.
-- Change the dimensions of the PaperMC logomark.
-- Create modified versions of the PaperMC logomark or derivative works of it.
-- Add your own project images or branding to the PaperMC logomark.
-- Claim the logomark as your own work or use it as a representation of your own projects.
-- Sell the PaperMC logomark on its own or as part of other products without explicit permission.
-- Alter the transparency of any elements within the PaperMC logomark.
+- 更改 PaperMC 标志中使用的任何颜色。
+- 改变 PaperMC 标志的尺寸。
+- 创建 PaperMC 标志的修改版本或衍生作品。
+- 将您自己的项目图片或品牌添加到 PaperMC 标志中。
+- 声称该标志是您自己的作品或将其用作您自己项目的代表。
+- 未经明确许可，单独销售 PaperMC 标志或将其作为其他产品的一部分销售。
+- 更改 PaperMC 标志内任何元素的透明度。
 
-![PaperMC logomark](papermc-logomark-512.png)
+![PaperMC 标志](papermc-logomark-512.png)
 
 ## Velocity
 
-Please do not edit, recolor, rearrange, or distort the Velocity logo. Resizing the
-logo and cropping out any blank space is acceptable.
+请不要编辑、重新着色、重新排列或扭曲 Velocity 标志。调整标志大小
+和裁剪任何空白空间是可以接受的。
 
-The logo should not be used in a matter that suggests the Velocity project officially
-endorses some product or service. For instance, you may advertise a plugin as being
-compatible with Velocity, but you may not make the Velocity logo prominent in that
-advertising.
+不应以暗示 Velocity 项目正式认可某些产品或服务的方式使用该标志。
+例如，您可以宣传插件与 Velocity 兼容，但不能在该广告中
+突出显示 Velocity 标志。
 
-![Velocity logomark](velocity-logomark-512.png)
+![Velocity 标志](velocity-logomark-512.png)

@@ -1,6 +1,6 @@
 ---
 slug: /dev/command-api/arguments/entity-player
-description: Player and Entity arguments documentation.
+description: 玩家和实体参数文档。
 ---
 
 import EntityOppedMp4 from "./assets/vanilla-arguments/entity-opped.mp4";
@@ -10,23 +10,23 @@ import PlayerMp4 from "./assets/vanilla-arguments/player.mp4";
 import PlayersMp4 from "./assets/vanilla-arguments/players.mp4";
 import PlayerProfilesMp4 from "./assets/vanilla-arguments/playerprofiles.mp4";
 
-# Entity and Player Arguments
-The arguments described in this section relate to arguments which you can use to retrieve entities. Their main usage is the selection of command targets.
-All of these have entity selectors (`@a`, `@e`, `@n`, etc.) as valid inputs, though they require the `minecraft.command.selector` permission in order to 
-be able to be used. The specific arguments may allow or disallow certain selectors.
+# 实体和玩家参数
+本节描述的参数与可用于检索实体的参数有关。它们的主要用途是选择命令目标。
+所有这些参数都接受实体选择器（`@a`、`@e`、`@n` 等）作为有效输入，但需要 `minecraft.command.selector` 权限才能
+使用。特定的参数可能允许或禁止某些选择器。
 
-Due to the permission requirement for selectors it is advised to add a `requires` statement to your command:
+由于选择器需要权限，建议在命令中添加 `requires` 语句：
 ```java
 .requires(ctx -> ctx.getSender().hasPermission("minecraft.command.selector"))
 ```
 
-You can find more information about requirements [here](../basics/requirements.mdx).
+你可以在[这里](../basics/requirements.mdx)找到更多关于要求的信息。
 
-## Entity argument
-This argument, after resolving its returning `EntitySelectorArgumentResolver`, returns a list of exactly one, no more and no less, entity. It is safe
-to call `List#getFirst()` to retrieve that entity. You can resolve it using <Javadoc name="io.papermc.paper.command.brigadier.argument.resolvers.ArgumentResolver#resolve(io.papermc.paper.command.brigadier.CommandSourceStack)">`ArgumentResolver#resolve(CommandSourceStack)`</Javadoc>
+## Entity 参数
+此参数在解析其返回的 `EntitySelectorArgumentResolver` 后，返回恰好一个实体的列表，不多也不少。可以安全地
+调用 `List#getFirst()` 来检索该实体。你可以使用 <Javadoc name="io.papermc.paper.command.brigadier.argument.resolvers.ArgumentResolver#resolve(io.papermc.paper.command.brigadier.CommandSourceStack)">`ArgumentResolver#resolve(CommandSourceStack)`</Javadoc> 来解析它。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> entityArgument() {
     return Commands.literal("entityarg")
@@ -35,7 +35,7 @@ public static LiteralCommandNode<CommandSourceStack> entityArgument() {
                 final EntitySelectorArgumentResolver entitySelectorArgumentResolver = ctx.getArgument("arg", EntitySelectorArgumentResolver.class);
                 final List<Entity> entities = entitySelectorArgumentResolver.resolve(ctx.getSource());
 
-                ctx.getSource().getSender().sendRichMessage("Found <green><entityname>",
+                ctx.getSource().getSender().sendRichMessage("找到 <green><entityname>",
                     Placeholder.component("entityname", entities.getFirst().name())
                 );
 
@@ -45,20 +45,20 @@ public static LiteralCommandNode<CommandSourceStack> entityArgument() {
 }
 ```
 
-### In-game preview
-If the executing player doesn't have the `minecraft.command.selector` permission:
+### 游戏内预览
+如果执行玩家没有 `minecraft.command.selector` 权限：
 <FullWidthVideo src={EntityUnoppedMp4}/>
 
-If the executing player has the `minecraft.command.selector` permission:
+如果执行玩家有 `minecraft.command.selector` 权限：
 <FullWidthVideo src={EntityOppedMp4}/>
 
 
-## Entities argument
-In contrast to the single entity argument, this multiple-entities argument accepts any amount of entities, with the minimum amount of entities being 1. They can, once again, be resolved using
-<Javadoc name="io.papermc.paper.command.brigadier.argument.resolvers.ArgumentResolver#resolve(io.papermc.paper.command.brigadier.CommandSourceStack)">`ArgumentResolver#resolve(CommandSourceStack)`</Javadoc>,
-which returns a `List<Entity>`.
+## Entities 参数
+与单个实体参数相比，这个多实体参数接受任意数量的实体，最小实体数量为 1。它们同样可以使用
+<Javadoc name="io.papermc.paper.command.brigadier.argument.resolvers.ArgumentResolver#resolve(io.papermc.paper.command.brigadier.CommandSourceStack)">`ArgumentResolver#resolve(CommandSourceStack)`</Javadoc> 来解析，
+返回一个 `List<Entity>`。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> entitiesArgument() {
     return Commands.literal("entitiesarg")
@@ -69,7 +69,7 @@ public static LiteralCommandNode<CommandSourceStack> entitiesArgument() {
 
                 final Component foundEntities = Component.join(JoinConfiguration.commas(true), entities.stream().map(Entity::name).toList());
 
-                ctx.getSource().getSender().sendRichMessage("Found <green><entitynames>",
+                ctx.getSource().getSender().sendRichMessage("找到 <green><entitynames>",
                     Placeholder.component("entitynames", foundEntities)
                 );
 
@@ -79,17 +79,17 @@ public static LiteralCommandNode<CommandSourceStack> entitiesArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={EntitiesMp4}/>
 
 
-## Player argument
-The player argument allows to retrieve a `PlayerSelectorArgumentResolver` for player arguments.
-For this "single player" argument, you can safely get the target player by running `PlayerSelectorArgumentResolver.resolve(ctx.getSource()).getFirst()`,
-which returns a <Javadoc name='org.bukkit.entity.Player'>Player</Javadoc> object.
+## Player 参数
+player 参数允许为玩家参数检索 `PlayerSelectorArgumentResolver`。
+对于这个"单个玩家"参数，你可以通过运行 `PlayerSelectorArgumentResolver.resolve(ctx.getSource()).getFirst()` 安全地获取目标玩家，
+它返回一个 <Javadoc name='org.bukkit.entity.Player'>Player</Javadoc> 对象。
 
-### Example usage
-This command yeets the targeted player into the air!
+### 使用示例
+这个命令会将目标玩家抛向空中！
 
 ```java
 public static LiteralCommandNode<CommandSourceStack> playerArgument() {
@@ -100,9 +100,9 @@ public static LiteralCommandNode<CommandSourceStack> playerArgument() {
                 final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
                 target.setVelocity(new Vector(0, 100, 0));
-                target.sendRichMessage("<rainbow>Yeeeeeeeeeet");
+                target.sendRichMessage("<rainbow>起飞！！！");
 
-                ctx.getSource().getSender().sendRichMessage("Yeeted <target>!",
+                ctx.getSource().getSender().sendRichMessage("将 <target> 抛向天空！",
                     Placeholder.component("target", target.name())
                 );
                 return Command.SINGLE_SUCCESS;
@@ -111,17 +111,17 @@ public static LiteralCommandNode<CommandSourceStack> playerArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={PlayerMp4}/>
 
 
-## Players argument
-The "multiple players" argument works similarly to the "single player" argument, also returning a `PlayerSelectorArgumentResolver`. Instead of just resolving to exactly one `Player`, this
-one can resolve to more than just one player - which you should account for in case of using this argument. `PlayerSelectorArgumentResolver.resolve(ctx.getSource())` returns a
-`List<Player>`, which you can just iterate through.
+## Players 参数
+"多玩家"参数的工作方式与"单个玩家"参数类似，也返回一个 `PlayerSelectorArgumentResolver`。不同的是，它不仅仅解析为一个 `Player`，而是
+可以解析为多个玩家 - 在使用此参数时应该考虑到这一点。`PlayerSelectorArgumentResolver.resolve(ctx.getSource())` 返回一个
+`List<Player>`，你可以直接遍历它。
 
-### Example usage
-Extending the "single player" yeet command to support multiple targets can look like this:
+### 使用示例
+扩展"单个玩家"抛掷命令以支持多个目标可以这样写：
 
 ```java
 public static LiteralCommandNode<CommandSourceStack> playersArgument() {
@@ -134,9 +134,9 @@ public static LiteralCommandNode<CommandSourceStack> playersArgument() {
 
                 for (final Player target : targets) {
                     target.setVelocity(new Vector(0, 100, 0));
-                    target.sendRichMessage("<rainbow>Yeeeeeeeeeet");
+                    target.sendRichMessage("<rainbow>起飞！！！");
 
-                    sender.sendRichMessage("Yeeted <target>!",
+                    sender.sendRichMessage("将 <target> 抛向天空！",
                         Placeholder.component("target", target.name())
                     );
                 }
@@ -146,22 +146,21 @@ public static LiteralCommandNode<CommandSourceStack> playersArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={PlayersMp4}/>
 
 
-## Player profiles argument
-The player profiles argument is a very powerful argument which can retrieve both offline and online players. It returns the result of the argument as a `PlayerProfileListResolver`,
-which resolves to a `Collection<PlayerProfile>`. This collection can be iterated to get the resulting profile(s). Usually, it only returns a single `PlayerProfile` if retrieving
-a player by name, but it can return multiple if using the entity selectors (like `@a` on online players). Thus it always makes sense to run whatever operation you want to run on
-all entries in the collection instead of just the first one.
+## Player profiles 参数
+player profiles 参数是一个非常强大的参数，可以检索离线和在线玩家。它将参数的结果作为 `PlayerProfileListResolver` 返回，
+解析为 `Collection<PlayerProfile>`。可以遍历此集合以获取结果配置文件。通常，如果通过名称检索玩家，它只返回一个 `PlayerProfile`，
+但如果使用实体选择器（如在线玩家的 `@a`），它可以返回多个。因此，最好在集合中的所有条目上运行你想要运行的操作，而不是只在第一个条目上运行。
 
-This argument will run API calls to Mojang servers in order to retrieve player information for players which have never joined the server before. Due to this operation sometimes
-taking a bit longer, it is suggested to resolve this argument in an asynchronous context in order to not cause any server lag.
+此参数将调用 Mojang 服务器的 API 来检索从未加入服务器的玩家信息。由于这个操作有时
+需要较长时间，建议在异步上下文中解析此参数，以避免造成服务器延迟。
 
-Sometimes, these API calls may fail. This is also visible in the in-game preview down below. This behavior is also the reason for `/whitelist add` sometimes.
+有时，这些 API 调用可能会失败。这在下面的游戏内预览中也可以看到。这种行为也是 `/whitelist add` 有时失败的原因。
 
-### Example usage - player lookup command
+### 使用示例 - 玩家查找命令
 ```java
 public static LiteralCommandNode<CommandSourceStack> playerProfilesArgument() {
     return Commands.literal("lookup")
@@ -171,7 +170,7 @@ public static LiteralCommandNode<CommandSourceStack> playerProfilesArgument() {
                 final Collection<PlayerProfile> foundProfiles = profilesResolver.resolve(ctx.getSource());
 
                 for (final PlayerProfile profile : foundProfiles) {
-                    ctx.getSource().getSender().sendPlainMessage("Found " + profile.getName());
+                    ctx.getSource().getSender().sendPlainMessage("找到 " + profile.getName());
                 }
 
                 return Command.SINGLE_SUCCESS;
@@ -180,5 +179,5 @@ public static LiteralCommandNode<CommandSourceStack> playerProfilesArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={PlayerProfilesMp4}/>

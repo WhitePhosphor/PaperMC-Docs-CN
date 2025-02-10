@@ -23,7 +23,7 @@ const url =
 const docsCommon: Options = {
   breadcrumbs: true,
   editUrl: ({ versionDocsDirPath, docPath }) =>
-    `https://github.com/PaperMC/docs/blob/main/${versionDocsDirPath}/${docPath}`,
+    `https://github.com/8aka-Team/PaperMC-docs-CN/blob/main/${versionDocsDirPath}/${docPath}`,
   editCurrentVersion: true,
   remarkPlugins: [remarkA11yEmoji],
   showLastUpdateAuthor: true,
@@ -31,9 +31,8 @@ const docsCommon: Options = {
 };
 
 const config: Config = {
-  title: "PaperMC Docs",
-  tagline:
-    "Documentation for all projects under the PaperMC umbrella, including Paper, Velocity, and Folia.",
+  title: "PaperMC 文档",
+  tagline: "PaperMC 旗下所有项目的文档，包括 Paper、Velocity 和 Folia。",
   url: url,
   baseUrl: "/",
   onBrokenLinks: isCI ? "throw" : "warn",
@@ -244,7 +243,7 @@ const config: Config = {
       },
       {
         name: "og:image:alt",
-        content: "PaperMC Logo",
+        content: "PaperMC 标志",
       },
     ],
     navbar: navbar,

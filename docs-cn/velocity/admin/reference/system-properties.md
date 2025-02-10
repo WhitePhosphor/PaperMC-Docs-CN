@@ -1,23 +1,22 @@
 ---
 slug: /reference/system-properties
-description: Documentation for the system properties Velocity may check.
+description: Velocity可能检查的系统属性的文档。
 ---
 
-# Velocity System Properties
+# Velocity系统属性
 
-These system properties can be set when you start your server allowing for the configuration of various settings.
+这些系统属性可以在启动服务器时设置,允许配置各种设置。
 
-:::danger[Danger Ahead]
+:::danger[前方危险]
 
-Setting flags for the JVM can alter how it operates and the same goes for the Velocity server.
-If you are unsure about what a flag does, it is recommended that you **do not use it**.
+为JVM设置标志可以改变其运行方式,Velocity服务器也是如此。
+如果你不确定某个标志的作用,建议你**不要使用它**。
 
 :::
 
-## How they work
+## 它们如何工作
 
-System properties are set when you start your server. For example, if you are using a `.bat` or a `.sh` file to start your server, you can add the system properties to
-the file. For example:
+系统属性在启动服务器时设置。例如,如果你使用`.bat`或`.sh`文件启动服务器,你可以将系统属性添加到文件中。例如:
 
 ```bash
 java -Dvelocity.packet-decode-logging=true -jar velocity.jar
@@ -25,68 +24,68 @@ java -Dvelocity.packet-decode-logging=true -jar velocity.jar
 
 :::info
 
-Some of Velocity's system properties contain a `.` character in their name. When using PowerShell, these will require wrapping in quotes.
-i.e. `"-Dvelocity.packet-decode-logging=true"`
+一些Velocity的系统属性在其名称中包含`.`字符。在使用PowerShell时,这些将需要用引号包裹。
+即`"-Dvelocity.packet-decode-logging=true"`
 
 :::
 
-Where a `-D` is used to set a system property, and the system property is `velocity.packet-decode-logging` with a value of `true`.
-Otherwise, just add them to the start command.
+其中`-D`用于设置系统属性,系统属性是`velocity.packet-decode-logging`,值为`true`。
+否则,只需将它们添加到启动命令中。
 
 :::note
 
-The default value shown may not be set for the property but will only be used by Velocity if it is not explicitly set.
+显示的默认值可能未为该属性设置,但如果未明确设置,Velocity将仅使用该值。
 
 :::
 
-## List of system properties
+## 系统属性列表
 
 #### auth.forceSecureProfiles
 
-- **default**: `true`
-- **description**: Overrides `force-key-authentication` from the config. If not set, it will be automatically set to the current config value.
+- **默认值**: `true`
+- **描述**: 覆盖配置中的`force-key-authentication`。如果未设置,它将自动设置为当前配置值。
 
 #### velocity.natives-tmpdir
 
-- **default**: `unset`
-- **description**: Temporary directory for Velocity native files. (If set, it will also define `io.netty.native.workdir`)
+- **默认值**: `未设置`
+- **描述**: Velocity原生文件的临时目录。(如果设置,它也将定义`io.netty.native.workdir`)
 
 #### velocity.max-known-packs
 
-- **default**: `64`
-- **description**: Limits known packs to the Vanilla default to prevent crashing Velocity.
+- **默认值**: `64`
+- **描述**: 将已知包限制为原版默认值以防止Velocity崩溃。
 
 #### velocity.max-packets-per-flush
 
-- **default**: `8192`
-- **description**: The max amount of packets before the queue is flushed automatically.
+- **默认值**: `8192`
+- **描述**: 队列自动刷新前的最大数据包数量。
 
 #### velocity.log-server-backpressure
 
-- **default**: `false`
-- **description**: Whether Velocity should log if the server connection is writable and thus if the player connection will be auto-read.
+- **默认值**: `false`
+- **描述**: Velocity是否应该记录服务器连接是否可写,从而玩家连接是否将自动读取。
 
 #### velocity.packet-decode-logging
 
-- **default**: `false`
-- **description**: Whether packet decoding errors should be logged extensively.
+- **默认值**: `false`
+- **描述**: 是否应该广泛记录数据包解码错误。
 
 #### velocity.increased-compression-cap
 
-- **default**: `false`
-- **description**: Whether the maximum uncompressed packet size should be set to its maximum supported limit (128 MiB) instead of the Vanilla limit (8 MiB).
+- **默认值**: `false`
+- **描述**: 未压缩数据包的最大大小是否应该设置为其最大支持限制(128 MiB)而不是原版限制(8 MiB)。
 
 #### velocity.disable-native-transport
 
-- **default**: `false`
-- **description**: Whether to disable Netty's native transport methods like Epoll. If set to true, Velocity will use Java's NIO transport instead.
+- **默认值**: `false`
+- **描述**: 是否禁用Netty的原生传输方法如Epoll。如果设置为true,Velocity将使用Java的NIO传输。
 
 #### velocity.natives-disabled
 
-- **default**: `false`
-- **description**: Whether native functionality for specific operating systems should be disabled.
+- **默认值**: `false`
+- **描述**: 是否应该禁用特定操作系统的原生功能。
 
 #### velocity.strictErrorHandling
 
-- **default**: `true`
-- **description**: Whether the client should disconnect on packet errors. Temporarily added in MC 1.20.5 and removed in 1.21.2 to help modded servers transition to this change.
+- **默认值**: `true`
+- **描述**: 客户端在数据包错误时是否应该断开连接。在MC 1.20.5中临时添加并在1.21.2中移除,以帮助模组服务器过渡到这个变化。

@@ -1,134 +1,135 @@
-# Contributing to PaperMC Docs
+# 为 PaperMC 文档做贡献
 
-Thank you for considering contributing to the PaperMC Docs repository! We appreciate your help in making our documentation better.
-To ensure a smooth and collaborative contribution process, please follow the guidelines below.
+感谢您考虑为 PaperMC 文档仓库做贡献！我们感谢您帮助我们改进文档。
+为确保贡献过程顺畅且富有协作性，请遵循以下指南。
 
-## Table of Contents
+## 目录
 
-1. [Introduction](#introduction)
-2. [How to add a page](#adding-a-page)
-3. [Submitting Contributions](#submitting-contributions)
-4. [Style Guidelines](#style-guidelines)
-5. [Code of Conduct](#code-of-conduct)
+- [为 PaperMC 文档做贡献](#为-papermc-文档做贡献)
+  - [目录](#目录)
+  - [简介](#简介)
+    - [如何添加页面](#如何添加页面)
+  - [提交贡献](#提交贡献)
+  - [风格指南](#风格指南)
+  - [自动文档版本控制](#自动文档版本控制)
+  - [魔法值处理](#魔法值处理)
+  - [行为准则](#行为准则)
 
-## Introduction
+## 简介
 
-The PaperMC Docs repository contains the documentation for the PaperMC project, which is used to provide essential
-information, instructions, and guidelines to our users, developers, and contributors. Your contributions play a
-significant role in improving and maintaining the quality of our documentation.
+PaperMC 文档仓库包含了 PaperMC 项目的文档，用于为我们的用户、开发者和贡献者提供重要信息、说明和指南。
+您的贡献在改进和维护我们文档质量方面发挥着重要作用。
 
-We use [Docusaurus](https://docusaurus.io/) to build and deploy the documentation website.
-Docusaurus has [extensive documentation](https://docusaurus.io/docs/category/guides) detailing what is possible with it.
+我们使用 [Docusaurus](https://docusaurus.io/) 来构建和部署文档网站。
+Docusaurus 有[详尽的文档](https://docusaurus.io/docs/category/guides)说明其所有功能。
 
-The bulk of Paper's documentation is written with Markdown, which is a simple markup language that is easy to learn.
-Take a look at some of the existing documentation to get a feel for how it is written.
+Paper 的大部分文档都是用 Markdown 编写的，这是一种简单易学的标记语言。
+看看一些现有的文档，了解它是如何编写的。
 
-### Adding a page
+### 如何添加页面
 
-To add a new page to the documentation, create a new Markdown file in the appropriate folder. For example, if you want to add
-a new page to the Paper Admin docs, create a new Markdown file in the `docs/paper/admin/` folder. The file name should be in
-lowercase and use hyphens to separate words. For example, `my-new-page.md`.
+要向文档添加新页面，请在适当的文件夹中创建一个新的 Markdown 文件。例如，如果您想向 Paper 管理文档添加新页面，
+请在 `docs/paper/admin/` 文件夹中创建一个新的 Markdown 文件。文件名应该使用小写字母，并使用连字符分隔单词。
+例如，`my-new-page.md`。
 
-The page should start with a slug and title. For example:
+页面应该以 slug 和标题开始。例如：
 
 ```markdown
 ---
 slug: /reference/paper-plugins
 ---
 
-# Paper Plugins
+# Paper 插件
 
-This documentation page serves to explain all the new semantics and possible confusions that Paper plugins may introduce.
+本文档页面用于解释 Paper 插件可能引入的所有新语义和可能的混淆。
 ```
 
-This will place the page at the `/paper/reference/paper-plugins` URL on the website. The slug should be unique and follow the
-folder structure of the documentation. The title is the name of the page that will be displayed on the website and in the sidebar.
+这将把页面放在网站的 `/paper/reference/paper-plugins` URL 上。slug 应该是唯一的，并遵循文档的文件夹结构。
+标题是将在网站和侧边栏中显示的页面名称。
 
-You must also add the page to the sidebar. In this instance we will go to the `config/sidebar.paper.ts` file and
-add the file to the `items` tag for that section. You must use the file structure for that file. One example would be
-`admin/reference/paper-plugins` where you omit the file extension and use slashes to denote folders. Take a look at the
-existing sidebar elements to get a feel for how it is structured.
+您还必须将页面添加到侧边栏。在这个例子中，我们将转到 `config/sidebar.paper.ts` 文件，
+并将文件添加到该部分的 `items` 标签中。您必须使用该文件的文件结构。一个例子是
+`admin/reference/paper-plugins`，其中省略文件扩展名并使用斜杠表示文件夹。看看现有的
+侧边栏元素，了解它是如何构建的。
 
-## Submitting Contributions
+## 提交贡献
 
-If you wish to contribute to the PaperMC Docs, please follow these steps:
+如果您想为 PaperMC 文档做贡献，请遵循以下步骤：
 
-1. Fork the repository to your GitHub account.
+1. 将仓库 fork 到您的 GitHub 账户。
 
-2. Create a new branch from the `main` branch.
+2. 从 `main` 分支创建一个新分支。
 
-3. Make your changes or add new documentation following the style guidelines mentioned below.
+3. 按照下面提到的风格指南进行更改或添加新文档。
 
-4. Commit your changes and push them to your fork.
+4. 提交您的更改并将其推送到您的 fork。
 
-5. Submit a pull request (PR) to the `main` branch of the Docs repository.
-   Cloudflare Pages will automatically deploy a preview of your changes to the PR. The link to the preview will be available in a PR comment.
+5. 向文档仓库的 `main` 分支提交拉取请求（PR）。
+   Cloudflare Pages 将自动为您的更改部署预览到 PR。预览链接将在 PR 评论中提供。
 
-6. Your PR will be reviewed, and feedback may be provided if necessary.
+6. 您的 PR 将被审查，如有必要可能会提供反馈。
 
-7. Once your contribution meets the guidelines and requirements, it will be merged into the main repository.
+7. 一旦您的贡献符合指南和要求，它将被合并到主仓库中。
 
-## Style Guidelines
+## 风格指南
 
-To maintain consistency and readability across the documentation, please adhere to the following style guidelines:
+为了保持文档的一致性和可读性，请遵守以下风格指南：
 
-1. **American English**: All documentation should be written in American English. Please use American spellings, grammar, and punctuation.
-   Take a look at [this guide](https://www.oxfordinternationalenglish.com/differences-in-british-and-american-spelling/) which outlines
-   the differences between American and British English.
+1. **美式英语**：所有文档都应该用美式英语编写。请使用美式拼写、语法和标点符号。
+   看看[这个指南](https://www.oxfordinternationalenglish.com/differences-in-british-and-american-spelling/)，
+   它概述了美式和英式英语之间的区别。
 
-2. **Markdown Format**: Documentation should be written in Markdown format (.md or .mdx) for easy rendering on the website.
+2. **Markdown 格式**：文档应该用 Markdown 格式（.md 或 .mdx）编写，以便在网站上轻松渲染。
 
-3. **Heading Structure**: Use `h1` (#) for the main title, `h2` (##) for section headings, and follow this pattern for subsequent subheadings.
-   Capitalize the first letter of each word in a h1, however, only capitalize the first letter of the first word in h2 and h3 unless~
-   it is a proper noun.
+3. **标题结构**：使用 `h1` (#) 作为主标题，`h2` (##) 作为章节标题，并遵循这种模式用于后续子标题。
+   在 h1 中每个单词的首字母都要大写，但在 h2 和 h3 中，除非是专有名词，否则只需将第一个单词的首字母大写。
 
-4. **Code Blocks**: When including code snippets or terminal commands, use fenced code blocks with the appropriate syntax highlighting.
+4. **代码块**：在包含代码片段或终端命令时，使用带有适当语法高亮的围栏代码块。
 
-5. **Admonitions**: Use admonitions to highlight important information. For example, use `:::note` for general notes, `:::tip`for tips,
-   `:::caution` for warnings, and `:::danger` for critical warnings.
+5. **提示框**：使用提示框来突出重要信息。例如，使用 `:::note` 作为一般注释，`:::tip` 作为提示，
+   `:::caution` 作为警告，`:::danger` 作为严重警告。
 
-6. **Links and References**: When referencing external sources or linking to other pages, use descriptive anchor text and provide full URLs.
+6. **链接和引用**：在引用外部来源或链接到其他页面时，使用描述性的锚文本并提供完整的 URL。
 
-7. **Images**: Include images if necessary to illustrate concepts. Ensure the images are clear and relevant to the content.
+7. **图片**：如有必要，包含图片来说明概念。确保图片清晰且与内容相关。
 
-8. **Format Code**: After you've made changes, don't forget to run the formatting script with `pnpm run format`.
+8. **格式化代码**：在进行更改后，不要忘记使用 `pnpm run format` 运行格式化脚本。
 
-9. **Keep It Concise**: Write clear and concise sentences. Avoid unnecessary jargon and explanations.
+9. **保持简洁**：写清晰简洁的句子。避免不必要的术语和解释。
 
-10. **Be Inclusive**: Be mindful of all readers and contributors. Use language that is inclusive and welcoming to everyone.
+10. **保持包容**：考虑所有读者和贡献者。使用包容和友好的语言。
 
-11. **Capitalize Vanilla**: When referring to the base game, use "Vanilla" with a capital "V".
+11. **原版大写**：在提到基础游戏时，使用大写的"原版"（Vanilla）。
 
-## Automatic Doc Versioning
+## 自动文档版本控制
 
-There are components and methods in order to embed the current Project Version into the documentation. This is done one
-of a few ways:
+有一些组件和方法可以将当前项目版本嵌入到文档中。这可以通过以下几种方式实现：
 
-1. `SoftwareVersion` component
+1. `SoftwareVersion` 组件
 
-    This component is used to embed the current version of the software into the documentation. An example of this would be:
+    此组件用于将软件的当前版本嵌入到文档中。例如：
 
     ```jsx
-    <SoftwareVersion versionType={"maj-min-pat"}/> // e.g. 1.19.2
-    <SoftwareVersion versionType={"maj-min"}/> // e.g. 1.19
-    <SoftwareVersion versionType={"maj"}/> // e.g. 1
+    <SoftwareVersion versionType={"maj-min-pat"}/> // 例如 1.19.2
+    <SoftwareVersion versionType={"maj-min"}/> // 例如 1.19
+    <SoftwareVersion versionType={"maj"}/> // 例如 1
 
-    // You can set the project name to be used for the versioning (defaults to paper):
-    <SoftwareVersion versionType={"maj-min-pat"} project={"velocity"}/> // e.g. 3.3.0-SNAPSHOT
+    // 您可以设置用于版本控制的项目名称（默认为 paper）：
+    <SoftwareVersion versionType={"maj-min-pat"} project={"velocity"}/> // 例如 3.3.0-SNAPSHOT
     ```
 
-2. `Javadoc` component
+2. `Javadoc` 组件
 
-    This component is used to embed a link to the current version of the corresponding Javadoc. An example of this would be:
+    此组件用于嵌入指向当前版本相应 Javadoc 的链接。例如：
 
     ```jsx
-    <Javadoc name={"org.bukkit.event.Event"}>here</Javadoc>
-    // The project can also be set here, and defaults to Paper
+    <Javadoc name={"org.bukkit.event.Event"}>这里</Javadoc>
+    // 这里也可以设置项目，默认为 Paper
     ```
 
-3. `VersionFormattedCode` component
+3. `VersionFormattedCode` 组件
 
-    This component is used to embed a code block with the current version of the software. An example of this would be:
+    此组件用于嵌入带有软件当前版本的代码块。例如：
 
     ````jsx
     <VersionFormattedCode language={"yaml"}>
@@ -143,42 +144,39 @@ of a few ways:
     ```⠀
     </VersionFormattedCode>
 
-    // The possible placeholders are:
-    %%_MAJ_MIN_MC_%%  - Major-Minor Paper Version (E.g. 1.20)
-    %%_MAJ_MIN_PAT_MC_%% - Major-Minor-Patch Paper Version (E.g. 1.20.4)
-    %%_MAJ_MIN_VEL_%% - Major Velocity Version (E.g. 3.1.0)
-    %%_MAJ_MIN_PAT_VEL_%% - Major-Minor-Patch Velocity Version (E.g. 3.1.1-SNAPSHOT)
-    %%_MAJ_MIN_PAT_USERDEV_%% - Latest Paperweight-Userdev Version (E.g. 1.7.3)
+    // 可用的占位符有：
+    %%_MAJ_MIN_MC_%%  - Paper 主要-次要版本 (例如 1.20)
+    %%_MAJ_MIN_PAT_MC_%% - Paper 主要-次要-补丁版本 (例如 1.20.4)
+    %%_MAJ_MIN_VEL_%% - Velocity 主要版本 (例如 3.1.0)
+    %%_MAJ_MIN_PAT_VEL_%% - Velocity 主要-次要-补丁版本 (例如 3.1.1-SNAPSHOT)
+    %%_MAJ_MIN_PAT_USERDEV_%% - 最新的 Paperweight-Userdev 版本 (例如 1.7.3)
     ````
 
-When the major version of the software changes, the docs will still need to have a "snapshot" created to keep documentation
-for older versions. This is done by using Docusaurus's `version` command:
+当软件的主要版本发生变化时，文档仍需要创建一个"快照"以保留旧版本的文档。
+这是通过使用 Docusaurus 的 `version` 命令完成的：
 
 ```bash
 pnpm docusaurus docs:version:paper "1.20"
 ```
 
-## Magic Value Handling
+## 魔法值处理
 
-When writing documentation, it is important to avoid using "magic values" in the documentation. This may be slightly less
-obscure than in code, but it is still important to avoid using them. For example, these values may end up being used in
-multiple places, and if they change, it is important to change them in all places. This is why it is important to use
-our `Property` component to embed these values into the documentation. An example of this would be:
+在编写文档时，避免使用"魔法值"很重要。这在文档中可能不像在代码中那样明显，但仍然很重要。
+例如，这些值可能最终在多个地方使用，如果它们发生变化，重要的是要在所有地方都进行更改。
+这就是为什么使用我们的 `Property` 组件将这些值嵌入到文档中很重要。例如：
 
 ```jsx
 <Property name="PAPER_JAVA_MIN" />
 ```
 
-This will embed the value of the property into the documentation, and if it changes, it will be changed in all places.
+这将把属性的值嵌入到文档中，如果它发生变化，它将在所有地方都发生变化。
 
-These values are stored in the `config-specs/properties.json` file. If you need to add a new property, you can
-add it to this file, and it will be available to use in the documentation.
+这些值存储在 `config-specs/properties.json` 文件中。如果您需要添加新属性，
+可以将其添加到此文件中，然后就可以在文档中使用它。
 
-## Code of Conduct
+## 行为准则
 
-Contributors are expected to follow the [Community Guidelines](https://papermc.io/community/guidelines) of the PaperMC organization in all
-interactions related to this repository.
+贡献者应该在与本仓库相关的所有互动中遵循 PaperMC 组织的[社区指南](https://papermc.io/community/guidelines)。
 
-Thank you for contributing to the PaperMC Docs! Your dedication helps improve the documentation for the entire
-community. If you have any questions or need further assistance, feel free to reach out to us on the PaperMC Discord server
-or create an issue on the repository.
+感谢您为 PaperMC 文档做出贡献！您的奉献帮助改进了整个社区的文档。如果您有任何问题或需要进一步帮助，
+欢迎在 PaperMC Discord 服务器上联系我们或在仓库中创建问题。

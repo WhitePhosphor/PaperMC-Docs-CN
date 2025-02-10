@@ -1,15 +1,15 @@
 ---
 slug: /dev/plugin-yml
-description: A guide to Bukkit's plugin.yml file.
+description: Bukkit的plugin.yml文件指南。
 ---
 
 # Bukkit Plugin YML
 
-The `plugin.yml` file is the main configuration file for your plugin.
-It contains information about your plugin, such as its name, version, and description.
-It also contains information about the plugin's dependencies, permissions, and commands.
+`plugin.yml`文件是你的插件的主要配置文件。
+它包含了关于你的插件的信息,如名称、版本和描述。
+它还包含了插件的依赖、权限和命令的信息。
 
-The `plugin.yml` file is located in the `resources` directory of your project.
+`plugin.yml`文件位于项目的`resources`目录中。
 ```
 example-plugin
 ├── build.gradle.kts
@@ -21,106 +21,106 @@ example-plugin
             └── plugin.yml
 ```
 
-## Example
+## 示例
 
-Here is an example of a `plugin.yml` file:
+这是一个`plugin.yml`文件的示例:
 
 <VersionFormattedCode language={"yaml"}>
 ```
 name: ExamplePlugin
 version: 1.0.0
 main: io.papermc.testplugin.ExamplePlugin
-description: An example plugin
+description: 一个示例插件
 author: PaperMC
 website: https://papermc.io
 api-version: '%%_MAJ_MIN_PAT_MC_%%'
 ```
 </VersionFormattedCode>
 
-## Fields
+## 字段
 
 :::note
 
-The fields in this section are not in any particular order.
-If they have an asterisk (\*) next to them, that means they are required.
+本节中的字段没有特定顺序。
+如果它们旁边有星号(\*),则表示它们是必需的。
 
 :::
 
 ### name*
 
-The name of your plugin. This is what will be displayed in the plugin list and log messages.
-This will be overridden in the logs if the prefix is set.
+你的插件的名称。这将显示在插件列表和日志消息中。
+如果设置了prefix,这将在日志中被覆盖。
 - `name: ExamplePlugin`
 
 ### version*
 
-The current version of the plugin. This is shown in plugin info messages and server logs.
+插件的当前版本。这会显示在插件信息消息和服务器日志中。
 - `version: 1.0.0`
 
 ### main*
 
-The main class of your plugin. This is the class that extends `JavaPlugin` and is the entry point to your plugin.
+你的插件的主类。这是继承`JavaPlugin`的类,也是你的插件的入口点。
 - `main: io.papermc.testplugin.ExamplePlugin`
 
-This is the package path and class name of your main class.
+这是你的主类的包路径和类名。
 
 ### description
 
-A short description of your plugin and what it does. This will be shown in the plugin info commands.
-- `description: An example plugin`
+你的插件的简短描述及其功能。这将显示在插件信息命令中。
+- `description: 一个示例插件`
 
 ### author / authors
 
-The author(s) of the plugin. This can be a single author or a list of authors.
+插件的作者。这可以是单个作者或作者列表。
 - `author: PaperMC`
 - `authors: [PaperMC, SpigotMC, Bukkit]`
-These will be shown in the plugin info commands.
+这些将显示在插件信息命令中。
 
 ### contributors
 
-The contributors to the plugin that aren't the managing author(s).
+不是管理作者的插件贡献者。
 - `contributors: [PaperMC, SpigotMC, Bukkit]`
-These will be shown in the plugin info commands.
+这些将显示在插件信息命令中。
 
 ### website
 
-The website of the plugin. This is useful for linking to a GitHub repository or a plugin page.
+插件的网站。这对于链接到GitHub仓库或插件页面很有用。
 - `website: https://papermc.io`
-This will be shown in the plugin info commands.
+这将显示在插件信息命令中。
 
 ### api-version
 
-The version of the Paper API that your plugin is using. This doesn't include the minor version until 1.20.5. From 1.20.5 and onward, a minor version is supported.
-Servers with a version lower than the version specified here will refuse to load the plugin.
-The valid versions are 1.13 - <SoftwareVersion versionType={"maj-min-pat"}/>.
+你的插件使用的Paper API版本。这不包括1.20.5之前的次要版本。从1.20.5开始,支持次要版本。
+版本低于此处指定版本的服务器将拒绝加载插件。
+有效版本是1.13 - <SoftwareVersion versionType={"maj-min-pat"}/>。
 - <VersionFormattedCode>`api-version: '%%_MAJ_MIN_PAT_MC_%%'`</VersionFormattedCode>
 
 :::info
 
-If this is not specified, the plugin will be loaded as a legacy plugin and a warning will be printed to the console.
+如果未指定此项,插件将作为旧版插件加载,并且会在控制台中打印警告。
 
 :::
 
 ### load
 
-This tells the server when to load the plugin. This can be `STARTUP` or `POSTWORLD`. Will default to `POSTWORLD` if not specified.
+这告诉服务器何时加载插件。这可以是`STARTUP`或`POSTWORLD`。如果未指定,默认为`POSTWORLD`。
 - `load: STARTUP`
 
 ### prefix
 
-The prefix of the plugin. This is what will be displayed in the log instead of the plugin name.
+插件的前缀。这是将在日志中显示的内容,而不是插件名称。
 - `prefix: EpicPaperMCHypePlugin`
 
 ### libraries
 
 :::warning
 
-The use of this feature is *currently* against Maven Central's TOS. However, this feature is very likely to stay.
+使用此功能*目前*违反了Maven Central的服务条款。但是,此功能很可能会保留。
 
 :::
 
-This is a list of libraries that your plugin depends on. These libraries will be downloaded from the Maven Central repository and added to the classpath.
-This removes the need to shade and relocate the libraries.
+这是你的插件依赖的库列表。这些库将从Maven Central仓库下载并添加到类路径中。
+这消除了需要shade和重定位库的需求。
 
 ```yaml
 libraries:
@@ -130,54 +130,54 @@ libraries:
 
 ### permissions
 
-This is a list of permissions that your plugin uses. This is useful for plugins that use permissions to restrict access to certain features.
+这是你的插件使用的权限列表。这对于使用权限来限制某些功能访问的插件很有用。
 ```yaml
 permissions :
     permission.node:
-        description: "This is a permission node"
+        description: "这是一个权限节点"
         default: op
         children:
             permission.node.child: true
     another.permission.node:
-        description: "This is another permission node"
+        description: "这是另一个权限节点"
         default: not op
 ```
 
-The description is the description of the permission node. This is what will be displayed in the permissions list.
-The default is the default value of the permission node. This can be `op`/`not op` or `true`/`false`.
-This defaults to the value of `default-permission` if not specified, which in turn defaults to `op`.
-Each permission node can have children. When set to `true`, it will inherit the parent permission.
+description是权限节点的描述。这是将在权限列表中显示的内容。
+default是权限节点的默认值。这可以是`op`/`not op`或`true`/`false`。
+如果未指定,则默认为`default-permission`的值,而`default-permission`默认为`op`。
+每个权限节点可以有子节点。当设置为`true`时,它将继承父权限。
 
 ### default-permission
 
-The default value that permissions that don't have a `default` specified will have. This can be `op`/`not op` or `true`/`false`.
+未指定`default`的权限将具有的默认值。这可以是`op`/`not op`或`true`/`false`。
 - `default-permission: true`
 
-## Commands
+## 命令
 
-This is a list of commands that your plugin uses. This is useful for plugins that use commands to provide features.
+这是你的插件使用的命令列表。这对于使用命令来提供功能的插件很有用。
 ```yaml
 commands:
     command:
-        description: "This is a command"
+        description: "这是一个命令"
         usage: "/command <arg>"
         aliases: [cmd, command]
         permission: permission.node
-        permission-message: "You do not have permission to use this command"
+        permission-message: "你没有使用此命令的权限"
 ```
 
-- `description` is the description of the command. This gives a brief description of what the command does.
-- `usage` is the usage of the command. This is what will be displayed when the player uses `/help <command>`.
-- `aliases` are a list of aliases that the command can be used with. This is useful for shortening the command.
-- `permission` is the permission node that the player needs to use the command. Note: Players will only see commands they have permission to use.
-- `permission-message` is the message that will be displayed when the player does not have permission to use the command.
+- `description`是命令的描述。这给出了命令功能的简短描述。
+- `usage`是命令的用法。这是当玩家使用`/help <command>`时将显示的内容。
+- `aliases`是命令可以使用的别名列表。这对于缩短命令很有用。
+- `permission`是玩家需要使用命令的权限节点。注意:玩家只会看到他们有权限使用的命令。
+- `permission-message`是当玩家没有使用命令的权限时将显示的消息。
 
-## Dependencies
+## 依赖
 
-:::warning[Dependency Loops]
+:::warning[依赖循环]
 
-If a plugin is specified as a dependency, it will be loaded before your plugin.
-Be careful as these can cause plugin load issues if cyclical dependencies appear. A cyclical dependency can be illustrated as follows:
+如果将插件指定为依赖项,它将在你的插件之前加载。
+要小心,因为如果出现循环依赖,这些可能会导致插件加载问题。循环依赖可以如下图所示:
 
 ```mermaid
 graph LR;
@@ -187,17 +187,17 @@ graph LR;
     PluginD-->PluginA;
 ```
 
-Where `PluginA` and `PluginB` are plugins that depend on each other.
+其中`PluginA`和`PluginB`是相互依赖的插件。
 
 :::
 
 ### depend
 
-A list of plugins that your plugin depends on to __load__. They are specified by their plugin name.
+你的插件需要__加载__的插件列表。它们通过插件名称指定。
 
 :::info
 
-If the plugin is not found, your plugin will not load.
+如果找不到插件,你的插件将不会加载。
 
 :::
 
@@ -205,20 +205,21 @@ If the plugin is not found, your plugin will not load.
 
 ### softdepend
 
-A list of plugins that your plugin depends on to have __full functionality__. They are specified by their plugin name.
+你的插件需要__完整功能__的插件列表。它们通过插件名称指定。
 
 - `softdepend: [Vault, WorldEdit]`
 
 ### loadbefore
 
-A list of plugins that your plugin should be loaded __before__. They are specified by their plugin name.
-This is useful if you want to load your plugin before another plugin for the other plugin to use your plugin's API.
+你的插件应该在__之前__加载的插件列表。它们通过插件名称指定。
+如果你想在另一个插件使用你的插件的API之前加载你的插件,这很有用。
 
 - `loadbefore: [Vault, FactionsUUID]`
 
 ### provides
 
-This can be used to tell the server that this plugin will provide the functionality of some library or other plugin (like an alias system).
-Plugins that (soft)depend on the other plugin will treat your plugin as if the other plugin exists when resolving dependencies or using
-<Javadoc name={"org.bukkit.plugin.PluginManager#getPlugin(java.lang.String)"}>`PluginManager#getPlugin(String)`</Javadoc>.
+这可以用来告诉服务器此插件将提供某些库或其他插件的功能(如别名系统)。
+(软)依赖于其他插件的插件在解析依赖关系或使用
+<Javadoc name={"org.bukkit.plugin.PluginManager#getPlugin(java.lang.String)"}>`PluginManager#getPlugin(String)`</Javadoc>时,
+会将你的插件视为其他插件存在。
 - `provides: [SomeOtherPlugin]`

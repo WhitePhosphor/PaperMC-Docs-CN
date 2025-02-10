@@ -1,41 +1,41 @@
 ---
 slug: /dev/command-api/basics/command-tree
-description: An extensive guide to building up a command tree.
+description: 构建命令树的详细指南。
 ---
 
 import Tree from "./assets/forest/tree.png";
 import DescribedTree from "./assets/forest/tree-descriptions.png";
 
-# Brigadier Command Trees
-What is a command tree and in what way does it have anything to do with Brigadier? If you are confused, this is the page for you! Here we will take an
-extensive look at everything you need to know to understands command tree!
+# Brigadier 命令树
+什么是命令树？它与 Brigadier 有什么关系？如果你对此感到困惑，这篇文章正适合你！在这里，我们将详细了解
+理解命令树所需的所有知识！
 
 :::note
 
-This is meant as a full-on course about the structure of Brigadier commands. This site provides no information about executing branches or general arguments, only literals.
-It is suggested that you look in here if you are new to Brigadier programming.
+这是关于 Brigadier 命令结构的完整教程。本页面不提供关于执行分支或一般参数的信息，仅涉及字面量。
+如果你是 Brigadier 编程的新手，建议你阅读这部分内容。
 
 :::
 
-## What is a tree?
-When talking about trees, the first that comes to mind is a tree in the wild. One that may look like this:
+## 什么是树？
+说到树，首先想到的是野外的树。它可能看起来像这样：
 
 <img src={Tree} style={{width: '40%', marginLeft: '30%', marginBottom: '5%'}}/>
 
-So, what does this have to do with commands? Imagine a command that looks like this:
+那么，这与命令有什么关系呢？想象一个这样的命令：
 
-```yml title="A Generic Command"
+```yml title="一个通用命令"
 /customplugin reload
 /customplugin tphere
 /customplugin killall
 ```
 
-For the sake of simplicity, we will refer to `/customplugin` (without any arguments) as our "command" or "tree" root. Each argument after our "root" is referred to as a "branch".
-You can visualize this on our generic tree like this:
+为了简单起见，我们将 `/customplugin`（不带任何参数）称为我们的"命令"或"树"根。根之后的每个参数被称为"分支"。
+你可以在我们的通用树上这样可视化它：
 
 <img src={DescribedTree} style={{width: '40%', marginLeft: '30%', marginBottom: '5%'}}/>
 
-Having to draw a tree each time like this is exhausting and usually does not get to the point though. We can visualize trees using a **tree diagram**. This would look like this:
+每次都这样画树很累，而且通常无法说明问题。我们可以使用**树形图**来可视化树。它看起来是这样的：
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -45,8 +45,8 @@ stateDiagram-v2
 ```
 </p>
 
-It is way easier to understand the root/branch relationship of elements now. The root node is the node that is at the top of our hierarchy. In this case, that is the 'customplugin' node.
-The other elements have an arrow pointing **at** them, meaning they are a **branch** of our root node, also called a child. Family trees follow a similar structure, as you can see here:
+现在更容易理解元素之间的根/分支关系了。根节点是位于我们层次结构顶部的节点。在这种情况下，就是 'customplugin' 节点。
+其他元素有一个指向它们的箭头，这意味着它们是我们根节点的**分支**，也称为子节点。家谱树遵循类似的结构，如下所示：
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -59,19 +59,19 @@ stateDiagram-v2
 ```
 </p>
 
-It is important to remember that this tree-like structure is not only important for Brigadier. It is a fairly often used concept. Paper's included [Adventure API](../../component-api/intro.mdx)
-also operates using a tree. Why is this important for using Brigadier though? Well, it allows for explicit command declaration. Being at a node, you know exactly where you are. That means you do not have
-to, like in standard Bukkit way, first check whether the amount of arguments is 2 and the first argument is `tphere`. Because you are at that exact `tphere` node, you can just start writing
-your logic. If you want to learn more about the execute logic of Brigadier commands, it is suggested that you check out [command executors](./executors).
+重要的是要记住，这种树状结构不仅对 Brigadier 重要。这是一个相当常用的概念。Paper 包含的 [Adventure API](../../component-api/intro.mdx)
+也使用树状结构运作。但这对使用 Brigadier 为什么重要呢？因为它允许显式命令声明。在一个节点上，你确切地知道你在哪里。这意味着你不必
+像标准 Bukkit 方式那样，先检查参数数量是否为 2，第一个参数是否为 `tphere`。因为你正好在那个 `tphere` 节点上，你可以直接开始编写
+你的逻辑。如果你想了解更多关于 Brigadier 命令的执行逻辑，建议你查看[命令执行器](./executors)。
 
-## How can we visualize a tree in-code?
-We can define our root like this:
+## 如何在代码中可视化树？
+我们可以这样定义我们的根：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("customplugin");
 ```
 
-This method returns a `LiteralArgumentBuilder<CommandSourceStack>`, which is a class that allows us to add branches to it using the `.then(...)` method, like this:
+这个方法返回一个 `LiteralArgumentBuilder<CommandSourceStack>`，这是一个允许我们使用 `.then(...)` 方法向其添加分支的类，像这样：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("customplugin");
@@ -80,13 +80,13 @@ root.then(Commands.literal("tphere"));
 root.then(Commands.literal("killall"));
 ```
 
-Each of these `.then(...)` methods adds a new branch to our root. You may have noticed the repeated use of `Commands.literal(String)` here. It does not only define the root of the tree
-of our command, but also our "subcommands" (`reload`, `tphere`, and `killall`). Each "child" literal is referred to as a subcommand of its parent.
+每个 `.then(...)` 方法都向我们的根添加一个新分支。你可能注意到了这里重复使用了 `Commands.literal(String)`。它不仅定义了我们命令的树根，
+还定义了我们的"子命令"（`reload`、`tphere` 和 `killall`）。每个"子"字面量被称为其父节点的子命令。
 
-## Creating a more advanced command
-But what if we want a more complex command? Let's say we want to define the following command:
+## 创建更高级的命令
+但如果我们想要一个更复杂的命令呢？假设我们想定义以下命令：
 
-```yml title="Advanced Command"
+```yml title="高级命令"
 /advanced
  ┣━┳ killall
  ┃ ┣━━ entities
@@ -97,7 +97,7 @@ But what if we want a more complex command? Let's say we want to define the foll
    ┗━━ main-dish
 ```
 
-Which allows for the following command executions in-game:
+它允许在游戏中执行以下命令：
 
 ```
 /advanced killall entities
@@ -107,7 +107,7 @@ Which allows for the following command executions in-game:
 /advanced eat main-dish
 ```
 
-As this is a fairly complicated command, we can visualize it as a tree graph first in order to we have a better understanding on what is going on:
+由于这是一个相当复杂的命令，我们可以先将其可视化为树形图，以便更好地理解发生了什么：
 
 <p align="center">
 ```mermaid
@@ -122,8 +122,8 @@ stateDiagram-v2
 ```
 </p>
 
-Having defined our target command, how can we go about this now? There is a few possible ways, but the simplest one is defining **furthest from root** first. That means we are first
-defining the last branches of our entire tree. So those, which have no subcommands:
+定义了我们的目标命令后，我们现在该如何处理呢？有几种可能的方法，但最简单的是先定义**离根最远的**。这意味着我们首先
+定义整个树的最后分支。也就是说，那些没有子命令的分支：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> entities = Commands.literal("entities");
@@ -134,7 +134,7 @@ LiteralArgumentBuilder<CommandSourceStack> iceCream = Commands.literal("ice-crea
 LiteralArgumentBuilder<CommandSourceStack> mainDish = Commands.literal("main-dish");
 ```
 
-This grants us the deepest elements in our tree.
+这给了我们树中最深的元素。
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -146,13 +146,13 @@ stateDiagram-v2
 ```
 </p>
 
-Now, we can define the next layer of literals: So the `killall` and `eat` ones:
+现在，我们可以定义下一层字面量：即 `killall` 和 `eat`：
 ```java
 LiteralArgumentBuilder<CommandSourceStack> killall = Commands.literal("killall");
 LiteralArgumentBuilder<CommandSourceStack> eat = Commands.literal("eat");
 ```
 
-Visualized in our tree graph:
+在我们的树形图中可视化：
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -161,7 +161,7 @@ stateDiagram-v2
 ```
 </p>
 
-With these defined, we can add our child elements to their parent element, like this:
+定义了这些后，我们可以将子元素添加到它们的父元素中，像这样：
 ```java
 killall.then(entities);
 killall.then(players);
@@ -171,7 +171,7 @@ eat.then(iceCream);
 eat.then(mainDish);
 ```
 
-Which gives us this, somewhat tree-like structure
+这给了我们这个有点像树的结构
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -183,7 +183,7 @@ stateDiagram-v2
 ```
 </p>
 
-Finally, we can create our **root node** and add our `killall` and `eat` subcommands to it:
+最后，我们可以创建我们的**根节点**并向其添加 `killall` 和 `eat` 子命令：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> advancedCommandRoot = Commands.literal("advanced");
@@ -191,7 +191,7 @@ advancedCommandRoot.then(killall);
 advancedCommandRoot.then(eat);
 ```
 
-And this returns the final command tree:
+这返回最终的命令树：
 <p align="center">
 ```mermaid
 stateDiagram-v2
@@ -205,26 +205,26 @@ stateDiagram-v2
 ```
 </p>
 
-And we are done!
+大功告成！
 
-## Chaining 'then' method calls together
-You might have noticed that it feels unnecessarily verbose to have to store every child node in its own variable. But here is where the `.then()` argument
-comes to rescue. It returns the same element as it was called on. That means if we were to run this code:
+## 链式调用 'then' 方法
+你可能注意到了，必须为每个子节点存储一个单独的变量感觉不必要的冗长。但这就是 `.then()` 参数的救星之处。它返回与调用它的相同元素。
+这意味着如果我们运行这段代码：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> value = killall.then(entities);
 if (value == killall) {
-    logger.info("The return value is the same as killall");
+    logger.info("返回值与 killall 相同");
 }
 ```
 
-We would always have "The return value is the same as killall" printed out. And we can take advantage of that by chaining the `then(...)` calls together, like this:
+我们总是会看到打印出"返回值与 killall 相同"。我们可以利用这一点将 `then(...)` 调用链接在一起，像这样：
 
 ```java
 killall.then(entities).then(players).then(zombies);
 ```
 
-Due to this being hard to read, we should give each branch a new line:
+由于这样难以阅读，我们应该为每个分支使用新的一行：
 
 ```java
 killall
@@ -233,7 +233,7 @@ killall
     .then(zombies);
 ```
 
-With this, we also do not have to store every single literal in its own variable, instead we can directly pass them into the `.then(...)` method:
+这样，我们也不必为每个字面量存储单独的变量，而是可以直接将它们传递给 `.then(...)` 方法：
 
 ```java
 killall
@@ -242,7 +242,7 @@ killall
     .then(Commands.literal("zombies"));
 ```
 
-The same can be done for the `eat` subcommand:
+对 `eat` 子命令也可以做同样的事：
 
 ```java
 eat
@@ -250,7 +250,7 @@ eat
     .then(Commands.literal("main-dish"));
 ```
 
-Taking even more advantage of the builder pattern of the `then` method, we can put these chained branches directly on the initial creation of our subcommand. Like this:
+进一步利用 `then` 方法的构建器模式，我们可以在初始创建子命令时直接放置这些链式分支。像这样：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> eat = Commands.literal("eat")
@@ -268,7 +268,7 @@ advancedCommandRoot.then(eat);
 advancedCommandRoot.then(killall);
 ```
 
-Now then, you might have noticed that our root node also registers its branches using the `.then(...)` method, meaning we can also combine those:
+现在，你可能注意到我们的根节点也使用 `.then(...)` 方法注册其分支，这意味着我们也可以组合这些：
 
 ```java
 LiteralArgumentBuilder<CommandSourceStack> advancedCommandRoot = Commands.literal("advanced")
@@ -283,10 +283,10 @@ LiteralArgumentBuilder<CommandSourceStack> advancedCommandRoot = Commands.litera
     );
 ```
 
-Which results in the finished command!
+这就完成了命令！
 
 :::warning
 
-You have to be extremely careful when nesting branches, as the command turns into a completely different one when you misplace a bracket.
+在嵌套分支时你必须非常小心，因为当你放错括号时，命令会变成完全不同的东西。
 
 :::

@@ -1,42 +1,42 @@
 ---
 slug: /dev/userdev
 sidebar_label: Paperweight Userdev
-description: A guide on how to use the paperweight-userdev Gradle plugin to access internal code.
+description: 关于如何使用 paperweight-userdev Gradle 插件来访问内部代码的指南。
 ---
 
 # paperweight-userdev
 
-**paperweight** is the name of Paper's custom build tooling. The **paperweight-userdev** Gradle plugin part of that
-provides access to internal code (also known as NMS) during development.
+**paperweight** 是 Paper 自定义构建工具的名称。其中的 **paperweight-userdev** Gradle 插件部分
+提供了在开发过程中访问内部代码（也称为 NMS）的功能。
 
 :::note
 
-This guide is written using the Gradle Kotlin DSL and assumes you have some basic knowledge of Gradle.
-If you want to see a fully-functioning plugin that uses **paperweight-userdev**,
-check out this [example plugin](https://github.com/PaperMC/paperweight-test-plugin).
+本指南使用 Gradle Kotlin DSL 编写，并假设你对 Gradle 有一些基本了解。
+如果你想看一个使用 **paperweight-userdev** 的完整功能插件，
+请查看这个[示例插件](https://github.com/PaperMC/paperweight-test-plugin)。
 
 :::
 
-## Why this is useful
-This is the only supported way of accessing server internals, as redistributing the server JAR is against the
-Minecraft EULA and general license assumption. Even if you manually depended on the patched server, you would be
-hindering other people working on your project and would be missing deployed API javadocs/sources in your IDE.
+## 为什么这很有用
+这是访问服务器内部代码的唯一支持方式，因为重新分发服务器 JAR 违反了
+Minecraft EULA 和一般许可假设。即使你手动依赖打过补丁的服务器，你也会
+妨碍其他人在你的项目上工作，并且在 IDE 中会缺少已部署的 API javadoc/源代码。
 
-On top of that, Spigot and pre-1.20.5 Paper versions still use Spigot mappings, which are a mix of obfuscated fields/methods
-and mapped as well as custom named classes. This can make it hard to work with in a development environment. This plugin lets you use
-fully deobfuscated types, names, and fields during development, and then remaps your plugin, so it can still be used with the obfuscated
-server. However, this does not apply to reflection. Look at something like [this library](https://github.com/jpenilla/reflection-remapper) to be able to
-use non-obfuscated names in reflection if you want to support obfuscated servers.
+除此之外，Spigot 和 1.20.5 之前的 Paper 版本仍然使用 Spigot 映射，这些映射混合了混淆的字段/方法
+以及已映射和自定义命名的类。这在开发环境中可能难以使用。这个插件让你在开发过程中可以使用
+完全反混淆的类型、名称和字段，然后重新映射你的插件，使其仍然可以在混淆的服务器上使用。
+但是，这不适用于反射。如果你想支持混淆的服务器，可以看看[这个库](https://github.com/jpenilla/reflection-remapper)，
+它可以让你在反射中使用非混淆的名称。
 
-:::info[1.20.5 Mojang-mapped runtime]
+:::info[1.20.5 Mojang 映射运行时]
 
-As of Minecraft version 1.20.5, Paper ships with a Mojang-mapped runtime instead of re-obfuscating the server to Spigot mappings.
-See [here](#1205-and-beyond) for more details.
+从 Minecraft 1.20.5 版本开始，Paper 使用 Mojang 映射的运行时，而不是将服务器重新混淆为 Spigot 映射。
+详见[此处](#1205-及以后)。
 
 :::
 
-## Adding the plugin
-Add the plugin to your `build.gradle.kts` file.
+## 添加插件
+将插件添加到你的 `build.gradle.kts` 文件中。
 
 <VersionFormattedCode language={"kotlin"} title={"build.gradle.kts"}>
 ```
@@ -46,15 +46,15 @@ plugins {
 ```
 </VersionFormattedCode>
 
-The latest version of `paperweight-userdev` supports dev bundles for Minecraft 1.17.1 and newer, so it's best practice to keep it up to date!
-Only the latest version of `paperweight-userdev` is officially supported, and we will ask you to update first if you are having problems with old versions.
-Furthermore, if you are having issues with `paperweight-userdev`, it is suggested that you update your Gradle version to the latest version. For more information on upgrading Gradle,
-check out [the Gradle wrapper documentation](https://docs.gradle.org/current/userguide/gradle_wrapper.html). If you keep experiencing issues, you should ask in the 
-[`#build-tooling-help`](https://discord.com/channels/289587909051416579/1078993196924813372) channel in our dedicated [Discord server](https://discord.gg/PaperMC)!
+最新版本的 `paperweight-userdev` 支持 Minecraft 1.17.1 及更新版本的开发包，所以最好保持更新！
+只有最新版本的 `paperweight-userdev` 得到官方支持，如果你使用旧版本遇到问题，我们会先要求你更新。
+此外，如果你遇到 `paperweight-userdev` 的问题，建议你将 Gradle 版本更新到最新版本。有关升级 Gradle 的更多信息，
+请查看 [Gradle wrapper 文档](https://docs.gradle.org/current/userguide/gradle_wrapper.html)。如果你继续遇到问题，应该在我们专门的 [Discord 服务器](https://discord.gg/PaperMC)
+的 [`#build-tooling-help`](https://discord.com/channels/289587909051416579/1078993196924813372) 频道中询问！
 
-:::info[Snapshots]
+:::info[快照版本]
 
-**paperweight-userdev** SNAPSHOT (pre-release) versions are only available through Paper's Maven repository.
+**paperweight-userdev** SNAPSHOT（预发布）版本仅通过 Paper 的 Maven 仓库提供。
 ```kotlin title="settings.gradle.kts"
 pluginManagement {
     repositories {
@@ -66,15 +66,14 @@ pluginManagement {
 
 :::
 
-## Adding the dev bundle dependency
-If you try to load your Gradle project now, you will receive an error saying you have to declare
-a dev bundle dependency. You can do that by adding to your `dependencies` block in your `build.gradle.kts`
-file.
+## 添加开发包依赖
+如果你现在尝试加载你的 Gradle 项目，你会收到一个错误，说你必须声明
+一个开发包依赖。你可以通过在 `build.gradle.kts` 文件的 `dependencies` 块中添加来实现。
 
 <VersionFormattedCode language={"kotlin"} title={"build.gradle.kts"}>
 ```
 dependencies {
-    // Other Dependencies
+    // 其他依赖
     paperweight.paperDevBundle("%%_MAJ_MIN_PAT_MC_%%-R0.1-SNAPSHOT")
 }
 ```
@@ -82,77 +81,77 @@ dependencies {
 
 :::tip
 
-You should remove any dependency on the Paper API, as the dev bundle includes that.
+你应该移除任何对 Paper API 的依赖，因为开发包已经包含了它。
 
 :::
 
-## Gradle tasks
+## Gradle 任务
 
 ### `reobfJar`
 
-This task creates a plugin JAR that is re-obfuscated to Spigot's runtime mappings.
-This means it will work on standard Paper servers.
+这个任务创建一个重新混淆到 Spigot 运行时映射的插件 JAR。
+这意味着它可以在标准的 Paper 服务器上工作。
 
-The output will be inside the `build/libs` folder. The JAR whose filename includes `-dev`
-is Mojang-mapped (not re-obfuscated) and will not work on most servers.
+输出将在 `build/libs` 文件夹中。文件名包含 `-dev` 的 JAR
+是 Mojang 映射的（未重新混淆）并且不会在大多数服务器上工作。
 
 :::info[Shadow]
 
-If you have the shadow Gradle plugin applied in your build script, **paperweight-userdev** will
-detect that and use the shaded JAR as the input for the `reobfJar` task.
+如果你在构建脚本中应用了 shadow Gradle 插件，**paperweight-userdev** 将
+检测到并使用 shaded JAR 作为 `reobfJar` 任务的输入。
 
-The `-dev-all.jar` file in `build/libs` is the shaded, but not re-obfuscated JAR.
+`build/libs` 中的 `-dev-all.jar` 文件是已经 shaded 但未重新混淆的 JAR。
 
 :::
 
-You can make the `reobfJar` task run on the default `build` task with:
+你可以让 `reobfJar` 任务在默认的 `build` 任务上运行：
 ```kotlin
 tasks.assemble {
     dependsOn(tasks.reobfJar)
 }
 ```
 
-## 1.20.5 and beyond
+## 1.20.5 及以后
 
-As of 1.20.5, Paper ships with a Mojang-mapped runtime instead of re-obfuscating the server to Spigot mappings.
-Additionally, CraftBukkit classes will no longer be relocated into a versioned package.
-This requires plugins to be deobfuscated before loading when necessary.
+从 1.20.5 开始，Paper 使用 Mojang 映射的运行时，而不是将服务器重新混淆为 Spigot 映射。
+此外，CraftBukkit 类将不再被重定位到版本化的包中。
+这要求在必要时在加载前对插件进行反混淆。
 
-Most of this process is done automatically by paperweight, but there are some important things to know when using server internals (or "NMS") from now on.
+大部分这个过程由 paperweight 自动完成，但在从现在开始使用服务器内部代码（或"NMS"）时有一些重要的事项需要了解。
 
-### Default mappings assumption
-* By default, all Spigot/Bukkit plugins will be assumed to be Spigot-mapped if they do not specify their mappings namespace in the manifest.
-  The other way around, all Paper plugins will be assumed to be Mojang-mapped if they do not specify their mappings namespace in the manifest.
-* Spigot-mapped plugins will need to be deobfuscated on first load, Mojang-mapped plugins will not.
+### 默认映射假设
+* 默认情况下，如果所有 Spigot/Bukkit 插件在清单中没有指定其映射命名空间，将被假定为 Spigot 映射。
+  相反，如果所有 Paper 插件在清单中没有指定其映射命名空间，将被假定为 Mojang 映射。
+* Spigot 映射的插件需要在首次加载时进行反混淆，Mojang 映射的插件则不需要。
 
-### Compiling to Mojang mappings
+### 编译为 Mojang 映射
 
 :::info
 
-This is the preferred option, as the one-time plugin remapping process during server startup will be skipped and it
-may allow you to keep version compatibility across smaller updates without changes or additional modules.
-However, this makes your plugin incompatible with Spigot servers.
+这是首选选项，因为服务器启动时的一次性插件重映射过程将被跳过，
+并且它可能允许你在较小的更新之间保持版本兼容性而无需更改或额外的模块。
+但是，这使你的插件与 Spigot 服务器不兼容。
 
 :::
 
-If you want your main output to use Mojang mappings, you need to remove all `dependsOn(reobfJar)` lines and add the following code to your build script:
+如果你想让你的主要输出使用 Mojang 映射，你需要移除所有 `dependsOn(reobfJar)` 行并在你的构建脚本中添加以下代码：
 
 ```kotlin title="build.gradle.kts"
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 ```
 
-### Compiling to Spigot mappings
+### 编译为 Spigot 映射
 
-If you want your main output to use Spigot mappings, add the following code to your build script:
+如果你想让你的主要输出使用 Spigot 映射，在你的构建脚本中添加以下代码：
 
 ```kotlin title="build.gradle.kts"
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
 ```
 
-This is useful for plugins that have loaders for both Spigot and Paper and want to keep compatibility with both.
+这对于同时有 Spigot 和 Paper 加载器并想保持与两者兼容的插件很有用。
 
 :::note
 
-If you are using Gradle with the Groovy DSL, you should instead access the fields via static methods like `getMOJANG_PRODUCTION()`.
+如果你使用带有 Groovy DSL 的 Gradle，你应该通过静态方法访问字段，如 `getMOJANG_PRODUCTION()`。
 
 :::

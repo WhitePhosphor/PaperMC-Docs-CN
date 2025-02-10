@@ -1,47 +1,42 @@
 ---
 slug: /dev/component-api/i18n
-description: How to use Adventure's internationalization.
-title: Internationalization
+description: 如何使用Adventure的国际化功能。
+title: 国际化
 ---
 
-Generally it's a good idea to support translations in your plugin, especially if you want to
-appeal to the largest user base. Adventure makes this simple by adding a server-side
-translation layer to almost all text that ends up being displayed to clients.
+通常在你的插件中支持翻译是一个好主意,特别是如果你想吸引最广泛的用户群。Adventure通过在几乎所有最终显示给客户端的文本中添加服务器端翻译层来简化这一过程。
 
 :::info[Javadocs]
 
-Adventure's Javadocs for all-things translations can be found [here](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/package-summary.html).
+Adventure关于翻译的所有Javadocs可以在[这里](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/package-summary.html)找到。
 
 :::
 
 ## GlobalTranslator
 
-All translation is done through [`GlobalTranslator`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/GlobalTranslator.html).
-You can render translations yourself and add new sources for translations.
+所有翻译都通过[`GlobalTranslator`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/GlobalTranslator.html)完成。
+你可以自己渲染翻译并添加新的翻译源。
 
-You can add sources to the `GlobalTranslator` by creating instances of [`TranslationRegistry`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/TranslationRegistry.html)
-or implementing the [`Translator`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/Translator.html) interface yourself.
+你可以通过创建[`TranslationRegistry`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/TranslationRegistry.html)实例
+或自己实现[`Translator`](https://jd.advntr.dev/api/latest/net/kyori/adventure/translation/Translator.html)接口来向`GlobalTranslator`添加源。
 
-## Where translations work
+## 翻译在哪里工作
 
-Vanilla Minecraft handles translations on the client by using the language files bundled with the client or provided via resource packs. If you don't want to send custom language files
-in a resource pack, server-side translations are the only alternative. They work anywhere the component API exists, except for <Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>
-display text like the display name or lore. So chat, entity display names, scoreboards, tab lists, etc., all support translations.
+原版Minecraft通过使用客户端捆绑的语言文件或通过资源包提供的语言文件在客户端处理翻译。如果你不想在资源包中发送自定义语言文件,服务器端翻译是唯一的替代方案。它们在组件API存在的任何地方都可以工作,除了<Javadoc name={"org.bukkit.inventory.ItemStack"}>`ItemStack`</Javadoc>的显示文本,如显示名称或说明文字。所以聊天、实体显示名称、记分板、标签列表等都支持翻译。
 
 :::caution
 
-The player's language as declared in the settings packet sent by the client arrives **after** the player has joined the server, so there are no guarantees that
-translations will work for a client that is joining during the <Javadoc name={"org.bukkit.event.player.PlayerJoinEvent"}>`PlayerJoinEvent`</Javadoc> or any earlier event.
-You can listen for the first <Javadoc name={"com.destroystokyo.paper.event.player.PlayerClientOptionsChangeEvent"}>`PlayerClientOptionsChangeEvent`</Javadoc>
-after joining to know with 100% certainty what language the client that joined is using.
+客户端在设置数据包中声明的玩家语言是在玩家加入服务器**之后**到达的,所以在<Javadoc name={"org.bukkit.event.player.PlayerJoinEvent"}>`PlayerJoinEvent`</Javadoc>或任何更早的事件中,无法保证翻译会对正在加入的客户端生效。
+你可以监听加入后的第一个<Javadoc name={"com.destroystokyo.paper.event.player.PlayerClientOptionsChangeEvent"}>`PlayerClientOptionsChangeEvent`</Javadoc>
+来100%确定加入的客户端使用的是什么语言。
 
 :::
 
-## Examples
+## 示例
 
 ### `ResourceBundle`
 ```properties title="src/main/resources/your/plugin/Bundle_en_US.properties"
-some.translation.key=Translated Message: {0}
+some.translation.key=翻译的消息: {0}
 ```
 
 ```java
@@ -52,15 +47,14 @@ registry.registerAll(Locale.US, bundle, true);
 GlobalTranslator.translator().addSource(registry);
 ```
 
-This creates a new `TranslationRegistry` under a specified namespace. Then, a <Javadoc name={"java.util.ResourceBundle"} project={"java"}>`ResourceBundle`</Javadoc>
-is created from a bundle located on the classpath with the specified <Javadoc name={"java.util.Locale"} project={"java"}>`Locale`</Javadoc>.
-Finally, that `ResourceBundle` is added to the registry. That registry is then added as a source to the `GlobalTranslator`.
-This makes all the translations available server-side.
+这创建了一个在指定命名空间下的新`TranslationRegistry`。然后,从类路径上使用指定<Javadoc name={"java.util.Locale"} project={"java"}>`Locale`</Javadoc>的位置创建一个<Javadoc name={"java.util.ResourceBundle"} project={"java"}>`ResourceBundle`</Javadoc>。
+最后,将该`ResourceBundle`添加到注册表中。然后将该注册表作为源添加到`GlobalTranslator`中。
+这使所有翻译在服务器端可用。
 
-Now you can use translation keys in translatable components.
+现在你可以在可翻译组件中使用翻译键。
 
 ```java
-final Component message = Component.translatable("some.translation.key", Component.text("The Argument"))
+final Component message = Component.translatable("some.translation.key", Component.text("参数"))
 ```
 
-This will show to clients using the US English language: `Translated Message: The Argument`.
+这将向使用美式英语语言的客户端显示:`翻译的消息: 参数`。

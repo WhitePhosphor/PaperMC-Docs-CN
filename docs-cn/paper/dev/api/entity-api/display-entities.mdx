@@ -1,145 +1,136 @@
 ---
 slug: /dev/display-entities
-description: The display entity API and how to use it.
+description: 显示实体API及其使用方法。
 ---
 
-# Display Entities
+# 显示实体
 
-Added in 1.19.4, [display entities](https://minecraft.wiki/w/Display) are a powerful way to display
-various things in the world, like blocks, items and text.
+在1.19.4中添加的[显示实体](https://minecraft.wiki/w/Display)是一种在世界中显示各种内容的强大方式,如方块、物品和文本。
 
-By default, these entities have no hitbox, don't move, make sounds or take damage,
-making them the perfect for all kinds of applications, like holograms.
+默认情况下,这些实体没有碰撞箱,不会移动,不会发出声音或受到伤害,这使它们成为各种应用(如全息图)的完美选择。
 
-## Types
+## 类型
 
-### Text
+### 文本
 
-Text can be displayed via a <Javadoc name={"org.bukkit.entity.TextDisplay"}>`TextDisplay`</Javadoc>
-entity.
+可以通过<Javadoc name={"org.bukkit.entity.TextDisplay"}>`TextDisplay`</Javadoc>实体显示文本。
 
 ```java
 TextDisplay display = world.spawn(location, TextDisplay.class, entity -> {
-    // customize the entity!
-    entity.text(Component.text("Some awesome content", NamedTextColor.BLACK));
-    entity.setBillboard(Display.Billboard.VERTICAL); // pivot only around the vertical axis
-    entity.setBackgroundColor(Color.RED); // make the background red
+    // 自定义实体!
+    entity.text(Component.text("一些很棒的内容", NamedTextColor.BLACK));
+    entity.setBillboard(Display.Billboard.VERTICAL); // 仅围绕垂直轴旋转
+    entity.setBackgroundColor(Color.RED); // 将背景设为红色
 
-    // see the Display and TextDisplay Javadoc, there are many more options
+    // 查看Display和TextDisplay的Javadoc,还有更多选项
 });
 ```
 
-### Blocks
+### 方块
 
-Blocks can be displayed via a <Javadoc name={"org.bukkit.entity.BlockDisplay"}>`BlockDisplay`</Javadoc>
-entity.
+可以通过<Javadoc name={"org.bukkit.entity.BlockDisplay"}>`BlockDisplay`</Javadoc>实体显示方块。
 
 ```java
 BlockDisplay display = world.spawn(location, BlockDisplay.class, entity -> {
-    // customize the entity!
+    // 自定义实体!
     entity.setBlock(Material.GRASS_BLOCK.createBlockData());
 });
 ```
 
-### Items
+### 物品
 
-Items can be displayed via an <Javadoc name={"org.bukkit.entity.ItemDisplay"}>`ItemDisplay`</Javadoc>
-entity.
+可以通过<Javadoc name={"org.bukkit.entity.ItemDisplay"}>`ItemDisplay`</Javadoc>实体显示物品。
 
-Despite its name, an _item_ display can also display _blocks_, with the difference being the
-position in the model - an item display has its position in the center, whereas a block display has
-its position in the corner of the block (this can be seen with the hitbox debug mode - F3+B).
+尽管名字如此,物品显示也可以显示方块,区别在于模型中的位置 - 物品显示的位置在中心,而方块显示的位置在方块的角落(这可以通过碰撞箱调试模式 - F3+B看到)。
 
 ```java
 ItemDisplay display = world.spawn(location, ItemDisplay.class, entity -> {
-    // customize the entity!
+    // 自定义实体!
     entity.setItemStack(ItemStack.of(Material.SKELETON_SKULL));
 });
 ```
 
-## Transformation
+## 变换
 
-Displays can have an arbitrary affine transformation applied to them, allowing you to position and
-warp them as you choose in 3D space.
+显示可以应用任意仿射变换,允许你在3D空间中随意定位和扭曲它们。
 
-Transformations are applied to the display in this order:
+变换按以下顺序应用到显示上:
 
 ```mermaid
 flowchart LR;
-    translation[Translation]-->left_rotation[Left rotation];
-    left_rotation-->scale[Scale];
-    scale-->right_rotation[Right rotation];
+    translation[平移]-->left_rotation[左旋转];
+    left_rotation-->scale[缩放];
+    scale-->right_rotation[右旋转];
 ```
 
-:::tip[Visualizing transformations]
+:::tip[可视化变换]
 
-Use the [Transformation Visualizer](https://misode.github.io/transformation/) website to visualize
-a transformation for quick prototyping!
+使用[变换可视化工具](https://misode.github.io/transformation/)网站来可视化变换,以便快速原型设计!
 
 :::
 
-### Scale
+### 缩放
 
-The most basic transformation is scaling, let's take a grass block and scale it up:
+最基本的变换是缩放,让我们拿一个草方块并放大它:
 
 ```java
 world.spawn(location, BlockDisplay.class, entity -> {
     entity.setBlock(Material.GRASS_BLOCK.createBlockData());
     entity.setTransformation(
         new Transformation(
-                new Vector3f(), // no translation
-                new AxisAngle4f(), // no left rotation
-                new Vector3f(2, 2, 2), // scale up by a factor of 2 on all axes
-                new AxisAngle4f() // no right rotation
+                new Vector3f(), // 不平移
+                new AxisAngle4f(), // 不左旋转
+                new Vector3f(2, 2, 2), // 在所有轴上放大2倍
+                new AxisAngle4f() // 不右旋转
         )
     );
-    // or set a raw transformation matrix from JOML
+    // 或者从JOML设置原始变换矩阵
     // entity.setTransformationMatrix(
     //         new Matrix4f()
-    //                 .scale(2) // scale up by a factor of 2 on all axes
+    //                 .scale(2) // 在所有轴上放大2倍
     // );
 });
 ```
 
-![Scaling example](./assets/display-scale.png)
+![缩放示例](./assets/display-scale.png)
 
-### Rotation
+### 旋转
 
-You can also rotate it, let's tip it on its corner:
+你也可以旋转它,让我们把它倾斜到角落:
 
 ```java
 world.spawn(location, BlockDisplay.class, entity -> {
     entity.setBlock(Material.GRASS_BLOCK.createBlockData());
     entity.setTransformation(
         new Transformation(
-                new Vector3f(), // no translation
+                new Vector3f(), // 不平移
                 // highlight-next-line
-                new AxisAngle4f((float) -Math.toRadians(45), 1, 0, 0), // rotate -45 degrees on the X axis
-                new Vector3f(2, 2, 2), // scale up by a factor of 2 on all axes
+                new AxisAngle4f((float) -Math.toRadians(45), 1, 0, 0), // 在X轴上旋转-45度
+                new Vector3f(2, 2, 2), // 在所有轴上放大2倍
                 // highlight-next-line
-                new AxisAngle4f((float) Math.toRadians(45), 0, 0, 1) // rotate +45 degrees on the Z axis
+                new AxisAngle4f((float) Math.toRadians(45), 0, 0, 1) // 在Z轴上旋转+45度
         )
     );
-    // or set a raw transformation matrix from JOML
+    // 或者从JOML设置原始变换矩阵
     // entity.setTransformationMatrix(
     //         new Matrix4f()
-    //                 .scale(2) // scale up by a factor of 2 on all axes
+    //                 .scale(2) // 在所有轴上放大2倍
                        // highlight-start
     //                 .rotateXYZ(
-    //                         (float) Math.toRadians(360 - 45), // rotate -45 degrees on the X axis
+    //                         (float) Math.toRadians(360 - 45), // 在X轴上旋转-45度
     //                         0,
-    //                         (float) Math.toRadians(45) // rotate +45 degrees on the Z axis
+    //                         (float) Math.toRadians(45) // 在Z轴上旋转+45度
     //                 )
                        // highlight-end
     // );
 });
 ```
 
-![Rotation example](./assets/display-rotation.png)
+![旋转示例](./assets/display-rotation.png)
 
-### Translation
+### 平移
 
-Finally, we can also apply a translation transformation (position offset) to the display, for example:
+最后,我们还可以对显示应用平移变换(位置偏移),例如:
 
 ```java
 world.spawn(location, BlockDisplay.class, entity -> {
@@ -147,96 +138,89 @@ world.spawn(location, BlockDisplay.class, entity -> {
     entity.setTransformation(
         new Transformation(
                 // highlight-next-line
-                new Vector3f(0.5F, 0.5F, 0.5F), // offset by half a block on all axes
-                new AxisAngle4f((float) -Math.toRadians(45), 1, 0, 0), // rotate -45 degrees on the X axis
-                new Vector3f(2, 2, 2), // scale up by a factor of 2 on all axes
-                new AxisAngle4f((float) Math.toRadians(45), 0, 0, 1) // rotate +45 degrees on the Z axis
+                new Vector3f(0.5F, 0.5F, 0.5F), // 在所有轴上偏移半个方块
+                new AxisAngle4f((float) -Math.toRadians(45), 1, 0, 0), // 在X轴上旋转-45度
+                new Vector3f(2, 2, 2), // 在所有轴上放大2倍
+                new AxisAngle4f((float) Math.toRadians(45), 0, 0, 1) // 在Z轴上旋转+45度
         )
     );
-    // or set a raw transformation matrix from JOML
+    // 或者从JOML设置原始变换矩阵
     // entity.setTransformationMatrix(
     //         new Matrix4f()
                        // highlight-next-line
-    //                 .translate(0.5F, 0.5F, 0.5F) // offset by half a block on all axes
-    //                 .scale(2) // scale up by a factor of 2 on all axes
+    //                 .translate(0.5F, 0.5F, 0.5F) // 在所有轴上偏移半个方块
+    //                 .scale(2) // 在所有轴上放大2倍
     //                 .rotateXYZ(
-    //                         (float) Math.toRadians(360 - 45), // rotate -45 degrees on the X axis
+    //                         (float) Math.toRadians(360 - 45), // 在X轴上旋转-45度
     //                         0,
-    //                         (float) Math.toRadians(45) // rotate +45 degrees on the Z axis
+    //                         (float) Math.toRadians(45) // 在Z轴上旋转+45度
     //                 )
     // );
 });
 ```
 
-![Translation example](./assets/display-trans.png)
+![平移示例](./assets/display-trans.png)
 
-## Interpolation
+## 插值
 
-A transformation can be linearly interpolated by the client to create a smooth animation,
-switching from one transformation to the next.
+客户端可以线性插值变换以创建平滑动画,从一个变换切换到下一个变换。
 
-An example of this would be smoothly rotating a block/item/text in-place. In conjunction with the
-[Scheduler API](../scheduler.mdx), the animation can be restarted after it's done,
-making the display spin indefinitely:
+一个例子就是平滑地原地旋转一个方块/物品/文本。结合[调度器API](../scheduler.mdx),动画可以在完成后重新启动,使显示无限旋转:
 
 ```java
 ItemDisplay display = location.getWorld().spawn(location, ItemDisplay.class, entity -> {
     entity.setItemStack(ItemStack.of(Material.GOLDEN_SWORD));
 });
 
-int duration = 5 * 20; // duration of half a revolution (5 * 20 ticks = 5 seconds)
+int duration = 5 * 20; // 半圈旋转的持续时间(5 * 20刻 = 5秒)
 
-Matrix4f mat = new Matrix4f().scale(0.5F); // scale to 0.5x - smaller item
+Matrix4f mat = new Matrix4f().scale(0.5F); // 缩放到0.5倍 - 更小的物品
 Bukkit.getScheduler().runTaskTimer(plugin, task -> {
-    if (!display.isValid()) { // display was removed from the world, abort task
+    if (!display.isValid()) { // 显示从世界中移除,中止任务
         task.cancel();
         return;
     }
 
-    display.setTransformationMatrix(mat.rotateY(((float) Math.toRadians(180)) + 0.1F /* prevent the client from interpolating in reverse */));
-    display.setInterpolationDelay(0); // no delay to the interpolation
-    display.setInterpolationDuration(duration); // set the duration of the interpolated rotation
-}, 1 /* delay the initial transformation by one tick from display creation */, duration);
+    display.setTransformationMatrix(mat.rotateY(((float) Math.toRadians(180)) + 0.1F /* 防止客户端反向插值 */));
+    display.setInterpolationDelay(0); // 插值无延迟
+    display.setInterpolationDuration(duration); // 设置插值旋转的持续时间
+}, 1 /* 从显示创建延迟一刻开始初始变换 */, duration);
 ```
 
-![Interpolation example](./assets/display-interp.gif)
+![插值示例](./assets/display-interp.gif)
 
-## Use cases
+## 用例
 
-Displays have many different use cases, ranging from stationary decoration to complex animation.
+显示有许多不同的用例,从固定装饰到复杂动画。
 
-A popular, simple use case is to make a decoration that's visible to only specific players,
-which can be achieved using standard entity API - <Javadoc name={"org.bukkit.entity.Entity#setVisibleByDefault(boolean)"}>`Entity#setVisibleByDefault()`</Javadoc>
-and <Javadoc name={"org.bukkit.entity.Player#showEntity(org.bukkit.plugin.Plugin,org.bukkit.entity.Entity)"}>`Player#showEntity()`</Javadoc>/
-<Javadoc name={"org.bukkit.entity.Player#hideEntity(org.bukkit.plugin.Plugin,org.bukkit.entity.Entity)"}>`Player#hideEntity()`</Javadoc>.
+一个流行的简单用例是制作只对特定玩家可见的装饰,这可以通过标准实体API实现 - <Javadoc name={"org.bukkit.entity.Entity#setVisibleByDefault(boolean)"}>`Entity#setVisibleByDefault()`</Javadoc>
+和<Javadoc name={"org.bukkit.entity.Player#showEntity(org.bukkit.plugin.Plugin,org.bukkit.entity.Entity)"}>`Player#showEntity()`</Javadoc>/
+<Javadoc name={"org.bukkit.entity.Player#hideEntity(org.bukkit.plugin.Plugin,org.bukkit.entity.Entity)"}>`Player#hideEntity()`</Javadoc>。
 
 :::warning
 
-If the display is only used temporarily, its persistence can be disabled with
-<Javadoc name={"org.bukkit.entity.Entity#setPersistent(boolean)"}>`Entity#setPersistent()`</Javadoc>,
-meaning it will disappear when the chunk unloads.
+如果显示只是临时使用,可以用<Javadoc name={"org.bukkit.entity.Entity#setPersistent(boolean)"}>`Entity#setPersistent()`</Javadoc>禁用其持久性,
+这意味着当区块卸载时它会消失。
 
-_However, if the display is located in a chunk that never unloads, i.e. a spawn chunk, it will never
-be removed, creating a resource leak. Make sure to remove the display afterward with
-<Javadoc name={"org.bukkit.entity.Entity#remove()"}>`Entity#remove()`</Javadoc>._
+_但是,如果显示位于永不卸载的区块中,即出生点区块,它将永远不会被移除,造成资源泄漏。确保之后用
+<Javadoc name={"org.bukkit.entity.Entity#remove()"}>`Entity#remove()`</Javadoc>移除显示。_
 
 :::
 
-They can also be added as passengers to entities with the
-<Javadoc name={"org.bukkit.entity.Entity#addPassenger(org.bukkit.entity.Entity)"}>`Entity#addPassenger()`</Javadoc>/
+它们也可以用<Javadoc name={"org.bukkit.entity.Entity#addPassenger(org.bukkit.entity.Entity)"}>`Entity#addPassenger()`</Javadoc>/
 <Javadoc name={"org.bukkit.entity.Entity#removePassenger(org.bukkit.entity.Entity)"}>`Entity#removePassenger()`</Javadoc>
-methods, useful for making styled name tags!
+方法作为实体的乘客添加,这对制作样式化的名称标签很有用!
 
 ```java
 TextDisplay display = world.spawn(location, TextDisplay.class, entity -> {
     // ...
 
-    entity.setVisibleByDefault(false); // hide it for everyone
-    entity.setPersistent(false); // don't save the display, it's temporary
+    entity.setVisibleByDefault(false); // 对所有人隐藏
+    entity.setPersistent(false); // 不保存显示,它是临时的
 });
 
-entity.addPassenger(display); // mount it on top of an entity's head
-player.showEntity(plugin, display); // show it to a player
+entity.addPassenger(display); // 将它挂载在实体头顶
+player.showEntity(plugin, display); // 对某个玩家显示
 // ...
-display.remove(); // done with the display
+display.remove(); // 完成显示
 ```

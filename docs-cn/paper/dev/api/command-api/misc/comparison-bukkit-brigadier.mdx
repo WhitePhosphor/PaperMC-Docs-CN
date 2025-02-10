@@ -1,24 +1,24 @@
 ---
 slug: /dev/command-api/misc/comparison-bukkit-brigadier
-description: A comparison between Brigadier and Bukkit commands.
+description: Brigadier 和 Bukkit 命令的比较。
 ---
 
 import BukkitPartyCommandImage from "./assets/bukkitparty-command.png";
 import PaperPartyCommandImage from "./assets/paperparty-command.png";
 
-# Comparing Brigadier and Bukkit Commands
+# 比较 Brigadier 和 Bukkit 命令
 
-:::danger[Experimental]
+:::danger[实验性]
 
-Paper's command system is still experimental and may change in the future.
+Paper 的命令系统仍处于实验阶段，未来可能会发生变化。
 
 :::
 
-## Registering commands
-### The old Bukkit way
+## 注册命令
+### 旧的 Bukkit 方式
 
-In order to register Bukkit commands, you would define a class that extends `BukkitCommand`, and implements the `execute(...)` and `tabComplete(...)`
-methods. This might look like this:
+要注册 Bukkit 命令，你需要定义一个继承 `BukkitCommand` 并实现 `execute(...)` 和 `tabComplete(...)`
+方法的类。这可能看起来像这样：
 ```java title="BukkitPartyCommand.java"
 package your.package.name;
 
@@ -39,18 +39,18 @@ public class BukkitPartyCommand extends BukkitCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (args.length == 0) {
-            sender.sendPlainMessage("Please provide a player!");
+            sender.sendPlainMessage("请提供一个玩家！");
             return false;
         }
 
         final Player targetPlayer = Bukkit.getPlayer(args[0]);
         if (targetPlayer == null) {
-            sender.sendPlainMessage("Please provide a valid player!");
+            sender.sendPlainMessage("请提供一个有效的玩家！");
             return false;
         }
 
-        targetPlayer.sendPlainMessage(sender.getName() + " started partying with you!");
-        sender.sendPlainMessage("You are now partying with " + targetPlayer.getName() + "!");
+        targetPlayer.sendPlainMessage(sender.getName() + " 开始和你一起开派对！");
+        sender.sendPlainMessage("你现在正在和 " + targetPlayer.getName() + " 一起开派对！");
         return true;
     }
 
@@ -65,24 +65,24 @@ public class BukkitPartyCommand extends BukkitCommand {
 }
 ```
 
-After that, you can define your command like this:
+之后，你可以这样定义你的命令：
 
 ```java title="PluginClass.java"
 this.getServer().getCommandMap().register(
     this.getName().toLowerCase(),
-    new BukkitPartyCommand("bukkitparty", "Have a party", "/bukkitparty <player>", List.of())
+    new BukkitPartyCommand("bukkitparty", "开一个派对", "/bukkitparty <player>", List.of())
 );
 ```
 
-As you can see, you have to do a lot of manual checking in order to register a single, very simple command. But how does
-the Brigadier API do it?
+如你所见，你必须进行大量的手动检查才能注册一个非常简单的命令。但是 Brigadier API 是如何
+做到这一点的呢？
 
-### The new Paper way
-First, we need to retrieve a `LiteralCommandNode<CommandSourceStack>`. That's a special Brigadier class that holds some sort of [command tree](../basics/command-tree). 
-In our case, it is the root of our command. We can do that by running `Commands.literal(final String literal)`, which returns a 
-`LiteralArgumentBuilder<CommandSourceStack>`, where we can define some arguments and executors. Once we are done, we can call
-`LiteralArgumentBuilder#build()` to retrieve our build `LiteralCommandNode`, which we can then register. That sounds complicated at first,
-but once you see it in action, it looks less terrifying:
+### 新的 Paper 方式
+首先，我们需要获取一个 `LiteralCommandNode<CommandSourceStack>`。这是一个特殊的 Brigadier 类，它持有某种[命令树](../basics/command-tree)。
+在我们的例子中，它是我们命令的根。我们可以通过运行 `Commands.literal(final String literal)` 来做到这一点，它返回一个
+`LiteralArgumentBuilder<CommandSourceStack>`，在这里我们可以定义一些参数和执行器。一旦我们完成，我们可以调用
+`LiteralArgumentBuilder#build()` 来获取我们构建的 `LiteralCommandNode`，然后我们可以注册它。这一开始听起来很复杂，
+但一旦你看到它的实际应用，就不那么可怕了：
 
 ```java title="PaperPartyCommand.java"
 public static LiteralCommandNode<CommandSourceStack> createCommand(final String commandName) {
@@ -93,8 +93,8 @@ public static LiteralCommandNode<CommandSourceStack> createCommand(final String 
                 final Player targetPlayer = playerSelector.resolve(ctx.getSource()).getFirst();
                 final CommandSender sender = ctx.getSource().getSender();
 
-                targetPlayer.sendPlainMessage(sender.getName() + " started partying with you!");
-                sender.sendPlainMessage("You are now partying with " + targetPlayer.getName() + "!");
+                targetPlayer.sendPlainMessage(sender.getName() + " 开始和你一起开派对！");
+                sender.sendPlainMessage("你现在正在和 " + targetPlayer.getName() + " 一起开派对！");
 
                 return Command.SINGLE_SUCCESS;
             }))
@@ -102,20 +102,20 @@ public static LiteralCommandNode<CommandSourceStack> createCommand(final String 
 }
 ```
 
-Each `.then(...)` defines a new branch in our tree, which can either be a literal (`Commands.literal(String)`) or an argument
-(`Commands.argument(String, ArgumentType<T>)`). Each branch may or may not define an `.executes(Command)` executor. This is
-where all the logic happens.
+每个 `.then(...)` 在我们的树中定义一个新分支，它可以是字面量（`Commands.literal(String)`）或参数
+（`Commands.argument(String, ArgumentType<T>)`）。每个分支可以定义也可以不定义一个 `.executes(Command)` 执行器。这就是
+所有逻辑发生的地方。
 
-We will take a closer look at that in different pages, but for now, how do we register it? Paper uses a `LifecycleEventManager` system.
-In a nutshell, that is a way to register commands (or tags) that get loaded each time the server reloads its resources, like using /reload.
-Registering our command looks like this:
+我们将在不同的页面中更详细地了解这一点，但现在，我们如何注册它呢？Paper 使用 `LifecycleEventManager` 系统。
+简而言之，这是一种注册命令（或标签）的方式，这些命令会在服务器每次重新加载其资源时加载，比如使用 /reload。
+注册我们的命令看起来像这样：
 ```java title="PluginClass.java"
 this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
-    commands.registrar().register(PaperPartyCommand.createCommand("paperparty"), "Have a nice party");
+    commands.registrar().register(PaperPartyCommand.createCommand("paperparty"), "来一场愉快的派对");
 });
 ```
 
-And we are done! As you can see here, both commands do the same thing:
+大功告成！如你所见，这两个命令做的是同样的事情：
 
 <div style={{display: 'inline-block'}}>
     <img src={BukkitPartyCommandImage} style={{float: 'left', width: '50%'}}/>

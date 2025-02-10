@@ -1,20 +1,19 @@
 ---
 slug: /dev/command-api/arguments/location
-description: BlockPosition, FinePosition and World argument documentation.
+description: BlockPosition、FinePosition 和 World 参数文档。
 ---
 
 import BlockPositionMp4 from "./assets/vanilla-arguments/blockposition.mp4";
 import FinePositionMp4 from "./assets/vanilla-arguments/fineposition.mp4";
 import WorldMp4 from "./assets/vanilla-arguments/world.mp4";
 
-# Location Arguments
+# 位置参数
 
-## Block position argument
-The block position argument is used for retrieving the position of a block. It works the same way as the first argument of the `/setblock <position> <block>` Vanilla command.
-In order to retrieve the `BlockPosition` variable from the
-<Javadoc name='io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver'>`BlockPositionResolver`</Javadoc>, we have to resolve it using the command source.
+## Block position 参数
+block position 参数用于获取方块的位置。它的工作方式与原版 `/setblock <position> <block>` 命令的第一个参数相同。
+为了从 <Javadoc name='io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver'>`BlockPositionResolver`</Javadoc> 中检索 `BlockPosition` 变量，我们必须使用命令源来解析它。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> blockPositionArgument() {
     return Commands.literal("blockpositionargument")
@@ -23,26 +22,26 @@ public static LiteralCommandNode<CommandSourceStack> blockPositionArgument() {
                 final BlockPositionResolver blockPositionResolver = ctx.getArgument("arg", BlockPositionResolver.class);
                 final BlockPosition blockPosition = blockPositionResolver.resolve(ctx.getSource());
 
-                ctx.getSource().getSender().sendPlainMessage("Put in " + blockPosition.x() + " " + blockPosition.y() + " " + blockPosition.z());
+                ctx.getSource().getSender().sendPlainMessage("输入了 " + blockPosition.x() + " " + blockPosition.y() + " " + blockPosition.z());
                 return Command.SINGLE_SUCCESS;
             }))
         .build();
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={BlockPositionMp4}/>
 
 
-## Fine position argument
-The fine position argument works similarly to the block position argument, with the only difference being that it can accept decimal (precise) location input. The optional
-overload (`ArgumentTypes.finePosition(boolean centerIntegers)`), which defaults to false if not set, will center whole input, meaning 5 becomes 5.5 (5.0 would stay as 5.0 though),
-as that is the "middle" of a block. This only applies to X/Z. The y coordinate is untouched by this operation.
+## Fine position 参数
+fine position 参数的工作方式与 block position 参数类似，唯一的区别是它可以接受小数（精确）位置输入。可选的
+重载（`ArgumentTypes.finePosition(boolean centerIntegers)`），如果未设置则默认为 false，将使整数输入居中，这意味着 5 变成 5.5（但 5.0 仍然保持为 5.0），
+因为这是方块的"中心"。这只适用于 X/Z。y 坐标不受此操作影响。
 
-This argument returns a <Javadoc name='io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver'>`FinePositionResolver`</Javadoc>. You can resolve that by running `FinePositionResolver#resolve(CommandSourceStack)` to get the resulting
-<Javadoc name='io.papermc.paper.math.FinePosition'>`FinePosition`</Javadoc>.
+此参数返回一个 <Javadoc name='io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver'>`FinePositionResolver`</Javadoc>。你可以通过运行 `FinePositionResolver#resolve(CommandSourceStack)` 来解析它以获取结果
+<Javadoc name='io.papermc.paper.math.FinePosition'>`FinePosition`</Javadoc>。
 
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> finePositionArgument() {
     return Commands.literal("fineposition")
@@ -51,7 +50,7 @@ public static LiteralCommandNode<CommandSourceStack> finePositionArgument() {
                 final FinePositionResolver resolver = ctx.getArgument("arg", FinePositionResolver.class);
                 final FinePosition finePosition = resolver.resolve(ctx.getSource());
 
-                ctx.getSource().getSender().sendRichMessage("Position: <red><x></red> <green><y></green> <blue><z></blue>",
+                ctx.getSource().getSender().sendRichMessage("位置：<red><x></red> <green><y></green> <blue><z></blue>",
                     Placeholder.unparsed("x", Double.toString(finePosition.x())),
                     Placeholder.unparsed("y", Double.toString(finePosition.y())),
                     Placeholder.unparsed("z", Double.toString(finePosition.z()))
@@ -62,16 +61,14 @@ public static LiteralCommandNode<CommandSourceStack> finePositionArgument() {
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={FinePositionMp4}/>
 
 
+## World 参数
+此参数允许用户选择当前加载的世界之一。你可以将结果作为通用的 Bukkit <Javadoc name='org.bukkit.World'>`World`</Javadoc> 对象检索。
 
-## World argument
-This argument allows the user to select one of the currently loaded world. You can retrieve the result of that as a generic Bukkit 
-<Javadoc name='org.bukkit.World'>`World`</Javadoc> object.
-
-### Example usage
+### 使用示例
 ```java
 public static LiteralCommandNode<CommandSourceStack> worldArgument() {
     return Commands.literal("teleport-to-world")
@@ -81,19 +78,19 @@ public static LiteralCommandNode<CommandSourceStack> worldArgument() {
 
                 if (ctx.getSource().getExecutor() instanceof Player player) {
                     player.teleport(world.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
-                    ctx.getSource().getSender().sendRichMessage("Successfully teleported <player> to <aqua><world></aqua>",
+                    ctx.getSource().getSender().sendRichMessage("成功将 <player> 传送到 <aqua><world></aqua>",
                         Placeholder.component("player", player.name()),
                         Placeholder.unparsed("world", world.getName())
                     );
                     return Command.SINGLE_SUCCESS;
                 }
 
-                ctx.getSource().getSender().sendRichMessage("<red>This command requires a player!");
+                ctx.getSource().getSender().sendRichMessage("<red>此命令需要一个玩家！");
                 return Command.SINGLE_SUCCESS;
             })
         ).build();
 }
 ```
 
-### In-game preview
+### 游戏内预览
 <FullWidthVideo src={WorldMp4}/>

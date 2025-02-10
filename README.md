@@ -1,54 +1,97 @@
-# 📖 PaperMC 文档
+# 📖 PaperMC 中文文档
 
-[![Discord](https://img.shields.io/discord/289587909051416579.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/papermc) ![Deployment Status](https://img.shields.io/github/deployments/PaperMC/docs/production?label=deployment&logo=github) ![License](https://img.shields.io/github/license/PaperMC/docs)
+[![Discord](https://img.shields.io/discord/289587909051416579.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/papermc) ![License](https://img.shields.io/github/license/PaperMC/docs) [![QQ 群](https://img.shields.io/badge/QQ_群-611076407-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=uZZDEZV_9Ni8dBJPjzGWZUVXK-qKXc7x)
 
-这是 PaperMC 项目下所有文档的仓库。内容发布在 [docs.papermc.io](https://docs.papermc.io) 上供查看。
+这是 [PaperMC 官方文档](https://docs.papermc.io) 的社区中文翻译版本，由 [千屈](https://github.com/Lythrilla) 维护。你可以在 [paper.8aka.org](https://paper.8aka.org) 阅读在线文档。
 
-## 🚀 开始使用
+## 🔔 重要说明
 
-如何在本地运行文档进行开发。
+- 这是一个**非官方**的社区翻译项目，仅供参考
+- 翻译可能不够准确或滞后于官方文档更新
+- 在实际使用中遇到问题时，请以[官方文档](https://docs.papermc.io)为准
+- 如发现翻译错误或有改进建议，欢迎[提交 Issue](https://github.com/8aka-Team/PaperMC-docs-CN/issues) 或 Pull Request
 
-### 📋 前置要求
+## 📚 文档内容
 
-- [node](https://nodejs.org)
-- [pnpm](https://pnpm.io/installation)
+本文档包含以下项目的中文翻译：
 
-### 💻 本地开发
+- **Paper**: 高性能的 Minecraft 服务端
+- **Velocity**: 现代化的服务器代理软件
+- **Folia**: 支持区域化多线程的服务端
+- **Waterfall**: 已停止维护的 BungeeCord 分支
+- **其他**: 通用开发文档和 API 说明
 
-1. 克隆仓库。如果你计划修改，请先创建分支！
+## 🚀 本地开发
 
+### 前置要求
+
+- [Node.js](https://nodejs.org) 18.0 或更高版本
+- [pnpm](https://pnpm.io/installation) 包管理器
+- Git
+
+### 快速开始
+
+1. 克隆仓库
 ```bash
-$ git clone https://github.com/8aka-Team/PaperMC-docs-CN
+git clone https://github.com/8aka-Team/PaperMC-docs-CN
+cd PaperMC-docs-CN
 ```
 
-2. 安装所需依赖。
-
+2. 安装依赖
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-3. 启动开发服务器。
-
+3. 启动开发服务器
 ```bash
-$ pnpm run dev
+pnpm run dev
 ```
 
-这将启动本地开发服务器并打开浏览器窗口。大多数更改将实时生效，无需重启开发服务器或刷新浏览器页面。开始编辑吧！
+服务器启动后会自动打开浏览器。大多数更改都会实时生效，无需重启服务器或刷新页面。
 
-### 🏗️ 构建
+### 构建部署
 
 ```bash
-$ pnpm run build
+pnpm run build
 ```
 
-此命令会在 `build` 目录下构建一个生产就绪的部署。这些文件可以托管在任何静态内容服务器上。
+这会在 `build` 目录下生成可部署的静态文件。
 
-## 📄 许可证
+## 📝 参与贡献
 
-PaperMC 文档 (如 `/docs` 文件夹中的 `.md` 文件) 采用 [CC-BY-SA-4.0](https://github.com/8aka-Team/PaperMC-docs-CN/blob/main/LICENSE-docs) 许可。
+我们欢迎任何形式的贡献，无论是修复错别字、改进翻译还是添加新内容。参与贡献前请阅读我们的[贡献指南](CONTRIBUTING.md)。
 
-支持代码采用 [BSD-2-Clause](https://github.com/8aka-Team/PaperMC-docs-CN/blob/main/LICENSE) 许可。
+### 如何贡献
 
-PaperMC 标志受其[自身条款](https://docs.papermc.io/misc/assets)约束，不继承任何项目的许可证。
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启一个 Pull Request
+
+## 🔗 相关链接
+
+- [官方文档](https://docs.papermc.io)
+- [官方 Discord](https://discord.gg/papermc)
+- [官方 GitHub](https://github.com/PaperMC/docs)
+- [问题反馈](https://github.com/8aka-Team/PaperMC-docs-CN/issues)
+- [QQ 交流群](https://qm.qq.com/cgi-bin/qm/qr?k=uZZDEZV_9Ni8dBJPjzGWZUVXK-qKXc7x): 611076407
+
+### 其他资源
+
+- [PaperMC 官网](https://papermc.io)
+- [PaperMC 博客](https://papermc.io/blog)
+- [PaperMC 论坛](https://forums.papermc.io)
+- [PaperMC API 文档](https://jd.papermc.io)
+
+## 📄 许可协议
+
+- 原文档版权归 PaperMC 团队所有
+- 翻译内容采用 [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh) 协议
+- 项目代码采用 [BSD-2-Clause](LICENSE) 许可
+- PaperMC 标志受其[自身条款](https://docs.papermc.io/misc/assets)约束
+
+---
 
 ![:PaperMC-Docs](https://count.kjchmc.cn/get/@:PaperMC-Docs)
+

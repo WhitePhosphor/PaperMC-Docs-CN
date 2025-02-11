@@ -1,19 +1,20 @@
 import remarkA11yEmoji from "@fec/remark-a11y-emoji";
 import { themes } from "prism-react-renderer";
 import isCI from "is-ci";
-import navbar from "./config/navbar.config";
-import footer from "./config/footer.config";
+import navbar from "./config/navbar.config.js";
+import footer from "./config/footer.config.js";
 import { env } from "process";
 import { Config } from "@docusaurus/types";
 import { Options } from "@docusaurus/plugin-content-docs";
+import { visit } from "unist-util-visit";
 import {
   AUTHOR_FALLBACK,
   AuthorData,
   commitCache,
   cacheAuthorData,
   getFileCommitHashSafe,
-} from "./src/util/authorUtils";
-import { preview, deploymentID } from "./src/util/pagesUtils";
+} from "./src/util/authorUtils.js";
+import { preview, deploymentID } from "./src/util/pagesUtils.js";
 
 cacheAuthorData(preview || env.NODE_ENV === "development");
 
@@ -25,7 +26,6 @@ const docsCommon: Options = {
   editUrl: ({ versionDocsDirPath, docPath }) =>
     `https://github.com/8aka-Team/PaperMC-docs-CN/blob/main/${versionDocsDirPath}/${docPath}`,
   editCurrentVersion: true,
-  remarkPlugins: [remarkA11yEmoji],
   showLastUpdateAuthor: true,
   showLastUpdateTime: true,
 };
@@ -115,18 +115,6 @@ const config: Config = {
         },
       };
     },
-    remarkPlugins: [
-      remarkA11yEmoji,
-      () => {
-        return (tree) => {
-          visit(tree, 'mdxJsxFlowElement', (node) => {
-            if (node.name === 'GlobalConfigSpec') {
-              node.name = 'GlobalConfigSpec';
-            }
-          });
-        };
-      },
-    ],
   },
 
   themes: [
@@ -144,6 +132,18 @@ const config: Config = {
         path: "docs-cn/misc",
         routeBasePath: "/misc",
         sidebarPath: require.resolve("./config/sidebar.misc"),
+        remarkPlugins: [
+          remarkA11yEmoji,
+          () => {
+            return (tree) => {
+              visit(tree, 'mdxJsxFlowElement', (node) => {
+                if (node.name === 'GlobalConfigSpec') {
+                  node.name = 'GlobalConfigSpec';
+                }
+              });
+            };
+          },
+        ],
       },
     ],
     [
@@ -292,4 +292,4 @@ const config: Config = {
   },
 };
 
-export = config;
+export default config;

@@ -9,7 +9,7 @@ description: 关于 Paper 插件的详细指南。
 
 :::info
 
-开发者可以在[这里](docs/paper/dev/getting-started/paper-plugins.mdx)获取更多关于 Paper 插件的信息。
+开发者可以在[这里](docs-cn/paper/dev/getting-started/paper-plugins.mdx)获取更多关于 Paper 插件的信息。
 
 :::
 
@@ -27,12 +27,12 @@ Paper 插件只支持由 Paper 的插件加载器加载，并且可以使用 Buk
 
 ### 如何添加 Paper 插件？
 
-Paper 插件的添加方式与 Bukkit 插件相同，因此，您可以按照[本指南](docs/paper/admin/getting-started/adding-plugins.md)进行操作。
+Paper 插件的添加方式与 Bukkit 插件相同，因此，您可以按照[本指南](docs-cn/paper/admin/getting-started/adding-plugins.md)进行操作。
 
 ### 循环插件加载
 
 随着 Paper 插件的引入，Paper 引入了一个新的插件加载器，修复了一些奇怪的问题。
-然而，这导致不再支持插件之间的[循环加载](docs/paper/dev/getting-started/paper-plugins.mdx#cyclic-plugin-loading)。
+然而，这导致不再支持插件之间的[循环加载](docs-cn/paper/dev/getting-started/paper-plugins.mdx#cyclic-plugin-loading)。
 
 如果 Paper 检测到循环，您的服务器将会显示错误并关闭。
 
@@ -42,3 +42,9 @@ Paper 插件的添加方式与 Bukkit 插件相同，因此，您可以按照[�
 请注意，这可能在未来不再受支持。
 
 :::
+
+Please read the [cyclic loading guide](docs-cn/paper/dev/getting-started/paper-plugins.mdx) for more information.
+
+Please read the [adding plugins guide](docs-cn/paper/admin/getting-started/adding-plugins.md) for more information.
+
+Please read the [paper plugins guide](docs-cn/paper/dev/getting-started/paper-plugins.mdx) for more information.

@@ -7,6 +7,7 @@ slug: /reference/global-configuration
 import React from 'react';
 import ConfigDocBlock from '@site/src/components/config/ConfigDocBlock';
 import GlobalSpec from '!!raw-loader!@site/config-specs/paper/paper-global.yml';
+import GlobalConfigSpec from '@site/src/components/config/GlobalConfigSpec';
 
 :::info
 
@@ -17,3 +18,13 @@ import GlobalSpec from '!!raw-loader!@site/config-specs/paper/paper-global.yml';
 :::
 
 <ConfigDocBlock data={GlobalConfigSpec}/>
+
+<GlobalConfigSpec spec={[
+  {
+    key: "settings.log-player-ip",
+    description: "是否在日志中记录玩家的 IP 地址",
+    default: true,
+    type: "boolean"
+  },
+  // ... 其他配置项
+]} />

@@ -115,6 +115,18 @@ const config: Config = {
         },
       };
     },
+    remarkPlugins: [
+      remarkA11yEmoji,
+      () => {
+        return (tree) => {
+          visit(tree, 'mdxJsxFlowElement', (node) => {
+            if (node.name === 'GlobalConfigSpec') {
+              node.name = 'GlobalConfigSpec';
+            }
+          });
+        };
+      },
+    ],
   },
 
   themes: [
@@ -142,10 +154,9 @@ const config: Config = {
         path: "docs-cn/paper",
         routeBasePath: "paper",
         sidebarPath: require.resolve("./config/sidebar.paper"),
-        lastVersion: "current",
         versions: {
           current: {
-            label: "1.21",
+            label: "1.20",
             path: "",
           },
         },

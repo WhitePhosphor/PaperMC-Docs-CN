@@ -55,7 +55,7 @@ If a dependency is marked as ``bootstrap``, this indicates that this dependency 
 :::note[Plugin Loading Order]
 
 Note that [unlike Bukkit plugins](#load-order-logic-split), dependencies are independent of the plugin load order. 
-This means that although declaring a dependency will give you access to its classes, if you require it to be initialised before your plugin is loaded, see how to [declare load order](#load-order-declaration).
+This means that although declaring a dependency will give you access to its classes, if you require it to be initialized before your plugin is loaded, see how to [declare load order](#load-order-declaration).
 :::
 
 ### Load Order Declaration

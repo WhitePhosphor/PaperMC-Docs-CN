@@ -139,7 +139,7 @@ It also remaps plugin CB calls to remove the version information.
 - **default**: `80`
 - **description**: Sets the maximum line length for signs.
 
-#### Paper.FilterThreshhold:
+#### Paper.FilterThreshold:
 
 - **default**: `8192`
 - **min**: `8192`

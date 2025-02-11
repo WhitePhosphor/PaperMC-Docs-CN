@@ -768,8 +768,8 @@ Recommended configuration for both `engine-mode` `1` and `2` can be found in the
 
 | 1.17                                  | 1.18                                        |
 | ------------------------------------- | ------------------------------------------- |
-| `view-distance` (`server.proporties`) | `simulation-distance` (`server.properties`) |
-| `no-tick-view-distance` (`paper.yml`) | `view-distance` (`server.proporties`)       |
+| `view-distance` (`server.properties`) | `simulation-distance` (`server.properties`) |
+| `no-tick-view-distance` (`paper.yml`) | `view-distance` (`server.properties`)       |
 
 :::
 

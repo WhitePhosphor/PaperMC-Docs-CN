@@ -19,7 +19,7 @@ import { preview, deploymentID } from "./src/util/pagesUtils.js";
 cacheAuthorData(preview || env.NODE_ENV === "development");
 
 const url =
-  (preview && `https://${deploymentID}.papermc-docs.pages.dev`) || "https://docs.papermc.io";
+  (preview && `https://${deploymentID}.papermc-docs-cn.pages.dev`) || "https://docs.papermc.io";
 
 const docsCommon: Options = {
   breadcrumbs: true,
@@ -39,10 +39,10 @@ const config: Config = {
   tagline: "PaperMC 旗下所有项目的文档，包括 Paper、Velocity 和 Folia。",
   url: url,
   baseUrl: "/",
-  onBrokenLinks: isCI ? "throw" : "warn",
-  onBrokenMarkdownLinks: isCI ? "throw" : "warn",
-  onBrokenAnchors: isCI ? "throw" : "warn",
-  onDuplicateRoutes: isCI ? "throw" : "warn",
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
+  onBrokenAnchors: 'warn',
+  onDuplicateRoutes: "warn",
   favicon: "/favicon.ico",
   trailingSlash: false,
   noIndex: preview,

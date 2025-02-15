@@ -11,8 +11,8 @@ Paper fixes many gameplay and technical issues within Minecraft. The most preval
 
 Paper fixes many Vanilla bugs that were not intended by Mojang. These bugs are patched to fix behavior or prevent abuse and
 instability on the server. Some of our fixes are configurable, as we understand that some servers may want to keep the
-Vanilla behavior. You will find these configuration options in the [global configuration](/docs-CN/paper/admin/reference/configuration/global-configuration.mdx)
-and the [world configuration](/docs-CN/paper/admin/reference/configuration/world-configuration.mdx).
+Vanilla behavior. You will find these configuration options in the [global configuration](/docs/paper/admin/reference/configuration/global-configuration.mdx)
+and the [world configuration](/docs/paper/admin/reference/configuration/world-configuration.mdx).
 
 ### What is intended behavior vs a bug?
 

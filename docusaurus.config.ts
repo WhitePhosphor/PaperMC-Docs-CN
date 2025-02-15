@@ -31,6 +31,10 @@ const docsCommon: Options = {
 };
 
 const config: Config = {
+  i18n: {
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans'],
+  },
   title: "PaperMC 文档",
   tagline: "PaperMC 旗下所有项目的文档，包括 Paper、Velocity 和 Folia。",
   url: url,
@@ -129,21 +133,9 @@ const config: Config = {
       {
         ...docsCommon,
         id: "misc",
-        path: "docs-cn/misc",
+        path: "docs/misc",
         routeBasePath: "/misc",
         sidebarPath: require.resolve("./config/sidebar.misc"),
-        remarkPlugins: [
-          remarkA11yEmoji,
-          () => {
-            return (tree) => {
-              visit(tree, 'mdxJsxFlowElement', (node) => {
-                if (node.name === 'GlobalConfigSpec') {
-                  node.name = 'GlobalConfigSpec';
-                }
-              });
-            };
-          },
-        ],
       },
     ],
     [
@@ -151,13 +143,13 @@ const config: Config = {
       {
         ...docsCommon,
         id: "paper",
-        path: "docs-cn/paper",
+        path: "docs/paper",
         routeBasePath: "paper",
         sidebarPath: require.resolve("./config/sidebar.paper"),
         lastVersion: "current",
         versions: {
           current: {
-            label: "1.21",
+            label: "1.20",
             path: "",
           },
         },
@@ -168,7 +160,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "folia",
-        path: "docs-cn/folia",
+        path: "docs/folia",
         routeBasePath: "folia",
         sidebarPath: require.resolve("./config/sidebar.folia"),
         lastVersion: "current",
@@ -185,7 +177,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "velocity",
-        path: "docs-cn/velocity",
+        path: "docs/velocity",
         routeBasePath: "velocity",
         sidebarPath: require.resolve("./config/sidebar.velocity"),
       },
@@ -195,7 +187,7 @@ const config: Config = {
       {
         ...docsCommon,
         id: "waterfall",
-        path: "docs-cn/waterfall",
+        path: "docs/waterfall",
         routeBasePath: "waterfall",
         sidebarPath: require.resolve("./config/sidebar.waterfall"),
       },
@@ -255,7 +247,7 @@ const config: Config = {
       },
       {
         name: "og:image:alt",
-        content: "PaperMC 标志",
+        content: "PaperMC Logo",
       },
     ],
     navbar: navbar,

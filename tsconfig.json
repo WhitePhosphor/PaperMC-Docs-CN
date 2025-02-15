@@ -3,10 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "moduleResolution": "Node16",
-    "module": "Node16",
-    "types": ["node", "@docusaurus/module-type-aliases"],
-    "paths": {
-      "@docusaurus/utils": ["node_modules/@docusaurus/utils/lib"]
-    }
+    "lib": ["DOM", "ES2021"]
   }
 }

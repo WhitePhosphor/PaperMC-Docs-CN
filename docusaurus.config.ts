@@ -154,9 +154,10 @@ const config: Config = {
         path: "docs-cn/paper",
         routeBasePath: "paper",
         sidebarPath: require.resolve("./config/sidebar.paper"),
+        lastVersion: "current",
         versions: {
           current: {
-            label: "1.20",
+            label: "1.21",
             path: "",
           },
         },

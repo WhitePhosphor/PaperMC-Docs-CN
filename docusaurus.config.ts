@@ -19,7 +19,7 @@ import { preview, deploymentID } from "./src/util/pagesUtils.js";
 cacheAuthorData(preview || env.NODE_ENV === "development");
 
 const url =
-  (preview && `https://${deploymentID}.papermc-docs-cn.pages.dev`) || "https://docs.papermc.io";
+  (preview && `https://${deploymentID}.papermc-docs-cn.pages.dev`) || "https://paper.8aka.org";
 
 const docsCommon: Options = {
   breadcrumbs: true,

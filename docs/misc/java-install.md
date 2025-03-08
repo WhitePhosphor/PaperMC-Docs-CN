@@ -73,7 +73,7 @@ sudo dnf -y install java-21-amazon-corretto-devel
 
 Zypper 用于 openSUSE、SLE 及相关发行版。
 
-由于 zypper 不能导入 yum 软件库，因此暂时以系统官方所提供软件源的软件作为演示。
+由于 Zypper 不能导入 YUM 软件库，因此暂时以系统官方所提供软件源的软件作为演示。
 
 ```bash
 sudo zypper in java-21-openjdk

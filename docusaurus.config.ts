@@ -51,6 +51,7 @@ const config: Config = {
     require.resolve("./src/css/custom.css"),
     require.resolve("./src/css/ui.scss"),
     require.resolve("@fontsource/jetbrains-mono/index.css"),
+    require.resolve('./src/clientModules/adsModules.js'),
   ],
 
   future: {

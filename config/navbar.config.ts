@@ -93,12 +93,12 @@ const navbar: Omit<Navbar, "style" | "hideOnScroll"> = {
       position: "right",
     },
     {
-      href: "https://discord.gg/PaperMC",
+      href: "https://discord.com/invite/jN4Br8uhSS",
       className: "header-icon-link header-discord-link",
       position: "right",
     },
     {
-      href: "https://github.com/PaperMC",
+      href: "https://github.com/8aka-Team/PaperMC-Docs-CN",
       className: "header-icon-link header-github-link",
       position: "right",
     },

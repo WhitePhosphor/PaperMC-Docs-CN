@@ -47,7 +47,7 @@ const footer: Footer = {
         },
         {
           label: "GitHub",
-          href: "https://github.com/PaperMC",
+          href: "https://github.com/8aka-Team/PaperMC-Docs-CN",
         },
       ],
     },

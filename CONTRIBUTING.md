@@ -165,11 +165,11 @@ loader: io.papermc.testplugin.TestPluginLoader
 为此，您可以使用 `jd:project_name[:module_name][:class_or_member_reference]` Markdown 链接快捷方式：
 
 ```md
-[my `Event` link](jd:paper:org.bukkit.event.Event)
+[我的`活动`链接。](jd:paper:org.bukkit.event.Event)
 [`ProxyInitializeEvent`](jd:velocity:com.velocitypowered.api.event.proxy.ProxyInitializeEvent)
 [`repeat(long, TimeUnit)`](jd:velocity:com.velocitypowered.api.scheduler.Scheduler$TaskBuilder#repeat(long,java.util.concurrent.TimeUnit))
-[java.base's List](jd:java:java.util.List)
-[java.sql's Connection](jd:java:java.sql:java.sql.Connection)
+[java.base 中的 `List`](jd:java:java.util.List)
+[java.sql 中的 `Connection`](jd:java:java.sql:java.sql.Connection)
 ```
 
 ## 行为准则

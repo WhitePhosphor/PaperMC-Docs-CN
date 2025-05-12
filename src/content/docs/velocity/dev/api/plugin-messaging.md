@@ -199,7 +199,7 @@ public void onPluginMessageFromBackend(PluginMessageEvent event) {
         return;
     }
 
-    // 标记PluginMessage为已处理
+    // 标记 PluginMessage 为已处理
     // 内容将不会转发至原定目标
     event.setResult(PluginMessageEvent.ForwardResult.handled());
 

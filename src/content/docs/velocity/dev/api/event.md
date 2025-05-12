@@ -1,6 +1,6 @@
 ---
-title: Working with events
-description: How to listen for events in Velocity.
+title: 处理事件
+description: 如何在 Velocity 中监听事件。
 slug: velocity/dev/event-api
 ---
 

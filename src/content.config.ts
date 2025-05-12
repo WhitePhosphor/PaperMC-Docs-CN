@@ -1,6 +1,5 @@
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
-// @ts-ignore
 import { defineCollection, z } from "astro:content";
 
 export const collections = {

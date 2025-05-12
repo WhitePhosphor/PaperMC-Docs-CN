@@ -1,6 +1,6 @@
 ---
 title: 插件迁移
-description: 如何将您的插件从 Velocity 1.x.x 迁移到现代 API。
+description: 如何将您的插件从 Velocity 1.x.x 迁移到现代 API
 slug: velocity/dev/porting-plugins-from-velocity-1
 ---
 

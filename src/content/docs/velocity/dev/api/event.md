@@ -1,75 +1,69 @@
 ---
 title: 处理事件
-description: 如何在 Velocity 中监听事件。
+description: 如何在 Velocity 中监听事件
 slug: velocity/dev/event-api
 ---
 
-Listening to events with Velocity's `@Subscribe`
-annotation is straightforward. You've already seen one such listener, using
-[`ProxyInitializeEvent`](jd:velocity:com.velocitypowered.api.event.proxy.ProxyInitializeEvent)
-in your main class. Additional events can be found on the [Javadoc](jd:velocity).
+使用 Velocity 的 `@Subscribe` 注解监听事件非常简单。
+你已经在主类中看到了一个使用 [`ProxyInitializeEvent`](jd:velocity:com.velocitypowered.api.event.proxy.ProxyInitializeEvent) 的监听器。
+更多事件可以在 [Javadoc](jd:velocity) 中找到。
 
-## Creating a listener method
+## 创建监听器方法
 
-To listen to an event, mark the method with [`@Subscribe`](jd:velocity:com.velocitypowered.api.event.Subscribe),
-like shown. This works similarly to annotation-driven event listening in other APIs you may be familiar with;
-it's the equivalent of Bukkit's/Bungee's `@EventHandler` and Sponge's `@Listener`.
+要监听一个事件，请使用 [`@Subscribe`](jd:velocity:com.velocitypowered.api.event.Subscribe) 标记该方法，如下所示。
+这与其他你可能熟悉的 API 中的注解驱动事件监听类似；它相当于 Bukkit/Bungee 的 `@EventHandler` 和 Sponge 的 `@Listener`。
 
 ```java
 @Subscribe
 public void onPlayerChat(PlayerChatEvent event) {
-	// do stuff
+	// 执行操作
 }
 ```
 
 :::tip
 
-Note that the import is [`com.velocitypowered.api.event.Subscribe`](jd:velocity:com.velocitypowered.api.event.Subscribe)
-and _not_ in `com.google.common.eventbus`.
+请注意，导入的是 [`com.velocitypowered.api.event.Subscribe`](jd:velocity:com.velocitypowered.api.event.Subscribe)，
+而不是 `com.google.common.eventbus`。
 
 :::
 
-## Orders
+## 顺序
 
-Every listener has a [`priority`](jd:velocity:com.velocitypowered.api.event.Subscribe#priority()).
-When an event is fired, the order in which listeners are invoked is defined by their `priority`.
-The higher the priority, the earlier the event handler will be called.
+每个监听器都有一个 [`priority`](jd:velocity:com.velocitypowered.api.event.Subscribe#priority())。
+当触发事件时，监听器被调用的顺序由其 `priority` 决定。优先级越高，事件处理器将越早被调用。
 
-State the desired order in the `@Subscribe` annotation:
+在 `@Subscribe` 注解中声明所需的顺序：
 
 ```java
 @Subscribe(priority = 0, order = PostOrder.CUSTOM)
 public void onPlayerChat(PlayerChatEvent event) {
-	// do stuff
+	// 执行操作
 }
 ```
 
-`-32768` is the default value if you do not specify an order.
+如果不指定顺序，`-32768` 是默认值。
 :::note
 
-Due to compatibility constraints, you must specify [`PostOrder.CUSTOM`](jd:velocity:com.velocitypowered.api.event.PostOrder#CUSTOM) in order to use this field.
+由于兼容性限制，你必须指定 [`PostOrder.CUSTOM`](jd:velocity:com.velocitypowered.api.event.PostOrder#CUSTOM) 才能使用这个字段。
 
 :::
 
-## Registering listeners
+## 注册监听器
 
-Velocity automatically registers your main plugin class as an event listener. This is handy for
-initialization and for simple plugins, but for more complex plugins, you will want to separate your
-event handlers from the main plugin class. To do so, you will need to register with the
-[`EventManager`](jd:velocity:com.velocitypowered.api.event.EventManager)
-any other listeners you have:
+Velocity 会自动将你的主插件类注册为事件监听器。
+这对于初始化和简单的插件很方便，但对于更复杂的插件，你可能希望将事件处理器与主插件类分开。
+为此，你需要将其他监听器注册到 [`EventManager`](jd:velocity:com.velocitypowered.api.event.EventManager)：
 
-The event system supports registering an object as a listener (allowing you to use `@Subscribe` to
-mark event handlers) or registering functional listeners.
+事件系统支持将对象注册为监听器（允许你使用 `@Subscribe` 标记事件处理器），或者注册函数式监听器。
 
-### Registering an object as a listener
+### 将对象注册为监听器
 
 ```java
 server.getEventManager().register(plugin, listener);
 ```
 
-Both parameters are [`Object`](jd:java:java.lang.Object).
-The first argument is your plugin's object, and the second argument should be the listener to register. For example:
+两个参数都是[`object`](JD：Java：Java.Lang.Object)。
+第一个参数是插件的对象，第二个参数应该是要注册的侦听器。例如：
 
 ```java
 @Plugin(id = "myfirstplugin", name = "My Plugin", version = "0.1.0", dependencies = {@Dependency(id = "wonderplugin")})
@@ -94,13 +88,13 @@ public class MyListener {
 
   @Subscribe(order = PostOrder.EARLY)
   public void onPlayerChat(PlayerChatEvent event) {
-    // do something here
+    // 在这里做点什么
   }
 
 }
 ```
 
-### Registering a functional-style listener
+### 注册函数式侦听器
 
 As an alternative to `@Subscribe`, you can also use the functional `EventHandler` interface and register yours with
 [`register(Object plugin, Class<E> eventClass, EventHandler<E> handler)`](jd:velocity:com.velocitypowered.api.event.EventManager#register(java.lang.Object,java.lang.Class,com.velocitypowered.api.event.EventHandler)):
@@ -111,7 +105,7 @@ As an alternative to `@Subscribe`, you can also use the functional `EventHandler
   });
 ```
 
-## Handling events asynchronously
+## 异步处理事件
 
 In Velocity 3.0.0, events can now be handled asynchronously. The event system allows a plugin to
 pause sending an event to every listener, perform some unit of computation or I/O asynchronously,
@@ -173,12 +167,12 @@ are urged to make the transition now.
 
 :::
 
-## Creating events
+## 创建事件
 
 Creating events on Velocity is somewhat different than on other platforms. However, it is very
 similar for the most part.
 
-### Creating the event class
+### 创建事件类
 
 First we need to create a class for our event. In this tutorial we'll assume you're making a private
 messaging plugin, and thus use a `PrivateMessageEvent`. Most of this part is boilerplate.
@@ -215,7 +209,7 @@ public class PrivateMessageEvent {
 
 You'll notice that your events don't need to extend or implement anything. They just work.
 
-### Firing the Event
+### 触发事件
 
 To fire the event, you'll need to get the server's event manager and use the
 [`fire`](jd:velocity:com.velocitypowered.api.event.EventManager#fire(E))
@@ -229,7 +223,7 @@ server.getEventManager().fire(new PrivateMessageEvent(sender, recipient, message
 });
 ```
 
-### Using `ResultedEvent`
+### 使用 `ResultedEvent`
 
 Velocity uses the generalized [`ResultedEvent`](jd:velocity:com.velocitypowered.api.event.ResultedEvent)
 for events which have some sort of 'result'. The result type of the event is defined by its generic type; for example

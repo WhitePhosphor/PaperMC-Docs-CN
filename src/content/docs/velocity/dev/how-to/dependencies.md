@@ -1,6 +1,6 @@
 ---
 title: 依赖管理
-description: 如何在你的 Velocity 插件中处理依赖关系。
+description: 如何在你的 Velocity 插件中处理依赖关系
 slug: velocity/dev/dependency-management
 ---
 

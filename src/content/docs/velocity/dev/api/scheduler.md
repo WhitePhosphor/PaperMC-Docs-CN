@@ -1,6 +1,6 @@
 ---
 title: 使用调度器
-description: 关于如何在 Velocity 中使用调度器 API 以运行任务的指南。
+description: 关于如何在 Velocity 中使用调度器 API 以运行任务的指南
 slug: velocity/dev/scheduler-api
 ---
 

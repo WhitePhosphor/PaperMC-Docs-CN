@@ -1,6 +1,6 @@
 ---
 title: 插件消息
-description: 如何在 Velocity 上处理和发送插件消息。
+description: 如何在 Velocity 上处理和发送插件消息
 slug: velocity/dev/plugin-messaging
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 常见陷阱
-description: 如何避免 Velocity 中的常见陷阱。
+description: 如何避免 Velocity 中的常见陷阱
 slug: velocity/dev/pitfalls
 ---
 

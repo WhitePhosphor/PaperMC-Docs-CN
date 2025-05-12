@@ -1,6 +1,6 @@
 ---
 title: 插件基础
-description: 如何开始使用 Velocity API。
+description: 如何开始使用 Velocity API
 slug: velocity/dev/api-basics
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 命令 API
-description: 如何在 Velocity 中创建命令。
+description: 如何在 Velocity 中创建命令
 slug: velocity/dev/command-api
 ---
 

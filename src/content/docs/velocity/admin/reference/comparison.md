@@ -1,35 +1,37 @@
 ---
-title: Comparing with other proxies
-description: A comparison of Velocity to other proxies.
+title: 比较其他代理
+description: Velocity 与其他代理的比较
 slug: velocity/comparisons-to-other-proxies
 ---
 
-Presumably, you have learned about what Velocity can do for you. But how does it stack up against
-other solutions out there? We're trying to convince you to use Velocity, after all, so this document
-may be somewhat biased in our favor.
+想必你已经了解了 Velocity 能为你做些什么。
+但它与其他解决方案相比如何呢？毕竟，我们是在试图说服你使用Velocity，所以这份文档可能会有些偏向于我们。
 
-## Overview
+## 概述
 
 :::danger
 
-**The Paper team strongly recommends using Velocity over Waterfall and BungeeCord**. Waterfall has reached end of life. All future
-development by PaperMC is done on Velocity. For more information, see the [announcement](https://forums.papermc.io/threads/1088/).
+**Paper 团队强烈推荐使用 Velocity 而不是 Waterfall 和 BungeeCord**。
+Waterfall 已经结束生命周期。
+PaperMC 的所有未来开发工作都在 Velocity 上进行。
+更多信息请参阅[公告](https://forums.papermc.io/threads/1088/)。
 
 :::
 
-This is a quick overview of the differences between Velocity and other popular proxy software. Read below for more details.
-| Feature                                  | BungeeCord | Waterfall | Velocity |
-|------------------------------------------|------------|-----------|----------|
-| Resource efficient                       | ❌         | ✅        | ✅✅     |
-| Velocity plugins                         | ❌         | ❌        | ✅       |
-| BungeeCord plugins                       | ✅         | ✅        | 🟨*      |
-| Secure player information forwarding     | ❌         | ❌        | ✅       |
-| API supporting modern Minecraft features | ❌         | ❌        | ✅       |
-| Actively developed                       | ❓         | ❌        | ✅       |
-| Improved mod support                     | ❌         | ❌        | ✅*\*    |
+这是一个关于Velocity与其他流行的代理软件之间差异的快速概述。更多详细信息请参阅下方内容。
 
-\* _The Velocity API does not support plugins made for BungeeCord/Waterfall, but [Snap](https://hangar.papermc.io/Phoenix616/Snap) can be installed for experimental support.
- Snap is not maintained by, or affiliated with, the Velocity project._
+| 功能                  | BungeeCord | Waterfall | Velocity |
+| ------------------- | ---------- | --------- | -------- |
+| 资源高效                | ❌          | ✅         | ✅✅       |
+| Velocity插件          | ❌          | ❌         | ✅        |
+| BungeeCord插件        | ✅          | ✅         | 🟨\*     |
+| 安全的玩家信息转发           | ❌          | ❌         | ✅        |
+| 支持现代Minecraft特性的API | ❌          | ❌         | ✅        |
+| 持续开发                | ❓          | ❌         | ✅        |
+| 改进的模组支持             | ❌          | ❌         | ✅\*\*    |
+
+\* _Velocity API 不支持为 BungeeCord/Waterfall 制作的插件，但可以安装 [Snap](https://hangar.papermc.io/Phoenix616/Snap) 以提供实验性支持。
+Snap 并非由 Velocity 项目维护，也与 Velocity 项目无关。_
 
 \** _Full Forge support for 1.7 through 1.12.2 and 1.20.2 or higher._
 

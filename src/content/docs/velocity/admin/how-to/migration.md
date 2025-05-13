@@ -1,6 +1,6 @@
 ---
-title: Migration guide
-description: How to migrate your proxy between different Velocity versions.
+title: 迁移指南
+description: 如何在不同版本的 Velocity 之间迁移代理
 slug: velocity/migration
 ---
 

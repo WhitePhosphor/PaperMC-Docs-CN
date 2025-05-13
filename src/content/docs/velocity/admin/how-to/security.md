@@ -1,6 +1,6 @@
 ---
-title: Securing your servers
-description: An explanation of how to secure your servers.
+title: 保护你的服务器
+description: 关于如何保护你的服务器的说明
 slug: velocity/security
 ---
 

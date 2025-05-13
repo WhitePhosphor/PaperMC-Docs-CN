@@ -1,6 +1,6 @@
 ---
-title: Getting started
-description: How to install and set up a minimal configuration of Velocity.
+title: 开始使用
+description: 如何安装并设置 Velocity 的最小配置
 slug: velocity/getting-started
 ---
 

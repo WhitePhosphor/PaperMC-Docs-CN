@@ -1,6 +1,6 @@
 ---
-title: What does Velocity do for me?
-description: An explanation for why you should run Velocity.
+title: Velocity 为我做了什么？
+description: 关于为什么你应该运行 Velocity 的说明
 slug: velocity/why-velocity
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: Frequently asked questions
-description: Frequently asked Velocity administration questions.
+title: 常见问题
+description: 常见的 Velocity 管理问题
 slug: velocity/faq
 ---
 

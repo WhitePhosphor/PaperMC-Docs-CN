@@ -1,6 +1,6 @@
 ---
-title: Built-in commands
-description: A list of the built-in commands with explanations.
+title: 内置命令
+description: 内置命令的列表及说明
 slug: velocity/built-in-commands
 ---
 

@@ -17,7 +17,7 @@ const prod = process.env.NODE_ENV === "production";
 
 // https://astro.build/config
 export default defineConfig({
-  site: prod ? "https://paper.8aka.org" : undefined,
+  site: prod ? "https://docs.papermc.io" : undefined,
   integrations: [
     // save Markdown renderer configuration to globals for use by the on-demand renderer
     // order matters - we want this to use only our configuration
@@ -38,7 +38,7 @@ export default defineConfig({
       ],
       lastUpdated: true,
       editLink: {
-        baseUrl: "https://github.com/8aka-Team/PaperMC-Docs-CN",
+        baseUrl: "https://github.com/PaperMC/docs/edit/main/",
       },
       customCss: [
         "@fontsource/poppins/400.css",
@@ -271,7 +271,7 @@ export default defineConfig({
                   label: "开发",
                   items: [
                     {
-                      label: "Getting started",
+                      label: "开始使用",
                       items: [
                         "velocity/dev/creating-your-first-plugin",
                         "velocity/dev/api-basics",
@@ -421,7 +421,6 @@ export default defineConfig({
             paper: `https://jd.papermc.io/paper/${LATEST_PAPER_RELEASE}`,
             velocity: `https://jd.papermc.io/velocity/${LATEST_VELOCITY_RELEASE.substring(0, LATEST_VELOCITY_RELEASE.lastIndexOf("."))}.0`,
             java: { url: "https://docs.oracle.com/en/java/javase/21/docs/api", module: "java.base" },
-
           },
         },
       ],

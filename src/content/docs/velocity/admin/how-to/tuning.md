@@ -1,6 +1,6 @@
 ---
-title: Tuning Velocity
-description: How to tune Velocity to allow for even better performance.
+title: 调整 Velocity
+description: 如何调整 Velocity 以实现更好的性能
 slug: velocity/tuning
 ---
 

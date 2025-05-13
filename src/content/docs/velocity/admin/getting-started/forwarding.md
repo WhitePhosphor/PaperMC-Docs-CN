@@ -1,6 +1,6 @@
 ---
-title: Configuring player information forwarding
-description: How to configure information forwarding on Velocity.
+title: 配置玩家信息转发
+description: 如何在 Velocity 上配置信息转发
 slug: velocity/player-information-forwarding
 ---
 

@@ -88,7 +88,7 @@ public class MyListener {
 
   @Subscribe(order = PostOrder.EARLY)
   public void onPlayerChat(PlayerChatEvent event) {
-    // 在这里做点什么
+    // 你可以在这里做点什么
   }
 
 }
@@ -96,26 +96,23 @@ public class MyListener {
 
 ### 注册函数式侦听器
 
-As an alternative to `@Subscribe`, you can also use the functional `EventHandler` interface and register yours with
-[`register(Object plugin, Class<E> eventClass, EventHandler<E> handler)`](jd:velocity:com.velocitypowered.api.event.EventManager#register(java.lang.Object,java.lang.Class,com.velocitypowered.api.event.EventHandler)):
+作为 `@Subscribe` 的替代方案，你也可以使用函数式 `EventHandler` 接口，
+并使用 [`register(Object plugin, Class<E> eventClass, EventHandler<E> handler)`](jd:velocity:com.velocitypowered.api.event.EventManager#register(java.lang.Object,java.lang.Class,com.velocitypowered.api.event.EventHandler)) 注册你的处理器：
 
 ```java
   server.getEventManager().register(this, PlayerChatEvent.class, event -> {
-      // do something here
+      // 在这里执行操作
   });
 ```
 
 ## 异步处理事件
 
-In Velocity 3.0.0, events can now be handled asynchronously. The event system allows a plugin to
-pause sending an event to every listener, perform some unit of computation or I/O asynchronously,
-and then resume processing the event. All Velocity events have the ability to be processed
-asynchronously, however only some will explicitly wait for events to finish being fired before
-continuing.
+在 Velocity 3.0.0 中，事件现在可以异步处理。
+事件系统允许插件暂停向每个监听器发送事件，异步执行一些计算或 I/O 操作，然后继续处理事件。
+所有 Velocity 事件都可以异步处理，但只有部分事件会在继续之前明确等待事件完成。
 
-For an annotation-based listener, all that is needed to process an event asynchronously is to either
-return an [`EventTask`](jd:velocity:com.velocitypowered.api.event.EventTask)
-or add a second return an [`Continuation`](jd:velocity:com.velocitypowered.api.event.Continuation) parameter:
+对于基于注解的监听器，要异步处理事件，只需返回一个 [`EventTask`](jd:velocity:com.velocitypowered.api.event.EventTask)
+或添加一个返回的 [`Continuation`](jd:velocity:com.velocitypowered.api.event.Continuation) 参数即可：
 
 ```java
   @Subscribe(priority = 100, order = PostOrder.CUSTOM)
@@ -132,9 +129,8 @@ or add a second return an [`Continuation`](jd:velocity:com.velocitypowered.api.e
   }
 ```
 
-A functional listener simply needs to implement
-[`AwaitingEventExecutor`](jd:velocity:com.velocitypowered.api.event.AwaitingEventExecutor)
-and return an [`EventTask`](jd:velocity:com.velocitypowered.api.event.EventTask):
+函数式监听器只需实现 [`AwaitingEventExecutor`](jd:velocity:com.velocitypowered.api.event.AwaitingEventExecutor)
+并返回一个 [`EventTask`](jd:velocity:com.velocitypowered.api.event.EventTask) 即可：
 
 ```java
   server.getEventManager().register(this, PlayerChatEvent.class, (AwaitingEventExecutor) event -> {
@@ -145,37 +141,31 @@ and return an [`EventTask`](jd:velocity:com.velocitypowered.api.event.EventTask)
   });
 ```
 
-There are two types of event tasks:
+有两种类型的事件任务：
 
-- **Async tasks** simply run a unit of execution asynchronously. To get a basic event task, use
-  [`EventTask.async(Runnable)`](jd:velocity:com.velocitypowered.api.event.EventTask#async(java.lang.Runnable)).
-  Basic event tasks are the closest equivalent for Velocity 1.x.x event listeners and asynchronous
-  events in the Bukkit API.
-- **Continuation tasks** provide the listener with a callback (known as a `Continuation`) to resume
-  event processing when the (possibly asynchronous) work is completed. To get a continuation-based
-  event task, use [`EventTask.withContinuation(Consumer<Continuation>)`](jd:velocity:com.velocitypowered.api.event.EventTask#withContinuation(java.util.function.Consumer)).
-  Continuation-based tasks are the closest equivalent for listeners that use BungeeCord `AsyncEvent`
-  intents, but have a slightly different programming model in that each listener still runs sequentially,
-  just that an individual listener can defer passing control onto the next listener until it is done.
+- **异步任务** 简单地异步运行一个执行单元。
+  要获取一个基本的事件任务，请使用 [`EventTask.async(Runnable)`](jd:velocity:com.velocitypowered.api.event.EventTask#async(java.lang.Runnable))。
+  基本事件任务是 Velocity 1.x.x 事件监听器和 Bukkit API 中异步事件的最接近等价物。
+- **延续任务** 为监听器提供了一个回调（称为 `Continuation`），以便在（可能是异步的）工作完成时恢复事件处理。
+  要获取一个基于延续的事件任务，请使用 [`EventTask.withContinuation(Consumer<Continuation>)`](jd:velocity:com.velocitypowered.api.event.EventTask#withContinuation(java.util.function.Consumer))。
+  基于延续的任务是使用 BungeeCord `AsyncEvent` 意图的监听器的最接近等价物，但它们的编程模型略有不同，因为每个监听器仍然按顺序运行，只是单个监听器可以推迟将控制权传递给下一个监听器，直到它完成为止。
 
 :::caution
 
-To retain compatibility with older versions of Velocity, Velocity 3.0.0 runs all event listeners
-asynchronously. This behavior will change in Polymer and will require you to explicitly provide an
-event task (or to use continuations) if you need to perform some work asynchronously. All developers
-are urged to make the transition now.
+为了与 Velocity 的旧版本保持兼容，Velocity 3.0.0 会异步运行所有事件监听器。
+这种行为在 Polymer 中将会改变，并且如果你需要异步执行某些工作，则需要显式的提供一个事件任务（或者使用延续）。
+强烈建议所有开发者现在就开始进行转换。
 
 :::
 
 ## 创建事件
 
-Creating events on Velocity is somewhat different than on other platforms. However, it is very
-similar for the most part.
+在 Velocity 上创建事件与其他平台有所不同，但大部分情况下非常相似。
 
 ### 创建事件类
 
-First we need to create a class for our event. In this tutorial we'll assume you're making a private
-messaging plugin, and thus use a `PrivateMessageEvent`. Most of this part is boilerplate.
+首先，我们需要为我们的事件创建一个类。
+在本教程中，我们假设你正在制作一个私信插件，因此使用`PrivateMessageEvent`。这部分大部分是样板代码。
 
 ```java
 public class PrivateMessageEvent {
@@ -202,41 +192,36 @@ public class PrivateMessageEvent {
     return message;
   }
 
-  // toString, equals, and hashCode may be added as needed
+  // 根据需要添加 `toString`、`equals` 和 `hashCode`
 
 }
 ```
 
-You'll notice that your events don't need to extend or implement anything. They just work.
+你会注意到，你的事件不需要扩展或实现任何内容。它们可以直接工作。
 
 ### 触发事件
 
-To fire the event, you'll need to get the server's event manager and use the
-[`fire`](jd:velocity:com.velocitypowered.api.event.EventManager#fire(E))
-method. Note that this returns a [`CompletableFuture`](jd:velocity:java.util.concurrent.CompletableFuture),
-so if you want to continue logic after the event is handled by all listeners, use a callback:
+要触发事件，你需要获取服务器的事件管理器并使用 [`fire`](jd:velocity:com.velocitypowered.api.event.EventManager#fire(E)) 方法。
+请注意，这返回一个 [`CompletableFuture`](jd:velocity:java.util.concurrent.CompletableFuture)，
+因此如果你想在所有监听器处理完事件后继续逻辑，请使用回调：
 
 ```java
 server.getEventManager().fire(new PrivateMessageEvent(sender, recipient, message)).thenAccept((event) -> {
-  // event has finished firing
-  // do some logic dependent on the result
+  // 事件已触发完毕
+  // 执行依赖于结果的某些逻辑
 });
 ```
 
 ### 使用 `ResultedEvent`
 
-Velocity uses the generalized [`ResultedEvent`](jd:velocity:com.velocitypowered.api.event.ResultedEvent)
-for events which have some sort of 'result'. The result type of the event is defined by its generic type; for example
-`PrivateMessageEvent implements ResultedEvent<ResultType>`.
+Velocity 使用泛化的 [`ResultedEvent`](jd:velocity:com.velocitypowered.api.event.ResultedEvent) 来处理具有某种“结果”的事件。
+事件的结果类型由其泛型类型定义；例如 `PrivateMessageEvent implements ResultedEvent<ResultType>`。
 
-Some common result types are [`GenericResult`](jd:velocity:com.velocitypowered.api.event.ResultedEvent$GenericResult),
-for simple allowed/denied results, and component results, used for events where the result may be denied with an accompanying reason
-(such as in a login event).
+一些常见的结果类型包括用于简单允许/拒绝结果的 [`GenericResult`](jd:velocity:com.velocitypowered.api.event.ResultedEvent$GenericResult) 和组件结果，
+用于事件结果可能被拒绝并附带原因的事件（例如在登录事件中）。
 
-Using a general result is far more encompassing than `isCancelled/setCancelled` methods you may be
-used to on other platforms, whose meaning is vague and limited to a simple boolean. In this example,
-we'll use `GenericResult`, so listeners will be able to mark our `PrivateMessageEvent` as either
-allowed or denied.
+使用通用结果比你可能熟悉的其他平台上的 `isCancelled/setCancelled` 方法要广泛得多，后者的含义模糊且仅限于一个简单的布尔值。
+在本例中，我们将使用 `GenericResult`，因此监听器可以将我们的 `PrivateMessageEvent` 标记为允许或拒绝。
 
 ```java
 public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
@@ -245,7 +230,7 @@ public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
   private final Player recipient;
   private final String message;
 
-  private GenericResult result = GenericResult.allowed(); // Allowed by default
+  private GenericResult result = GenericResult.allowed(); // 默认允许
 
   public PrivateMessageEvent(Player sender, Player recipient, String message) {
     this.sender = sender;
@@ -278,8 +263,7 @@ public class PrivateMessageEvent implements ResultedEvent<GenericResult> {
 }
 ```
 
-Per convention, the result of a `ResultedEvent` should never be null. Here, we assure that using
-[`Objects#requireNonNull(Object)`](jd:java:java.util.Objects#requireNonNull(T)).
+按照惯例，`ResultedEvent` 的结果永远不应该为 null。
+在这里，我们使用 [`Objects#requireNonNull(Object)`](jd:java:java.util.Objects#requireNonNull(T))，来确保这一点。
 
-Listeners may 'deny' the event by using `event.setResult(GenericResult.denied())`, and you may check
-the result with `event.getResult()`.
+监听器可以通过使用 `event.setResult(GenericResult.denied())` 来"拒绝"事件，你可以通过 `event.getResult()` 检查结果。

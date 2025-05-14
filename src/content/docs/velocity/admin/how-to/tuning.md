@@ -36,11 +36,8 @@ Velocity 作为一个网络应用程序，对这些缓解措施带来的性能�
 为了将这些性能损失降到最低，我们建议在配备有针对 Spectre 和 Meltdown 的缓解措施的 CPU 的机器上托管你的代理。
 通常，2019 年及以后发布的处理器都包含针对 Spectre 和 Meltdown 的保护措施。
 
-如果你使用的是容易受到 Spectre 和/或 Meltdown 影响的 CPU，并且愿意为了性能而冒险，那么根据你使用的操作系统，也可以禁用 Spectre/Meltdown 的缓解措施。
-
-相关中文文章：
-[关闭 Spectre 和 Meltdown 漏洞补丁来提升系统性能](https://konata.tech/2021/11/13/disableMitigations/#!)，
-[禁用 Meltdown、Spectre 和 Retbleed 补丁，使 CPU 恢复全盛状态](https://ngabbs.com/read.php?tid=40601311)
+如果你使用的是容易受到 Spectre 和/或 Meltdown 影响的 CPU，并且愿意为了性能而冒险，那么根据你使用的操作系统，也可以禁用 Spectre/Meltdown 的缓解措施。 相关中文文章：
+[关闭 Spectre 和 Meltdown 漏洞补丁来提升系统性能](https://konata.tech/2021/11/13/disableMitigations/#!)，[禁用 Meltdown、Spectre 和 Retbleed 补丁，使 CPU 恢复全盛状态](https://ngabbs.com/read.php?tid=40601311)
 
 但请注意，你是在 _自行承担风险_ 的情况下禁用这些安全缓解措施的。
 Velocity 项目并不推荐你禁用这些缓解措施。

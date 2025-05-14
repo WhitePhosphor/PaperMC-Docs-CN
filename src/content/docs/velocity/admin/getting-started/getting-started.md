@@ -4,7 +4,7 @@ description: 如何安装并设置 Velocity 的最小配置
 slug: velocity/getting-started
 ---
 
-This page covers how to install and set up a minimal configuration of Velocity.
+本页面介绍了如何安装和设置 Velocity 的最小配置。
 
 ## 安装 Java
 

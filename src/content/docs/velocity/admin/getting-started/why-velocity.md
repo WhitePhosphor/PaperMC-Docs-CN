@@ -1,5 +1,5 @@
 ---
-title: Velocity 为我做了什么？
+title: 为啥使用
 description: 关于为什么你应该运行 Velocity 的说明
 slug: velocity/why-velocity
 ---
@@ -9,19 +9,19 @@ that can top it. However, we do diverge from more established, mainstream soluti
 important ways. That can make Velocity a bit hard to sell. We are frequently asked "why?" so often.
 This page is our answer to that question.
 
-## Strong experience
+## 丰富的经验
 
 The founder and primary developer of Velocity (Tux) has been active in developing proxy software for
 _Minecraft: Java Edition_ since 2013. They created the RedisBungee plugin, contributed to BungeeCord
 from 2014 to 2017, and also founded the Waterfall project and led it from 2016 to 2017. In fact, the
 current maintainer of Waterfall helped encourage them to start a brand-new proxy from the ground up!
 
-## Leading performance
+## 卓越表现
 
 Velocity powers several highly-populated Minecraft networks, while using fewer resources than the
 competition. The recipe to the sauce is simple.
 
-### No entity ID rewriting
+### 无实体 ID 重写
 
 When a Minecraft client connects to another Minecraft server, the server will send back an ID that
 uniquely identifies a specific player connection. This ID is used in packets that target the player
@@ -39,7 +39,7 @@ sequence. Velocity takes advantage of this and forces the client to change its e
 approach improves performance, improves mod compatibility, and reduces issues caused by incomplete
 entity ID rewrites.
 
-### Going deep
+### 深入
 
 Velocity goes deeper than optimizing the handling of the Minecraft protocol. Smart handling of the
 protocol produces incredible performance gains but for more performance, we need to go much deeper.
@@ -54,7 +54,7 @@ Velocity also employs several tricks to get the JIT (just-in-time) compiler on o
 tricks require deep understanding of how Java works, but we put in the work to apply those tricks
 which translate to increased performance.
 
-### Internal stability policies
+### 内部稳定性政策
 
 Finally, Velocity does not attempt to maintain a stable internal API between minor and major
 releases. This allows Velocity to be more flexible and still deliver performance improvements and
@@ -65,19 +65,19 @@ conservative about API breaks and when it does so, provides little notice of the
 when doing a break, does not take the opportunity to seriously improve the API being broken (for
 instance, adding RGB support to `ChatColor`).
 
-### Control is in your hands
+### 控制权掌握在您手中。
 
 We take pride in tuning Velocity to be the most performant proxy, but in case the speed provided
 out-of-the-box is not good enough, you can easily tweak several performance-related settings in
 `velocity.toml`.
 
-## Improved security
+## 改进的安全性
 
 Velocity also features more security features, some of which are unique to Velocity. We proactively
 foreclose as many denial-of-service attacks as soon as possible and feature a unique player info
 forwarding system for Minecraft 1.13+ that requires the server and proxy to know a pre-arranged key.
 
-## Standards and mod support
+## 标准和模组支持
 
 Unlike certain platforms which only provide lip service to the modding community (and can be at time
 hostile to them), Velocity embraces the richness of the platform Minecraft provides. As just a small

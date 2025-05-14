@@ -7,16 +7,16 @@ slug: velocity/faq
 Over the years, we've been asked many of the same questions by users. This FAQ attempts to answer as
 many of these questions from the user perspective.
 
-## What version of Java does Velocity require?
+## Velocity 需要哪个版本的 Java？
 
 Velocity 3.3.x and above requires at least Java 17, however it works best with 21 or above.
 
-## Where can I find Velocity plugins?
+## 我在哪里可以找到 Velocity 插件？
 
 A good source for finding plugins compatible with Velocity would be our plugin repository
 [Hangar](https://hangar.papermc.io/?page=0&platform=VELOCITY).
 
-## Does Velocity support plugins developed for BungeeCord or Waterfall?
+## Velocity 是否支持为 BungeeCord 或 Waterfall 开发的插件？
 
 No. Many of the things Velocity can do could not be done if we decided to support BungeeCord
 plugins.
@@ -26,11 +26,11 @@ addition, plugins that support BungeeCord but only require that they are install
 (nothing on the proxy) typically use the BungeeCord plugin messaging channel, which is supported
 natively by the latest versions of Velocity.
 
-## Help, I can't connect to my server!
+## 帮助，我无法连接到我的服务器！
 
 There are a few common causes for why you can't connect to the server.
 
-### Basic troubleshooting
+### 基本故障排除
 
 As a first step, you should verify:
 
@@ -38,7 +38,7 @@ As a first step, you should verify:
 - that the proxy is started
 - that the server and proxy are bound to the appropriate port and IP
 
-### Improper player information forwarding errors
+### 不正确的玩家信息转发错误
 
 ```
 Can't connect to server lobby: If you wish to use IP forwarding, please enable it in your Bungeecord config as well!
@@ -61,7 +61,7 @@ enabling it in Velocity. To fix this error, ensure that you have set up the corr
 information forwarding method on the proxy. See [Player Information Forwarding](/velocity/player-information-forwarding) for
 more information.
 
-### Invalid payload `REGISTER`
+### 无效的 `REGISTER` 数据包
 
 ```
 [server connection] player1 -> hub has connected
@@ -73,7 +73,7 @@ can fix this issue if you use Paper (or a fork of Paper) 1.12.2 or above by addi
 [`-Dpaper.disableChannelLimit=true`](/paper/reference/system-properties#paperdisablechannellimit)
 to the server's startup flags and restarting the server.
 
-### Argument type identifier unknown
+### 参数类型标识符未知
 
 ```
 Argument type identifier <namespace>:<name> unknown.
@@ -87,7 +87,7 @@ other kind of modded server and have it working with Velocity, let us know!)
 If you receive this message but run a Vanilla server,
 [please report a bug to the Velocity issue tracker](https://github.com/PaperMC/Velocity/issues/new).
 
-### Read time out while switching to a Forge server
+### 在切换到 Forge 服务器时读取超时
 
 Particularly for some very large mod packs, there is an elevated risk of the connection between the
 player and the proxy dropping. There is not much we can do on the proxy end to alleviate this. We
@@ -97,14 +97,14 @@ the value (in seconds) you chose for the proxy. For instance, if you determine t
 the best read timeout to use, use `-Dfml.readTimeout=120` and set `read-timeout = 120000` in
 `velocity.toml`.
 
-### My forced hosts are not working!
+### 我的强制主机不起作用！
 
 First, double-check that you properly set up DNS records pointing to your proxy for the forced hosts
 you have selected. Forced hosts are _not_ compatible with SRV records, so if you are relying on SRV
 records to direct the player to the proxy, you will need to find a way to get the proxy running on
 the default Minecraft port, 25565.
 
-### Plugins unable to modify messages or commands
+### 插件无法修改消息或命令
 
 ```
 A plugin tried to cancel a signed chat message. This is no longer possible in 1.19.1 and newer. Disconnecting player <player>

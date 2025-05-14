@@ -1,5 +1,5 @@
 ---
-title: 配置玩家信息转发
+title: 信息转发
 description: 如何在 Velocity 上配置信息转发
 slug: velocity/player-information-forwarding
 ---
@@ -23,7 +23,7 @@ must use BungeeCord forwarding.
 
 :::
 
-## Configuring modern forwarding
+## 配置现代转发
 
 `modern` forwarding is a Velocity-native format. It forwards all player information in an efficient
 binary format and employs a MAC code to make it much more difficult to trick the server into
@@ -41,7 +41,7 @@ To use modern forwarding with any supported server implementation, set the `play
 setting in `velocity.toml` to `modern`. Then, you need to ensure your server is properly configured
 to use Velocity forwarding.
 
-### Configuring modern forwarding for Paper
+### 为 Paper 配置现代转发
 
 Paper 1.14+ and above, along with Paper 1.13.1/1.13.2 build 377 and above support Velocity modern
 forwarding natively.
@@ -64,17 +64,17 @@ If you are using Paper 1.18.2 or lower, you will find these options as `settings
 
 :::
 
-## Configuring modern forwarding for Fabric
+## 为 Fabric 配置现代转发
 
 A mod called [FabricProxy-Lite](https://modrinth.com/mod/fabricproxy-lite) allows you to use
 Velocity modern forwarding with a modded server using Fabric.
 
-## Configuring modern forwarding for Forge
+## 为 Forge 配置现代转发
 
 A mod called [ProxyCompatibleForge](https://modrinth.com/mod/proxy-compatible-forge) allows you to use
 Velocity modern forwarding with a modded server using Forge 1.14 or higher.
 
-## Configuring legacy BungeeCord-compatible forwarding
+## 配置与旧版 BungeeCord 兼容的转发
 
 :::danger
 
@@ -99,23 +99,23 @@ supports the [BungeeGuard](https://www.spigotmc.org/resources/bungeeguard.79601/
 set the `player-info-forwarding-mode` setting in `velocity.toml` to `bungeeguard`, then add the value in
 the `forwarding.secret` file to the token section in the BungeeGuard configuration.
 
-### Configuring legacy forwarding for Spigot / Paper
+### 为 Spigot/Paper 配置旧版转发
 
 To make Spigot or Paper understand the data forwarded from Velocity, set `settings.bungeecord` to
 `true` in your `spigot.yml` and then reboot your server.
 
-### Configuring legacy forwarding for Sponge
+### 为 Sponge 配置旧版转发
 
 To configure Sponge to understand the data forwarded from Velocity, you will need to stop the server
 first, set `modules.bungeecord` to `true` and `bungeecord.ip-forwarding` to `true` in your
 `config/sponge/global.conf` file, and then restart your Sponge server.
 
-### Configuring legacy forwarding for Forge
+### 为 Forge 配置旧版转发
 
 To configure Forge to understand the data forwarded from Velocity, you will need to stop the server
 first, download your correct [BungeeForge](https://github.com/caunt/BungeeForge/releases) version and place the mod into the mods folder, and then restart your Forge server.
 
-### Configuring legacy forwarding for Fabric
+### 为 Fabric 配置旧版转发
 
 :::caution
 

@@ -6,25 +6,25 @@ slug: velocity/getting-started
 
 This page covers how to install and set up a minimal configuration of Velocity.
 
-## Installing Java
+## 安装 Java
 
 Velocity is written in Java, so if you do not already have Java installed, you will need to install
 it before you continue. Velocity requires at least Java 17, however it works best with 21 or above.
 See our [Java installation guide](/misc/java-install) for detailed instructions.
 
-## Downloading Velocity
+## 下载 Velocity
 
 Head over to the [downloads](https://papermc.io/downloads/velocity) page to get the latest version
 of Velocity. We recommend getting the latest stable version. After downloading Velocity, move the
 JAR file to a dedicated folder for just the proxy or upload it to your server.
 
-## Launching Velocity for the first time
+## 首次启动 Velocity
 
 Once you have downloaded Velocity, we will launch it for the first time to generate the
 configuration file, `velocity.toml`. You can use the start script created to launch Velocity once
 you're done configuring Velocity.
 
-### Launching Velocity under Windows
+### 在 Windows 下启动 Velocity
 
 Create a `start.bat` with the following contents in the same directory where you intend to place the
 proxy files.
@@ -45,7 +45,7 @@ rename the Velocity JAR to `velocity.jar`.
 Once saved, double-click the `start.bat` file. If it worked, you should now receive a console
 similar to the output in the next section.
 
-### Launching Velocity under macOS or Linux
+### 在 macOS 或 Linux 下启动 Velocity
 
 Create a `start.sh` with the following contents in the same directory where you intend to place the
 proxy files. You may do this using a file transfer client, or using a text editor running on the
@@ -62,7 +62,7 @@ directory where you have placed the Velocity JAR file and the `start.sh` file. T
 `chmod +x start.sh` and then `./start.sh`. If it worked, you should now receive a console similar to
 the output in the next section.
 
-## After launch
+## 启动后
 
 Here's a sample of what you'll see once we've started the proxy:
 
@@ -88,7 +88,7 @@ Velocity has launched, and you are now ready to configure the proxy completely. 
 If you used the Windows batch script from earlier, the window will ask you to press a key. You can
 either press a key or close the command window.
 
-### Configuring your servers
+### 配置您的服务器
 
 We now need to configure each server to accept connections from the proxy.
 

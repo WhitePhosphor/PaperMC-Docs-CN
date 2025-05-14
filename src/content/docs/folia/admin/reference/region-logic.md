@@ -1,82 +1,54 @@
 ---
-title: Region logic
-description: An overview to how Folia's regionizer works.
+title: 区域逻辑
+description: 对 Folia 区域化器工作原理的概述
 slug: folia/reference/region-logic
 ---
 
-## Fundamental regionizing logic
+## 基础区域化逻辑
 
 ## Region
 
-A region is simply a set of owned chunk positions and implementation
-defined unique data object tied to that region. It is important
-to note that for any non-dead region x, that for each chunk position y
-it owns that there is no other non-dead region z such that
-the region z owns the chunk position y.
+区域仅仅是一组拥有区块位置和与该区域绑定的实现定义的唯一数据对象。
+重要的是要注意，对于任何非死亡区域 x，对于它拥有的每个区块位置 y，不存在其他非死亡区域 z，使得区域 z 拥有区块位置 y。
 
 ## Regionizer
 
-Each world has its own regionizer. The regionizer is a term used
-to describe the logic that the class `ThreadedRegionizer` executes
-to create, maintain, and destroy regions. Maintenance of regions is
-done by merging nearby regions together, marking which regions
-are eligible to be ticked, and finally by splitting any regions
-into smaller independent regions. Effectively, it is the logic
-performed to ensure that groups of nearby chunks are considered
-a single independent region.
+每个世界都有自己的区域化器。
+区域化器是用来描述 `ThreadedRegionizer` 类执行的创建、维护和销毁区域的逻辑的术语。
+区域的维护是通过将附近的区域合并在一起、标记哪些区域有资格被计时，以及最后将任何区域拆分成更小的独立区域来完成的。
+实际上，这是确保附近一组区块被视为一个独立区域的逻辑。
 
-## Guarantees the regionizer provides
+## 区域化器提供的保证
 
-The regionizer provides a set of important invariants that allows
-regions to tick in parallel without race conditions:
+区域化器提供了一组重要的不变量，允许区域在没有竞态条件的情况下并行计时：
 
-### First invariant
+### 第一个不变量
 
-The first invariant is simply that any chunk holder that exists
-has one, and only one, corresponding region.
+第一个不变量很简单，即任何存在的区块持有者都只有一个对应的区域。
 
-### Second invariant
+### 第二个不变量
 
-The second invariant is that for every _existing_ chunk holder x that is
-contained in a region that every each chunk position within the
-"merge radius" of x is owned by the region. Effectively, this invariant
-guarantees that the region is not close to another region, which allows
-the region to assume while ticking it can create data for chunk holders
-"close" to it.
+第二个不变量是，对于每一个 _存在的_ 区块持有者 x，如果它包含在一个区域内，那么在其“合并半径”内的每个区块位置都由该区域拥有。
+实际上，这个不变量保证了该区域附近没有其他区域，从而允许该区域在计时时假设它可以为“靠近”它的区块持有者创建数据。
 
-### Third invariant
+### 第三个不变量
 
-The third invariant is that a ticking region _cannot_ expand
-the chunk positions it owns as it ticks. The third invariant
-is important as it prevents ticking regions from "fighting"
-over non-owned nearby chunks, to ensure that they truly tick
-in parallel, no matter what chunk loads they may issue while
-ticking.
+第三个不变量是，一个正在计时的区域 _不能_ 在其计时时扩展它所拥有的区块位置。
+第三个不变量很重要，因为它防止了正在计时的区域在计时时“争夺”附近未拥有的区块，以确保它们真正地并行计时，无论它们在计时时可能发出什么区块加载请求。
 
-To comply with the first invariant, the regionizer will
-create "transient" regions _around_ ticking regions. Specifically,
-around in this context means close enough that would require a merge,
-but not far enough to be considered independent. The transient regions
-created in these cases will be merged into the ticking region
-when the ticking region finishes ticking.
+为了符合第一个不变量，区域化器将在正在计时的区域 _周围_ 创建“临时”区域。
+具体来说，在这种情况下，“周围”意味着足够接近以至于需要合并，但又不至于远到被认为是独立的。在这种情况下创建的临时区域将在正在计时的区域完成计时时合并到该区域中。
 
-Both of the second invariant and third invariant combined allow
-the regionizer to guarantee that a ticking region may create
-and then access chunk holders around it (i.e. sync loading) without
-the possibility that it steps on another region's toes.
+第二个不变量和第三个不变量结合起来，使得区域化器能够保证一个正在计时的区域可以创建并访问其周围的区块持有者（即同步加载），而不会出现与另一个区域冲突的可能性。
 
-### Fourth invariant
+### 第四个不变量
 
-The fourth invariant is that a region is only in one of four
-states: "transient", "ready", "ticking", or "dead."
+第四个不变量是，一个区域只能处于四种状态之一：“临时”、“就绪”、“计时”或“死亡”。
 
-The "ready" state allows a state to transition to the "ticking" state,
-while the "transient" state is used as a state for a region that may
-not tick. The "dead" state is used to mark regions which should
-not be use.
+“就绪”状态允许区域转换到“计时”状态，而“临时”状态用于那些可能不会计时的区域。
+“死亡”状态用于标记那些不应被使用的区域。
 
-The states transitions are explained later, as it ties in
-with the regionizer's merge and split logic.
+状态转换将在后面解释，因为它与区域化器的合并和拆分逻辑有关。
 
 ## Regionizer implementation
 

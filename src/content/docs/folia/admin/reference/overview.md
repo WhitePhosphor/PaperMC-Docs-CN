@@ -1,14 +1,12 @@
 ---
-title: Overview
-description: An overview of how Folia works.
+title: 概述
+description: 关于 Folia 工作原理的概述。
 slug: folia/reference/overview
 ---
 
-Described in this document is the abstract overview
-of changes done by Folia. Folia splits the chunks within all loaded worlds
-into independently ticking regions so that the regions are ticked
-independently and in parallel. Described first will be intra region
-operations, and then inter region operations.
+本文档描述了 Folia 所做的更改的抽象概述。
+Folia 将所有已加载世界中的区块划分为独立计时的区域，以便这些区域可以独立且并行地进行计时。
+首先描述的是区域内操作，然后是区域间操作。
 
 ## Rules for independent regions
 

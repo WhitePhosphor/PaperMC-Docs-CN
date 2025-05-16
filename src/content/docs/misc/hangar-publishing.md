@@ -1,6 +1,6 @@
 ---
-title: Hangar auto-publishing
-description: How to automatically publish your plugin to Hangar on commits.
+title: Hangar 自动发布
+description: 如何在提交时自动将您的插件发布到 Hangar
 slug: misc/hangar-publishing
 ---
 

@@ -114,7 +114,7 @@
 
 <div class="not-content generator">
   <div class="memory-input">
-    <p><span class="label">Memory:</span> {memory}GB</p>
+    <p><span class="label">内存:</span> {memory}GB</p>
     <input type="range" min={0.5} max={24} step={0.5} bind:value={memory} />
     <p class="gauge">
       {#each { length: 5 } as _, i}
@@ -125,11 +125,11 @@
 
   <div class="inputs">
     <div class="input">
-      <p class="label">File name:</p>
+      <p class="label">文件名:</p>
       <input type="text" placeholder="server.jar" bind:value={filename} />
     </div>
     <div class="input">
-      <p class="label">Platform:</p>
+      <p class="label">平台:</p>
       <select bind:value={platformId}>
         {#each platforms as option (option.id)}
           <option value={option.id}>{option.label ?? option.id}</option>
@@ -150,12 +150,12 @@
     {#if flag.id !== "velocity"}
       <div class="checkbox">
         <input type="checkbox" bind:checked={gui} />
-        <span class="label">GUI</span>
+        <span class="label">开启 GUI</span>
       </div>
     {/if}
     <div class="checkbox">
       <input type="checkbox" bind:checked={autoRestart} />
-      <span class="label">Auto-restart</span>
+      <span class="label">自动重启</span>
     </div>
   </div>
 
@@ -163,9 +163,9 @@
 
   <div class="actions">
     <button class:copied onclick={copyToClipboard}>
-      {copied ? "Copied!" : "Copy"}
+      {copied ? "已复制！" : "复制"}
     </button>
-    <button onclick={download}>Download</button>
+    <button onclick={download}>下载</button>
   </div>
 </div>
 

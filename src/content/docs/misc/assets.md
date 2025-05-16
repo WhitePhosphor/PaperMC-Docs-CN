@@ -1,5 +1,5 @@
 ---
-title: Art assets
+title: 相关资源
 description: The official PaperMC and Velocity logomarks and the terms under which you may use them.
 slug: misc/assets
 ---

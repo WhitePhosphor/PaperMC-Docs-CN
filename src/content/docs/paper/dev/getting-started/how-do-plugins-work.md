@@ -1,5 +1,5 @@
 ---
-title: How plugins work
+title: 插件原理
 description: How plugins work in Paper.
 slug: paper/dev/how-do-plugins-work
 ---

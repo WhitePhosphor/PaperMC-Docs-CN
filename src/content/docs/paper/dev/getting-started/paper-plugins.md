@@ -1,5 +1,5 @@
 ---
-title: Paper plugins
+title: Paper 插件
 description: A development guide for how to write Paper-specific plugins.
 slug: paper/dev/getting-started/paper-plugins
 sidebar:

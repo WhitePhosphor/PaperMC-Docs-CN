@@ -52,9 +52,9 @@ else
 fi
 ```
 
-This will get the latest stable build for the given project and Minecraft version, if it's available.
+这将获取给定项目和 Minecraft 版本的最新稳定版本，如果可用的话。
 
-## Downloading the latest stable build
+## 正在下载最新稳定版本
 
 ```shell replace
 #!/usr/bin/env sh
@@ -69,14 +69,15 @@ if [ "$LATEST_BUILD" != "null" ]; then
   JAR_NAME=${PROJECT}-${MINECRAFT_VERSION}-${LATEST_BUILD}.jar
   PAPERMC_URL="https://api.papermc.io/v2/projects/${PROJECT}/versions/${MINECRAFT_VERSION}/builds/${LATEST_BUILD}/downloads/${JAR_NAME}"
 
-  # Download the latest Paper version
+  # 下载最新版 Paper
   curl -o server.jar $PAPERMC_URL
-  echo "Download completed"
+  echo "下载完成"
 else
-  echo "No stable build for version $MINECRAFT_VERSION found :("
+  echo "未找到版本 $MINECRAFT_VERSION 的稳定版本 :("
 fi
 ```
 
-This is the most common use case for the API. It will download the latest stable build for the given project and
-Minecraft version. You should always serve & use the stable builds. Experimental builds are prone to error and
-do not receive support.
+这是API最常见的用例。
+它将下载给定项目和 Minecraft 版本的最新稳定版本。
+您应该始终提供并使用稳定版本。
+实验性版本容易出错且不提供支持。

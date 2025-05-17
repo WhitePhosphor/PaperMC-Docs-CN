@@ -1,5 +1,5 @@
 ---
-title: 阅读堆栈跟踪
+title: 堆栈跟踪
 description: 当发生异常时，JVM 会生成堆栈跟踪（Stacktraces）。本指南将讨论如何阅读堆栈跟踪的基础知识
 slug: paper/dev/reading-stacktraces
 ---

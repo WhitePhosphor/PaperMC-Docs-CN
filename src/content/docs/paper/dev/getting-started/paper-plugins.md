@@ -131,7 +131,7 @@ public class TestPluginBootstrap implements PluginBootstrap {
 A bootstrapper also allows you to change the way your plugin is initialized, allowing you to pass values into your plugin constructor.
 Currently, bootstrappers do not offer much new API and are highly experimental. This may be subject to change once more API is introduced.
 
-## Loaders
+## 加载器
 Paper plugins are able to identify their own plugin loader by implementing
 [`PluginLoader`](jd:paper:io.papermc.paper.plugin.loader.PluginLoader)
 and adding the class of your implementation to the loader field in the `paper-plugin.yml`.

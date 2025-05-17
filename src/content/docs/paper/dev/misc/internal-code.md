@@ -1,6 +1,6 @@
 ---
-title: Minecraft internals
-description: A brief overview of how to use internals in your plugin.
+title: Minecraft 内部机制
+description: 简要介绍如何在插件中使用内部机制
 slug: paper/dev/internals
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Events
+title: 事件
 description: A guide on how to add new events to Paper.
 slug: paper/contributing/events
 ---

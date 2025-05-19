@@ -74,50 +74,47 @@ slug: paper/dev/how-do-plugins-work
 
 ### 权限
 
-Permissions are a way to control who can run commands and who can listen to events. Permissions
-are registered by plugins and can be checked by other plugins. Permissions can be granted to players and groups.
-Permissions can have a hierarchical nature, if defined so by the plugin in their `plugin.yml`. For example, a
-plugin can define `example.command.help` as a sub-permission of `example.command`. This means that if a player
-has the `example.command` permission, they will also have the `example.command.help` permission.
+权限是一种控制谁可以运行命令以及谁可以监听事件的方式。
+权限由插件注册，并可由其他插件检查。
+权限可以授予玩家和组。如果插件在其 `plugin.yml` 中定义，权限可以具有层次结构。
+例如，一个插件可以将 `example.command.help` 定义为 `example.command` 的子权限。
+这意味着如果玩家具有 `example.command` 权限，他们也将具有 `example.command.help` 权限。
 
 :::note
 
-Permission plugins can allow the usage of wildcard permissions using the `*` character to grant any permission
-or sub-permission available, allowing hierarchical permissions even if not set by the plugin itself. For example,
-granting `example.command.*` through a permission plugin with wildcard support will grant access to all permissions
-starting with `example.command.` itself.
+权限插件可以使用 `*` 字符来允许使用通配符权限，以授予任何可用的权限或子权限，即使插件本身没有设置，也可以实现层次化权限。
+例如，通过支持通配符的权限插件授予 `example.command.*`，将允许访问所有以 `example.command.` 开头的权限。
 
-It is **not** recommended to use wildcard permissions, especially `*` (All permissions), as it can be a huge
-security risk, as well as potentially causing unwanted side effects to a player. Use with caution.
+不推荐使用通配符权限，尤其是 `*`（所有权限），因为这可能会带来巨大的安全风险，并且可能会对玩家产生意外的副作用。
+使用时需谨慎。
 
 :::
 
 ## 配置
 
-Plugins can have configuration files. These files are used to store data that the plugin needs to run. For example, a
-plugin that adds a new block to the game might have a configuration file that stores the block's ID. Configuration files
-should be stored in the plugin's data folder, within the `plugins` folder. The server offers a YAML configuration API
-that can be used to read and write configuration files. See [here](/paper/dev/plugin-configurations) for more information.
+插件可以有配置文件。这些文件用于存储插件运行所需的数据。例如，添加新方块到游戏的插件可能会有一个配置文件，用于存储方块的 ID。
+配置文件应存储在插件的数据文件夹中，位于 `plugins` 文件夹内。
+服务器提供了一个 YAML 配置 API，可用于读取和写入配置文件。
+更多信息请参阅 [这里](/paper/dev/plugin-configurations)。
 
 ## 安排任务
 
-Plugins can schedule tasks to run at a later time. This is useful for things like running code after a certain amount
-of time has passed. For example, a plugin might want to run code after 5 seconds. This can be done by scheduling a task
-to run after 100 ticks - one second is 20 ticks during normal operation. It is important to note that tasks might be
-delayed if the server is lagging. For example, if the server is only running at 10 ticks per second, a task that is
-scheduled to run after 100 ticks will take 10 seconds.
+插件可以安排任务在稍后运行。这对于在特定时间后运行代码非常有用。
+例如，一个插件可能希望在 5 秒后运行代码。
+这可以通过安排一个任务在 100 个刻之后运行来实现——在正常运行时，1 秒等于 20 个刻。
+需要注意的是，如果服务器出现延迟，任务可能会被推迟。
+例如，如果服务器每秒只运行 10 个刻，那么一个安排在 100 个刻后运行的任务将需要 10 秒。
 
-In Java, typically you could use [`Thread#sleep()`](jd:java:java.lang.Thread#sleep(long)) to delay
-the execution of code. However, if the code is running on the main thread, this will cause the server to pause for the
-delay. Instead, you should use the `Scheduler` API to schedule tasks to run later.
-Learn more about the `Scheduler` API [here](/paper/dev/scheduler).
+在 Java 中，通常你可以使用 [`Thread#sleep()`](jd:java:java.lang.Thread#sleep(long)) 来延迟代码的执行。
+然而，如果代码在主线程上运行，这将导致服务器在延迟期间暂停。
+相反，你应该使用 `Scheduler` API 来安排任务稍后运行。更多关于 `Scheduler` API 的信息可以在[这里](/paper/dev/scheduler)找到。
 
-## 组件
+## 组件（Adventure）
 
-Since Minecraft 1.7 and the introduction of "components", plugins can now send messages to players that contain
-rich text. This means that plugins can send messages that contain things like colors, bold text, and clickable links.
-Colors were always possible, but only through the use of legacy color codes.
+自 Minecraft 1.7 引入“组件”以来，插件现在可以向玩家发送包含富文本的消息。
+这意味着插件可以发送包含颜色、粗体文本和可点击链接等内容的消息。
+颜色一直是可能的，但只能通过使用旧版颜色代码。
 
-Paper implements a library called `Adventure` that makes it easy to create and send messages to players. Learn more
-about the `Adventure` API [here](https://docs.advntr.dev/) from their docs or our docs
-[here](/paper/dev/component-api/introduction).
+Paper 实现了一个名为 `Adventure` 的库，它使得向玩家发送消息变得简单。
+你可以从它们的文档 [这里](https://docs.advntr.dev/)
+或我们的文档 [这里](/paper/dev/component-api/introduction) 了解更多信息。

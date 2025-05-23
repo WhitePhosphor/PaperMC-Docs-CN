@@ -14,10 +14,10 @@ PaperMC 项目主要通过 Discord 进行沟通。请使用以下邀请链接：
 
 - [Forums](https://forums.papermc.io)
 
-## X
+## Twitter/X
 
 我们经常通过我们的 X 页面发布版本更新说明、更新通知和其他信息。
 
-- [@PaperPowered](https://twitter.com/PaperPowered)
+- [@PaperPowered](https://x.com/PaperPowered)
 
 您不应通过直接消息或 @ 此账号来寻求支持。它不像上述地点那样经常被检查。

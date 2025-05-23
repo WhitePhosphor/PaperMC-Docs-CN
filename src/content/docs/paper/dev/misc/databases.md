@@ -116,9 +116,9 @@ dependencies {
 
 :::caution
 
-Hikari 库并未包含在 Paper 中，因此你需要对其进行遮蔽/重新定位。在 Gradle 中，你需要使用 [Shadow 插件](https://imperceptiblethoughts.com/shadow/)。
-或者，你可以使用你的 Paper 插件的库加载器在运行时加载该库。
-有关如何使用它的更多信息，请查看 [这里](/paper/dev/getting-started/paper-plugins#加载器)。
+Hikari库没有与Paper一起打包，因此你需要对其进行遮蔽（shade）或重定位（relocate）。
+在Gradle中，你需要使用[Shadow插件](https://gradleup.com/shadow/)。
+或者，你可以使用库加载器在运行时加载你的Paper插件中的库。有关如何使用此功能的更多信息，请参阅[这里](/paper/dev/getting-started/paper-plugins#loaders)。
 
 :::
 

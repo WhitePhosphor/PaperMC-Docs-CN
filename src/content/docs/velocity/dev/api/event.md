@@ -201,9 +201,10 @@ public class PrivateMessageEvent {
 
 ### 触发事件
 
-要触发事件，你需要获取服务器的事件管理器并使用 [`fire`](jd:velocity:com.velocitypowered.api.event.EventManager#fire(E)) 方法。
-请注意，这返回一个 [`CompletableFuture`](jd:velocity:java.util.concurrent.CompletableFuture)，
-因此如果你想在所有监听器处理完事件后继续逻辑，请使用回调：
+要触发事件，你需要获取服务器的事件管理器并使用
+[`fire`](jd:velocity:com.velocitypowered.api.event.EventManager#fire(E)) 方法。
+需要注意的是，这会返回一个  [`CompletableFuture`](jd:java:java.util.concurrent.CompletableFuture) ，
+因此如果你想在所有监听器处理完事件后继续执行逻辑，可以使用回调函数。
 
 ```java
 server.getEventManager().fire(new PrivateMessageEvent(sender, recipient, message)).thenAccept((event) -> {

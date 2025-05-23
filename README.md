@@ -28,7 +28,7 @@
 
 ### 前置要求
 
-- [node](https://nodejs.org)
+- [node 22](https://nodejs.org)
 - [pnpm](https://pnpm.io/installation)
 - [d2](https://d2lang.com/) (可选-用于生成图表)
 - [Git](https://git-scm.com/downloads)

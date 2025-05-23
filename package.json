@@ -32,10 +32,14 @@
   "devDependencies": {
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.15.16",
+    "dead-or-alive": "^1.0.4",
     "prettier": "3.5.3",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-svelte": "^3.3.3"
   },
-  "packageManager": "pnpm@10.11.0"
+  "engines": {
+    "node": "22.x"
+  },
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }

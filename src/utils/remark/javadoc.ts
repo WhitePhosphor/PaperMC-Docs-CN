@@ -46,7 +46,7 @@ const parse = async (url: string, { targets }: Options): Promise<string | null> 
   const result = await deadOrAlive(parsed, {
     findUrls: false,
     followMetaHttpEquiv: false,
-    userAgent: "PaperMC/docs (https://docs.papermc.io)",
+    userAgent: "PaperMC/docs (https://paper.8aka.org)",
   });
   if (result.status !== "alive") {
     throw new Error(`Javadoc link "${url}" is not valid`);

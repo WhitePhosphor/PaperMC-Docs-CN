@@ -78,12 +78,12 @@ Velocity 的一些系统属性名称中包含 `.` 字符。在使用 PowerShell 
 #### velocity.disable-native-transport
 
 - **默认**: `false`
-- **描述**: 是否禁用 Netty 的本地传输方法，如 io_uring 支持和 Epoll。如果设置为 `true`，Velocity 将使用 Java 的 NIO 传输。
+- **描述**: 是否禁用 Netty 的本地传输方法，如 `io_uring` 支持和 Epoll。如果设置为 `true`，Velocity 将使用 Java 的 NIO 传输。
 
 #### velocity.enable-iouring-transport
 
-- **default**: `false`
-- **description**: 当设置为`true`时，启用Netty的`io_uring`传输。默认情况下，Velocity仅使用Epoll（在Linux上）和kqueue（在macOS上）原生传输。此属性不会覆盖`velocity.disable-native-transport`属性。
+- **默认**: `false`
+- **描述**: 当设置为`true`时，启用 Netty 的 `io_uring` 传输。默认情况下，Velocity 仅使用 Epoll（在 Linux 上）和 kqueue（在 macOS 上）原生传输。此属性不会覆盖 `velocity.disable-native-transport` 属性。
 
 #### velocity.natives-disabled
 

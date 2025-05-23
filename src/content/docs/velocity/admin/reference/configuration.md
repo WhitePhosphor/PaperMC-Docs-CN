@@ -18,11 +18,11 @@ Velocity使用 [TOML](https://github.com/toml-lang/toml) 文件格式，因为�
 
 聊天消息可以使用 [MiniMessage](https://docs.advntr.dev/minimessage/format.html) 格式提供。
 
-Minecraft 1.16及更高版本支持RGB颜色。
+Minecraft 1.16及更高版本支持 RGB 颜色。
 
 ### 地址
 
-地址是由IP地址或主机名与端口号组成，两者之间用冒号（`:`）分隔。
+地址是由 IP 地址或主机名与端口号组成，两者之间用冒号（`:`）分隔。
 例如，`127.0.0.1:25577` 和 `server01.example.com:25565` 都是有效的地址。
 
 ## 根部分

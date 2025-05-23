@@ -15,7 +15,7 @@ slug: velocity/dev/command-api
 
 在内部，Velocity 使用 [Brigadier](https://github.com/Mojang/brigadier) 库来注册和分发命令操作。
 你可以通过将你的 `CommandNode` 包装在 `BrigadierCommand` 中来注册它们。让我们看一个例子，
-这个命令会用浅蓝色文字向执行命令的人显示"Hello World"。
+这个命令会用浅蓝色文字向执行命令的人显示 `Hello World`。
 
 ```java
 package com.example.velocityplugin;

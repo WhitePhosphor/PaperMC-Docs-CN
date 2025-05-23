@@ -1,5 +1,5 @@
 ---
-title: Roadmap
+title: 路线图
 description: Outlines the future intents and plans of the Paper project.
 slug: paper/dev/roadmap
 ---

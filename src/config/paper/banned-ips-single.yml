@@ -1,5 +1,5 @@
 header:
-  message: This is a single entry in the root array found in banned-ips.json.
+  message: 这是在 `banned-ips.json` 文件的根数组中找到的一个条目。
 ip:
   description: |
     The IP address representing the banned user.

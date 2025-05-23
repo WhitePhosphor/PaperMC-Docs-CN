@@ -1,5 +1,5 @@
 ---
-title: Persistent data container (PDC)
+title: 持久数据容器（PDC）
 description: A guide to the PDC API for storing data.
 slug: paper/dev/pdc
 ---

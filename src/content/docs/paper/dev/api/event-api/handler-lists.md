@@ -1,6 +1,6 @@
 ---
-title: Handler lists
-description: An explanation to what an event's HandlerList is.
+title: HandlerList
+description: 对事件的 HandlerList 的解释
 slug: paper/dev/handler-lists
 ---
 

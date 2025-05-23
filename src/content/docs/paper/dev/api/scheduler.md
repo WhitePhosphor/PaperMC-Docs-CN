@@ -1,10 +1,10 @@
 ﻿---
-title: Scheduling
-description: A guide on how to use BukkitScheduler to run code at specific times.
+title: 调度
+description: 如何使用 BukkitScheduler 在特定时间运行代码的指南
 slug: paper/dev/scheduler
 ---
 
-The [`BukkitScheduler`](jd:paper:org.bukkit.scheduler.BukkitScheduler) can be used to schedule your code to be run later or repeatedly.
+[`BukkitScheduler`](jd:paper:org.bukkit.scheduler.BukkitScheduler) 可用于安排代码稍后运行或重复运行。
 
 :::note[Folia]
 

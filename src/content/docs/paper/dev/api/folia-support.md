@@ -1,5 +1,5 @@
 ---
-title: Supporting Paper and Folia
+title: 支持 Paper 和 Folia
 description: How to support both Folia and Paper within your plugin.
 slug: paper/dev/folia-support
 ---

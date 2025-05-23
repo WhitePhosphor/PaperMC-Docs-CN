@@ -1,10 +1,10 @@
 ---
-title: Registries
+title: 注册表
 description: A guide to registries and their modification on Paper.
 slug: paper/dev/registries
 sidebar:
   badge:
-    text: Experimental
+    text: 实验性
     variant: danger
 ---
 

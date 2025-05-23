@@ -1,10 +1,10 @@
 ---
-title: Lifecycle API
+title: 生命周期 API
 description: A guide to Paper's Lifecycle API.
 slug: paper/dev/lifecycle
 sidebar:
   badge:
-    text: Experimental
+    text: 实验性
     variant: danger
 ---
 

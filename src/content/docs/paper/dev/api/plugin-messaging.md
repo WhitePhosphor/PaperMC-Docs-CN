@@ -1,5 +1,5 @@
 ---
-title: Plugin messaging
+title: 消息传递
 description: How to communicate with clients or proxies.
 slug: paper/dev/plugin-messaging
 ---

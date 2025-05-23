@@ -1,5 +1,5 @@
 ---
-title: Recipes
+title: 配方
 description: How to create and manage recipes.
 slug: paper/dev/recipes
 ---

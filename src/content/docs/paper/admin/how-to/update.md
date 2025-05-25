@@ -1,6 +1,6 @@
 ---
-title: Updating
-description: Paper has new features and fixes coming every day, this guide explains the updating process.
+title: 更新
+description: Paper 每天都在推出新功能和修复，本指南解释了更新过程
 slug: paper/updating
 ---
 
@@ -8,14 +8,14 @@ Updating Paper is an important part of running every server. With new features a
 every day, we recommend updating at least once per week to keep your server patched for the latest
 bugs. Installing updates is very simple, but it's important to know how to do it correctly.
 
-:::caution[Don't replace any JAR in a running server]
+:::caution[不要替换正在运行的服务器中的任何 JAR]
 
 Unless you know exactly what and why you're doing what you're doing, it's never a good idea to
 replace any JAR in a running server, be that plugins, or Paper itself.
 
 :::
 
-## Step 1. Backup
+## 步骤 1：备份
 
 :::tip
 

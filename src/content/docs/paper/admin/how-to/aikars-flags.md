@@ -1,15 +1,14 @@
 ---
-title: Aikar's flags
-description: Aikar's flags are a set of JVM flags designed to improve the performance of your Paper server.
+title: 启动参数
+description: Aikar 的启动参数是一组用于提升 Paper 服务器性能的 JVM 参数
 slug: paper/aikars-flags
 ---
 
-## Recommended JVM startup flags
+## 推荐的 JVM 启动参数
 
-:::caution[Script Generator]
+:::caution[脚本生成器]
 
-**This page only serves as an explanation page.** If you want to generate a start script, please visit
-our **[Script Generator](/misc/tools/start-script-gen)**.
+**此页面仅作为解释页面。** 如果您想生成启动脚本，请访问我们的 **[脚本生成器](/misc/tools/start-script-gen)**。
 
 :::
 
@@ -17,34 +16,32 @@ our **[Script Generator](/misc/tools/start-script-gen)**.
 java -Xms10G -Xmx10G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -jar paper.jar --nogui
 ```
 
-:::danger[Do not allocate all of your available memory on a shared host!]
+:::danger[在共享主机上，不要分配所有可用内存！]
 
-When setting the `Xms` and `Xmx` values, if your host says you have 8GB of memory, **do not use 8GB**!
+在设置 `Xms` 和 `Xmx` 值时，如果您的主机说您有 8GB 内存，**不要使用8GB**！
 
-Minecraft (and Java) needs additional memory on top of that `Xmx` parameter. It is recommended to
-**reduce your `Xmx` and `Xms` by about 1000-1500MB** to avoid running out of memory or `OOMKiller` killing
-your server. This also leaves room for the operating system to use memory too.
+Minecraft（以及Java）在 `Xmx` 参数之外还需要额外的内存。
+建议您 **将 `Xmx` 和 `Xms` 减少约1000-1500MB** ，以避免内存不足或 `OOMKiller` 终止您的服务器。
+这也为操作系统留出了使用内存的空间。
 
-Do you have 8GB of memory? Use 6500MB for safety.
-_But you may also ask your host if they will cover this overhead for you and
-give you 9500M instead. Some hosts will! Just ask._
+您有8GB内存吗？为了安全起见，请使用6500MB。
+_但您也可以询问您的主机提供商，他们是否会为您承担这部分开销，并为您提供9500M。**译者注：完全不会。**_
 
 :::
 
-## Recommended memory
+## 推荐内存
 
-**We recommend using at least 6-10GB**, no matter how few players! If you can't afford 10GB of
-memory, give as much as you can, but ensure you leave the operating system some memory too. G1GC
-operates better with more memory.
+**我们建议至少使用6-10GB**，不管玩家数量多少！如果您无法承担10GB的内存，请尽可能多地分配，但要确保为操作系统留出一些内存。
+G1GC 在内存足够多的情况下运行的会更好。
 
-However, more memory does not mean better performance above a certain point. Eventually you will hit
-a point of diminishing returns. Going out and getting 32GB of RAM for a server will only waste your
-money with minimal returns.
+然而，超过一定限度，更多的内存并不意味着更好的性能。
+最终您会达到收益递减的点。
+为服务器购买 32GB 的内存只会浪费您的金钱，而收益微乎其微。
 
-## Java GC logging
+## Java GC 日志记录
 
-Are you having old gen issues with these flags? Add the following flags based on your Java version
-to enable GC logging:
+如果您使用这些参数时遇到旧代（old gen）问题，
+请根据您的 Java 版本添加以下参数以启用 GC 日志记录：
 
 **Java 8-10**
 

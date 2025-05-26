@@ -6,7 +6,7 @@ slug: paper/reference/paper-plugins
 
 本文档页面旨在解释 Paper 插件可能引入的所有新语义和可能存在的混淆之处。
 
-:::note
+:::note[注意]
 
 开发者可以在 [这里](/paper/dev/getting-started/paper-plugins) 获取更多关于 Paper 插件的信息。
 

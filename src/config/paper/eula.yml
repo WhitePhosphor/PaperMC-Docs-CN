@@ -1,6 +1,6 @@
 header:
   message: |
-    #通过将以下设置更改为 TRUE，您表示同意我们的 EULA（[https://aka.ms/MinecraftEULA](https://aka.ms/MinecraftEULA)）。 C.
+    #通过将以下设置更改为 TRUE，您表明您同意我们的 EULA（[MinecraftEULA](https://aka.ms/MinecraftEULA)）
 
     #\<date\>
   inline: true

@@ -1,7 +1,7 @@
 settings:
   allow-end:
     default: "true"
-    description: Whether to load end-type dimensions.
+    description: 是否加载末地维度。
   warn-on-overload:
     default: "true"
     description: Allows disabling the "Can't keep up!" message.

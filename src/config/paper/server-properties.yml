@@ -1,10 +1,9 @@
 accept-transfers:
   default: "false"
-  description: "服务器是否接受来自其他服务器使用传输命令/数据包的传输。如果设置为 false，服务器将断开客户端的连接"
+  description: "是否接受来自其他服务器使用传输命令/数据包的传输。如果设置为 false，服务器将断开客户端的连接"
 allow-flight:
   default: "false"
-  description: >
-    这意味着即使玩家在生存模式中飞行，也不会被踢出游戏。这种情况很可能是通过作弊实现的，但也可能会出现误判。
+  description: "是否允许玩家在生存模式中开启飞行的时候不踢出玩家。这种情况很可能是通过作弊实现的，但也可能会出现误判"
 allow-nether:
   default: "true"
   description: "Allows users to travel to the Nether."

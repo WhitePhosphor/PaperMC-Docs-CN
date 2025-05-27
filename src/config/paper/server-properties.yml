@@ -6,77 +6,70 @@ allow-flight:
   description: "是否允许玩家在生存模式中开启飞行的时候不踢出玩家。这种情况很可能是通过作弊实现的，但也可能会出现误判"
 allow-nether:
   default: "true"
-  description: "Allows users to travel to the Nether."
+  description: "是否开启下界维度生成。大厅，游戏等不需要下界的子服可以直接关闭"
 broadcast-console-to-ops:
   default: "true"
-  description: "Send console command output to all online operators."
+  description: "是否将控制台命令输出发送给所有在线的管理员"
 broadcast-rcon-to-ops:
   default: "true"
-  description: "Send rcon command output to all online operators."
+  description: "是否将 RCON 命令输出发送给所有在线的管理员"
 bug-report-link:
   default: ""
-  description: "A URL value used for the Report Server Bugs button in the Server Links client menu."
+  description: "设置一个用于客户端菜单中“报告服务器错误”按钮的 URL 值"
 debug:
   default: "false"
-  description: "Enables the server's debug mode."
+  description: "是否启用服务器的调试（debug）模式"
 difficulty:
   default: "easy"
-  description: 'Defines the difficulty of the server. (Allowed values: "peaceful", "easy", "normal", "hard")'
+  description: '设置定义服务器的难度。（允许的值：“peaceful（和平）”、“easy（简单）”、“normal（普通）”、“hard（困难）”）'
 enable-command-block:
   default: "true"
-  description: "Enables command blocks."
+  description: "是否开启命令方块，玩家获取方块仍然需要 OP 权限"
 enable-jmx-monitoring:
   default: "false"
   description: >
-    Exposes an MBean with the Object name "net.minecraft.server:type=Server" and two attributes
-    "averageTickTime" and "tickTimes" exposing the tick times in milliseconds. In order for enabling JMX on
-    the Java runtime you also need to add a couple of JVM flags to the startup as documented
-    [here](https://docs.oracle.com/javase/8/docs/technotes/guides/management/agent.html)
+    是否启用 JMX 监控
+    公开一个对象名称为 “net.minecraft.server:type=Server” 的 MBean（管理构件），
+    以及 “averageTickTime”（平均滴答时间）和 “tickTimes”（滴答次数）这两个属性，以毫秒为单位展示滴答时间。
+    为了在 Java 运行时启用 JMX，你需要在启动时添加一些 JVM 参数，具体参数和配置方法可以参考 [Oracle 官方文档](https://docs.oracle.com/javase/8/docs/technotes/guides/management/agent.html)
 enable-query:
   default: "false"
-  description: "Enables GameSpy4 protocol server listener. Used to get information about server."
+  description: "是否启用 GameSpy4 协议服务器监听器。用于获取服务器的信息"
 enable-rcon:
   default: "false"
-  description: "Enables remote access to the server console."
+  description: "是否启用 RCON 允许对服务器控制台的远程访问"
 enable-status:
   default: "true"
   description: >
-    Makes the server appear on the server list and also enables listener for getting server
-    information. If turned off, server will appear offline but players will still be able to connect.
+    是否启用用于获取服务器信息的监听器，使服务器出现在服务器列表中。如果关闭此功能，服务器将显示为离线状态，但玩家仍然可以连接。
+    子服状态下可以关闭以节省带宽，客户端获取状态直接由反代理端（velocity/waterfall/BungeeCord）响应
 enforce-secure-profile:
   default: "true"
-  description: "If set to true, players without a Mojang-signed public key will not be able to connect to the server."
+  description: "是否启用 Mojang 公钥验证，没有 Mojang 签名的公钥的玩家将无法连接到服务器"
 enforce-whitelist:
   default: "false"
-  description: "If set to true, the server will kick players who are not on the whitelist."
+  description: "是否启用白名单功能，启用后只有 white-list 内的玩家才能连接到服务器"
 entity-broadcast-range-percentage:
   default: "100"
   description: >
-    Controls how close entities need to be before being sent to clients. Higher values means they''ll
-    be rendered from farther away, potentially causing more lag. This is expressed the percentage of the default
-    value. For example, setting to 50 will make it half as usual. This mimics the function on the client video
-    settings (not unlike Render Distance, which the client can customize so long as it''s under the server''s
-    setting). This must be between 10 and 1000 percent.
+    设置向客户端发送的实体渲染距离，较高的值意味着它们可以从更远的地方被渲染，可能会导致更多的延迟。
+    这模仿了客户端视频设置中的功能（与渲染距离类似，只要在服务器设置之下，客户端可以自定义）。这必须在10%到1000%之间
 force-gamemode:
   default: "false"
   description: >
-    Force players to join in the default game mode. This will reset their previous game mode when they
-    reconnect.
+    是否强制玩家以默认游戏模式加入。这将在他们重新连接时重置他们之前的游戏模式
 function-permission-level:
   default: "2"
-  description: "Sets the default permission level for functions. (Allowed values: 1, 2, 3, 4)"
+  description: "设置函数的默认权限级别。（允许的值：1、2、3、4）"
 gamemode:
   default: "survival"
-  description: 'Defines the mode of gameplay. (Allowed values: "survival", "creative", "adventure", "spectator")'
+  description: '设置玩家加入服务器的默认游戏模式。（允许的值：“survival（生存）”、“creative（创造）”、“adventure（冒险）”、“spectator（旁观者）”）'
 generate-structures:
   default: "true"
-  description: "Defines whether structures (such as villages) will be generated."
+  description: "是否允许生成结构（如村庄）"
 generator-settings:
   default: "{}"
-  description: >
-    The settings used to customize world generation. Follow
-    [its format](https://minecraft.wiki/w/Java_Edition_level_format#generatorOptions_tag_format) and
-    write the corresponding JSON string.
+  description: 用于自定义世界生成的设置。遵循[其格式](https://minecraft.wiki/w/Java_Edition_level_format#generatorOptions_tag_format)并编写相应的 JSON 字符串
 hardcore:
   default: "false"
   description: "If set to true, players will be set to spectator mode if they die."

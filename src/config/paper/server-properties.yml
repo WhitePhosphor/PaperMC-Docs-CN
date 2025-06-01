@@ -72,7 +72,7 @@ generator-settings:
   description: 用于自定义世界生成的设置。遵循[其格式](https://minecraft.wiki/w/Java_Edition_level_format#generatorOptions_tag_format)并编写相应的 JSON 字符串
 hardcore:
   default: "false"
-  description: "If set to true, players will be set to spectator mode if they die."
+  description: "如果设置为true，玩家死亡后将被设置为旁观者模式。"
 hide-online-players:
   default: "false"
   description: "Hides the player list sent with the status request packets."

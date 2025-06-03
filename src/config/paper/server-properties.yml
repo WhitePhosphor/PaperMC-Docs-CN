@@ -66,35 +66,33 @@ gamemode:
   description: '设置玩家加入服务器的默认游戏模式。（允许的值：“survival（生存）”、“creative（创造）”、“adventure（冒险）”、“spectator（旁观者）”）'
 generate-structures:
   default: "true"
-  description: "是否允许生成结构（如村庄）"
+  description: "是否允许生成结构（如村庄），由于地牢和沙漠水井在技术上属于地物，因而即使此项设为 false，其仍然会生成"
 generator-settings:
   default: "{}"
-  description: 用于自定义世界生成的设置。遵循[其格式](https://minecraft.wiki/w/Java_Edition_level_format#generatorOptions_tag_format)并编写相应的 JSON 字符串
+  description: >-
+    设置用于自定义世界生成的设置。需要遵循[其格式](https://minecraft.wiki/w/Java_Edition_level_format#generatorOptions_tag_format)并编写相应的 JSON 字符串。
+    例如：{"layers"\:[{"height"\:1,"block"\:"minecraft\:air"}],"lakes"\:false,"features"\:false,"biome"\:"minecraft\:the_void","structure_overrides"\:[]}
 hardcore:
   default: "false"
-  description: "如果设置为true，玩家死亡后将被设置为旁观者模式。"
+  description: "是否开启硬核模式，如果设置为 true，玩家死亡后将被设置为旁观者模式"
 hide-online-players:
   default: "false"
-  description: "Hides the player list sent with the status request packets."
+  description: "是否在客户端请求数据包时隐藏数据包中的发送的玩家列表"
 initial-disabled-packs:
   default: ""
-  description: "Comma-separated list of datapacks to not be auto-enabled on world creation."
+  description: "设置在创建世界时不会自动启用的数据包列表，用英文逗号（,）分隔列表"
 initial-enabled-packs:
   default: "vanilla"
-  description: >
-    Comma-separated list of datapacks to be enabled during world creation. Feature packs need
-    to be explicitly enabled.
+  description: "设置在创建世界时需要启用的数据包列表，用英文逗号（,）分隔列表。一些功能包需要明确启用"
 level-name:
   default: "world"
-  description: "The name of the world. This will be the name of the folder in which the world is saved."
+  description: "设置默认的世界名称，这也是保存世界数据的文件夹的名称"
 level-seed:
   default: ""
-  description: "The seed used to generate the world. Leave blank to default to random."
+  description: "设置用于生成世界的种子，留空则默认为随机。部分服务端会有更大的种子计算方式，列如：1024 位的种子生成规则"
 level-type:
   default: "minecraft:normal"
-  description: >
-    Defines the type of the world generator. (Allowed values: "normal", "flat", "large_biomes",
-    "amplified", "single_biome_surface", "buffet", "default_1_1", "customized")
+  description: 设置世界生成器的类型。（允许的值：`"normal（默认）"`、`"flat（超平坦）"`、`"large_biomes（巨型生物群系）"`、`"amplified（放大化）"`、`"single_biome_surface（单一生物群系）"`、`"buffet"`、`"default_1_1"`、`"customized（自定义）"`）
 log-ips:
   default: "true"
   description: >-
